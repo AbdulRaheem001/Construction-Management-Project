@@ -1,21 +1,23 @@
 import { useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate, useParams } from 'react-router-dom';
 import { api } from '../lib/api';
 import { formatCurrency, formatDate, getStatusColor } from '../utils/formatters';
 import PermissionGuard from '../components/PermissionGuard';
 import toast from 'react-hot-toast';
-import { Plus, Search, Filter, X } from 'lucide-react';
+import { Plus, Search, Filter, X, ArrowLeft, Calendar, MapPin, User as UserIcon, DollarSign, TrendingUp, Clock } from 'lucide-react';
 import type { Project, User } from '../types';
 
 export default function Projects() {
   return (
     <Routes>
       <Route index element={<ProjectsList />} />
+      <Route path=":id" element={<ProjectDetails />} />
     </Routes>
   );
 }
 
 function ProjectsList() {
+  const navigate = useNavigate();
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -157,7 +159,10 @@ function ProjectsList() {
                   </div>
                 )}
 
-                <button className="w-full bg-indigo-50 text-indigo-600 py-2 rounded-lg hover:bg-indigo-100 transition font-medium text-sm">
+                <button 
+                  onClick={() => navigate(`/projects/${project._id}`)}
+                  className="w-full bg-indigo-50 text-indigo-600 py-2 rounded-lg hover:bg-indigo-100 transition font-medium text-sm"
+                >
                   View Details
                 </button>
               </div>
@@ -176,6 +181,242 @@ function ProjectsList() {
           }}
         />
       )}
+    </div>
+  );
+}
+
+function ProjectDetails() {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const [project, setProject] = useState<Project | null>(null);
+  const [budgetData, setBudgetData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (id) {
+      fetchProjectDetails();
+    }
+  }, [id]);
+
+  const fetchProjectDetails = async () => {
+    try {
+      const response = await api.get(`/projects/${id}`);
+      setProject(response.data.data.project);
+      setBudgetData(response.data.data.budget);
+    } catch (error) {
+      console.error('Error fetching project details:', error);
+      toast.error('Failed to load project details');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      </div>
+    );
+  }
+
+  if (!project) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-gray-500">Project not found</p>
+        <button
+          onClick={() => navigate('/projects')}
+          className="mt-4 text-indigo-600 hover:text-indigo-700"
+        >
+          Back to Projects
+        </button>
+      </div>
+    );
+  }
+
+  const budgetUsed = budgetData?.actualSpent || 0;
+  const budgetRemaining = budgetData?.remainingBudget || 0;
+  const budgetPercentage = parseFloat(budgetData?.budgetUtilization || '0');
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center gap-4">
+        <button
+          onClick={() => navigate('/projects')}
+          className="p-2 hover:bg-gray-100 rounded-lg transition"
+        >
+          <ArrowLeft size={24} />
+        </button>
+        <div className="flex-1">
+          <h1 className="text-3xl font-bold text-gray-900">{project.projectName}</h1>
+          <p className="text-gray-600 mt-1">{project.projectCode}</p>
+        </div>
+        <span className={`px-4 py-2 text-sm font-medium rounded-full ${getStatusColor(project.status)}`}>
+          {project.status}
+        </span>
+      </div>
+
+      {/* Main Info Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-2 bg-blue-100 rounded-lg">
+              <UserIcon size={20} className="text-blue-600" />
+            </div>
+            <span className="text-sm text-gray-600">Client</span>
+          </div>
+          <p className="text-xl font-bold text-gray-900">{project.client}</p>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-2 bg-green-100 rounded-lg">
+              <MapPin size={20} className="text-green-600" />
+            </div>
+            <span className="text-sm text-gray-600">Location</span>
+          </div>
+          <p className="text-xl font-bold text-gray-900">{project.location}</p>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-2 bg-purple-100 rounded-lg">
+              <Calendar size={20} className="text-purple-600" />
+            </div>
+            <span className="text-sm text-gray-600">Start Date</span>
+          </div>
+          <p className="text-xl font-bold text-gray-900">{formatDate(project.startDate)}</p>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-2 bg-orange-100 rounded-lg">
+              <Clock size={20} className="text-orange-600" />
+            </div>
+            <span className="text-sm text-gray-600">Target Completion</span>
+          </div>
+          <p className="text-xl font-bold text-gray-900">
+            {project.targetCompletionDate ? formatDate(project.targetCompletionDate) : 'Not set'}
+          </p>
+        </div>
+      </div>
+
+      {/* Budget Overview */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <h2 className="text-xl font-bold text-gray-900 mb-6">Budget Overview</h2>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <DollarSign size={18} className="text-gray-600" />
+              <span className="text-sm text-gray-600">Initial Budget</span>
+            </div>
+            <p className="text-2xl font-bold text-gray-900">{formatCurrency(project.initialBudget)}</p>
+          </div>
+
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <TrendingUp size={18} className="text-gray-600" />
+              <span className="text-sm text-gray-600">Budget Used</span>
+            </div>
+            <p className="text-2xl font-bold text-red-600">{formatCurrency(budgetUsed)}</p>
+          </div>
+
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <DollarSign size={18} className="text-gray-600" />
+              <span className="text-sm text-gray-600">Budget Remaining</span>
+            </div>
+            <p className={`text-2xl font-bold ${budgetRemaining >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+              {formatCurrency(budgetRemaining)}
+            </p>
+          </div>
+        </div>
+
+        {/* Budget Progress Bar */}
+        <div>
+          <div className="flex justify-between text-sm mb-2">
+            <span className="text-gray-600 font-medium">Budget Utilization</span>
+            <span className="font-bold text-gray-900">{budgetPercentage.toFixed(1)}%</span>
+          </div>
+          <div className="w-full bg-gray-200 rounded-full h-4">
+            <div
+              className={`h-4 rounded-full transition-all duration-300 ${
+                budgetPercentage > 90 ? 'bg-red-500' :
+                budgetPercentage > 75 ? 'bg-yellow-500' : 'bg-green-500'
+              }`}
+              style={{ width: `${Math.min(budgetPercentage, 100)}%` }}
+            ></div>
+          </div>
+          {budgetPercentage > 100 && (
+            <p className="text-sm text-red-600 mt-2 font-medium">
+              ⚠️ Budget exceeded by {formatCurrency(Math.abs(budgetRemaining))}
+            </p>
+          )}
+        </div>
+      </div>
+
+      {/* Description & Site Manager */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <h2 className="text-xl font-bold text-gray-900 mb-4">Description</h2>
+          <p className="text-gray-700 leading-relaxed">
+            {project.description || 'No description provided'}
+          </p>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <h2 className="text-xl font-bold text-gray-900 mb-4">Site Manager</h2>
+          {project.siteManager ? (
+            <div className="space-y-3">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center">
+                  <UserIcon size={24} className="text-indigo-600" />
+                </div>
+                <div>
+                  <p className="font-semibold text-gray-900">{project.siteManager.name}</p>
+                  <p className="text-sm text-gray-600">{project.siteManager.role}</p>
+                </div>
+              </div>
+              <div className="pt-3 border-t border-gray-200">
+                <p className="text-sm text-gray-600">Email</p>
+                <p className="font-medium text-gray-900">{project.siteManager.email}</p>
+              </div>
+              {project.siteManager.contact && (
+                <div>
+                  <p className="text-sm text-gray-600">Contact</p>
+                  <p className="font-medium text-gray-900">{project.siteManager.contact}</p>
+                </div>
+              )}
+            </div>
+          ) : (
+            <p className="text-gray-500">No site manager assigned</p>
+          )}
+        </div>
+      </div>
+
+      {/* Project Dates */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <h2 className="text-xl font-bold text-gray-900 mb-4">Timeline</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div>
+            <p className="text-sm text-gray-600 mb-1">Start Date</p>
+            <p className="text-lg font-semibold text-gray-900">{formatDate(project.startDate)}</p>
+          </div>
+          {project.targetCompletionDate && (
+            <div>
+              <p className="text-sm text-gray-600 mb-1">Target Completion</p>
+              <p className="text-lg font-semibold text-gray-900">{formatDate(project.targetCompletionDate)}</p>
+            </div>
+          )}
+          {project.actualCompletionDate && (
+            <div>
+              <p className="text-sm text-gray-600 mb-1">Actual Completion</p>
+              <p className="text-lg font-semibold text-green-600">{formatDate(project.actualCompletionDate)}</p>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

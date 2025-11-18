@@ -9,7 +9,7 @@ dotenv.config();
 const seedData = async () => {
   try {
     // Connect to MongoDB
-    const mongoURI = 'mongodb+srv://femonaofficials:Z7EiKSQV0usvHIGP@cluster0.aydpswq.mongodb.net/crm';
+    const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/crm';
     await mongoose.connect(mongoURI);
     logger.info('Connected to MongoDB');
 
