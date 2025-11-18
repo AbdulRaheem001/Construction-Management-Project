@@ -1,0 +1,73 @@
+import mongoose, { Schema, Document } from 'mongoose';
+
+export interface IMaterialConsumption extends Document {
+  consumptionNumber: string;
+  project: mongoose.Types.ObjectId;
+  material: mongoose.Types.ObjectId;
+  quantity: number;
+  date: Date;
+  purpose?: string;
+  consumedBy: mongoose.Types.ObjectId;
+  approvedBy?: mongoose.Types.ObjectId;
+  notes?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const materialConsumptionSchema = new Schema<IMaterialConsumption>(
+  {
+    consumptionNumber: {
+      type: String,
+      required: [true, 'Consumption number is required'],
+      unique: true,
+      trim: true,
+      uppercase: true,
+    },
+    project: {
+      type: Schema.Types.ObjectId,
+      ref: 'Project',
+      required: [true, 'Project is required'],
+    },
+    material: {
+      type: Schema.Types.ObjectId,
+      ref: 'Material',
+      required: [true, 'Material is required'],
+    },
+    quantity: {
+      type: Number,
+      required: [true, 'Quantity is required'],
+      min: [0, 'Quantity cannot be negative'],
+    },
+    date: {
+      type: Date,
+      required: [true, 'Date is required'],
+      default: Date.now,
+    },
+    purpose: {
+      type: String,
+      trim: true,
+    },
+    consumedBy: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: [true, 'Consumed by is required'],
+    },
+    approvedBy: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    },
+    notes: {
+      type: String,
+      trim: true,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+materialConsumptionSchema.index({ consumptionNumber: 1 });
+materialConsumptionSchema.index({ project: 1 });
+materialConsumptionSchema.index({ material: 1 });
+
+export default mongoose.model<IMaterialConsumption>('MaterialConsumption', materialConsumptionSchema);

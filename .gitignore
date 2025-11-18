@@ -1,0 +1,44 @@
+# Dependencies
+/backend/node_modules/
+/frontend/node_modules/
+/backend/package-lock.json
+/frontend/package-lock.json
+/backend/yarn.lock
+/frontend/yarn.lock
+
+# Environment
+/backend/.env
+/backend/.env.local
+/backend/.env.*.local
+/frontend/.env
+/frontend/.env.local
+/frontend/.env.*.local
+
+# Build output
+/backend/dist/
+/frontend/dist/
+/frontend/build/
+/frontend/.next/
+
+
+# Uploads
+/frontend/uploads/
+backend/uploads/
+
+
+# IDE
+/backend/.vscode/
+frontend/.vscode/
+.backend/.idea/
+.frontend/.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+coverage/
+.nyc_output/
