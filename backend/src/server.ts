@@ -59,7 +59,7 @@ app.use(errorHandler);
 
 // Database connection
 const connectDB = async () => {
-  const mongoURI ='mongodb+srv://femonaofficials:Z7EiKSQV0usvHIGP@cluster0.aydpswq.mongodb.net/crm';
+  const mongoURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/crm';
   console.log('🔄 Attempting to connect to MongoDB...');
   console.log('📍 MongoDB URI:', mongoURI.replace(/\/\/([^:]+):([^@]+)@/, '//$1:****@')); // Hide password in logs
   

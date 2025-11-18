@@ -31,6 +31,7 @@ export interface Project {
   status: 'Planning' | 'Active' | 'On Hold' | 'Completed' | 'Cancelled';
   description?: string;
   manager?: User;
+  siteManager?: User;
   totalExpenses?: number;
   budgetUtilization?: number;
 }
