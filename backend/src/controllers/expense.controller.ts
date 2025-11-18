@@ -10,12 +10,23 @@ export const createExpense = async (
   next: NextFunction
 ) => {
   try {
+    // Auto-generate expense number if not provided
+    let expenseNumber = req.body.expenseNumber;
+    if (!expenseNumber) {
+      const expenseCount = await Expense.countDocuments();
+      expenseNumber = `EXP-${String(expenseCount + 1).padStart(6, '0')}`;
+    }
+
     const expenseData = {
       ...req.body,
+      expenseNumber,
       createdBy: req.user._id,
     };
 
     const expense = await Expense.create(expenseData);
+    await expense.populate('project', 'projectName projectCode');
+    await expense.populate('createdBy', 'name email');
+    
     logger.info(`Expense created: ${expense.expenseNumber}`);
 
     res.status(201).json({

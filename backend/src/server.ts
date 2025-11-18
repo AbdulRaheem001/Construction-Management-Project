@@ -17,6 +17,7 @@ import expenseRoutes from './routes/expense.routes';
 import dailyLogRoutes from './routes/dailyLog.routes';
 import roleRoutes from './routes/role.routes';
 import permissionRoutes from './routes/permission.routes';
+import materialIssueRoutes from './routes/materialIssue.routes';
 
 // Load environment variables
 dotenv.config();
@@ -53,6 +54,7 @@ app.use('/api/expenses', expenseRoutes);
 app.use('/api/daily-logs', dailyLogRoutes);
 app.use('/api/roles', roleRoutes);
 app.use('/api/permissions', permissionRoutes);
+app.use('/api/material-issues', materialIssueRoutes);
 
 // Error handling middleware (must be last)
 app.use(errorHandler);

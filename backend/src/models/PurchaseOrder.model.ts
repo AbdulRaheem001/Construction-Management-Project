@@ -10,13 +10,17 @@ interface IPOItem {
 export interface IPurchaseOrder extends Document {
   poNumber: string;
   project: mongoose.Types.ObjectId;
+  vendor: mongoose.Types.ObjectId;
   supplier: string;
   supplierContact?: string;
   items: IPOItem[];
   totalAmount: number;
-  status: 'Draft' | 'Pending Approval' | 'Approved' | 'Partially Received' | 'Fully Received' | 'Cancelled';
+  paidAmount: number;
+  status: 'Draft' | 'Pending Approval' | 'Approved' | 'Received' | 'Partially Received' | 'Cancelled';
+  paymentStatus: 'Pending' | 'Partial' | 'Paid';
   orderDate: Date;
   expectedDeliveryDate?: Date;
+  receivedAt?: Date;
   notes?: string;
   createdBy: mongoose.Types.ObjectId;
   approvedBy?: mongoose.Types.ObjectId;
@@ -38,6 +42,10 @@ const purchaseOrderSchema = new Schema<IPurchaseOrder>(
       type: Schema.Types.ObjectId,
       ref: 'Project',
       required: [true, 'Project is required'],
+    },
+    vendor: {
+      type: Schema.Types.ObjectId,
+      ref: 'Vendor',
     },
     supplier: {
       type: String,
@@ -76,10 +84,20 @@ const purchaseOrderSchema = new Schema<IPurchaseOrder>(
       required: true,
       min: [0, 'Total amount cannot be negative'],
     },
+    paidAmount: {
+      type: Number,
+      default: 0,
+      min: [0, 'Paid amount cannot be negative'],
+    },
     status: {
       type: String,
-      enum: ['Draft', 'Pending Approval', 'Approved', 'Partially Received', 'Fully Received', 'Cancelled'],
+      enum: ['Draft', 'Pending Approval', 'Approved', 'Received', 'Partially Received', 'Cancelled'],
       default: 'Draft',
+    },
+    paymentStatus: {
+      type: String,
+      enum: ['Pending', 'Partial', 'Paid'],
+      default: 'Pending',
     },
     orderDate: {
       type: Date,
@@ -87,6 +105,9 @@ const purchaseOrderSchema = new Schema<IPurchaseOrder>(
       default: Date.now,
     },
     expectedDeliveryDate: {
+      type: Date,
+    },
+    receivedAt: {
       type: Date,
     },
     notes: {

@@ -44,22 +44,28 @@ export interface Material {
   category: string;
   unit: string;
   costPerUnit: number;
+  avgUnitCost: number;
+  currentStock: number;
   reorderPoint: number;
   supplier?: string;
   isActive: boolean;
-  currentStock?: number;
+  totalValue?: number;
 }
 
 export interface PurchaseOrder {
   _id: string;
   poNumber: string;
   project: Project | string;
+  vendor?: any;
   supplier: string;
   items: POItem[];
   totalAmount: number;
-  status: 'Draft' | 'Pending' | 'Approved' | 'Partially Received' | 'Fully Received' | 'Cancelled';
+  paidAmount: number;
+  status: 'Draft' | 'Pending Approval' | 'Approved' | 'Received' | 'Partially Received' | 'Cancelled';
+  paymentStatus: 'Pending' | 'Partial' | 'Paid';
   orderDate: string;
   expectedDelivery?: string;
+  receivedAt?: string;
   notes?: string;
   createdBy: User;
   approvedBy?: User;
@@ -136,15 +142,19 @@ export interface Expense {
   _id: string;
   expenseNumber: string;
   project?: Project | string;
-  category: 'Material' | 'Labour' | 'Equipment' | 'General' | 'Overhead';
+  category: string;
+  expenseType: 'Material' | 'Labour' | 'Equipment' | 'General' | 'Overhead';
   amount: number;
   description: string;
   date: string;
-  paymentStatus: 'Pending' | 'Paid' | 'Overdue';
+  paymentStatus: 'Pending' | 'Paid' | 'Partially Paid' | 'Overdue';
   paymentMethod?: string;
   paymentDate?: string;
-  attachments?: string[];
+  vendor?: string;
+  invoiceNumber?: string;
+  notes?: string;
   createdBy: User;
+  approvedBy?: User;
 }
 
 export interface DailyLog {
@@ -160,6 +170,20 @@ export interface DailyLog {
   materialsReceived?: string[];
   remarks?: string;
   createdBy: User;
+}
+
+export interface MaterialIssue {
+  _id: string;
+  project: Project | string;
+  material: Material | string;
+  quantity: number;
+  unitCost: number;
+  totalCost: number;
+  issueDate: string;
+  issuedBy: User;
+  notes?: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface DashboardStats {
