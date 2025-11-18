@@ -4,8 +4,8 @@ import { api } from '../lib/api';
 import { formatCurrency, formatDate, getStatusColor } from '../utils/formatters';
 import PermissionGuard from '../components/PermissionGuard';
 import toast from 'react-hot-toast';
-import { Plus, Search, Filter } from 'lucide-react';
-import type { Project } from '../types';
+import { Plus, Search, Filter, X } from 'lucide-react';
+import type { Project, User } from '../types';
 
 export default function Projects() {
   return (
@@ -20,6 +20,7 @@ function ProjectsList() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   useEffect(() => {
     fetchProjects();
@@ -54,7 +55,7 @@ function ProjectsList() {
         </div>
         <PermissionGuard permission="createProject" showMessage>
           <button 
-            onClick={() => toast('Create Project form coming soon!', { icon: '🚧' })}
+            onClick={() => setShowCreateModal(true)}
             className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition"
           >
             <Plus size={20} />
@@ -164,6 +165,359 @@ function ProjectsList() {
           ))}
         </div>
       )}
+
+      {/* Create Project Modal */}
+      {showCreateModal && (
+        <CreateProjectModal
+          onClose={() => setShowCreateModal(false)}
+          onSuccess={() => {
+            setShowCreateModal(false);
+            fetchProjects();
+          }}
+        />
+      )}
+    </div>
+  );
+}
+
+interface Milestone {
+  name: string;
+  description: string;
+  deadline: string;
+}
+
+interface CreateProjectModalProps {
+  onClose: () => void;
+  onSuccess: () => void;
+}
+
+function CreateProjectModal({ onClose, onSuccess }: CreateProjectModalProps) {
+  const [users, setUsers] = useState<User[]>([]);
+  const [formData, setFormData] = useState({
+    projectName: '',
+    projectCode: '',
+    client: '',
+    location: '',
+    description: '',
+    startDate: '',
+    targetCompletionDate: '',
+    initialBudget: '',
+    siteManager: '',
+    status: 'Planning',
+  });
+  const [milestones, setMilestones] = useState<Milestone[]>([
+    { name: '', description: '', deadline: '' }
+  ]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    try {
+      const response = await api.get('/users?isActive=true');
+      setUsers(response.data.data.users || []);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
+
+  const handleAddMilestone = () => {
+    setMilestones([...milestones, { name: '', description: '', deadline: '' }]);
+  };
+
+  const handleRemoveMilestone = (index: number) => {
+    if (milestones.length > 1) {
+      setMilestones(milestones.filter((_: Milestone, i: number) => i !== index));
+    }
+  };
+
+  const handleMilestoneChange = (index: number, field: keyof Milestone, value: string) => {
+    const updated = [...milestones];
+    updated[index][field] = value;
+    setMilestones(updated);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const validMilestones = milestones.filter(m => m.name.trim() !== '');
+      
+      await api.post('/projects', {
+        ...formData,
+        initialBudget: parseFloat(formData.initialBudget),
+        milestones: validMilestones.length > 0 ? validMilestones : undefined,
+      });
+
+      toast.success('Project created successfully');
+      onSuccess();
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || 'Failed to create project');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-xl shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="p-6 border-b border-gray-200 sticky top-0 bg-white z-10">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-bold text-gray-900">Create New Project</h2>
+            <button
+              onClick={onClose}
+              className="text-gray-400 hover:text-gray-600 transition"
+            >
+              <X size={24} />
+            </button>
+          </div>
+        </div>
+
+        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          {/* Basic Information */}
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Basic Information</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Project Name *
+                </label>
+                <input
+                  type="text"
+                  value={formData.projectName}
+                  onChange={(e) => setFormData({ ...formData, projectName: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Project Code *
+                </label>
+                <input
+                  type="text"
+                  value={formData.projectCode}
+                  onChange={(e) => setFormData({ ...formData, projectCode: e.target.value.toUpperCase() })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+                  placeholder="e.g., PROJ-2024-001"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Client *
+                </label>
+                <input
+                  type="text"
+                  value={formData.client}
+                  onChange={(e) => setFormData({ ...formData, client: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Location *
+                </label>
+                <input
+                  type="text"
+                  value={formData.location}
+                  onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Start Date *
+                </label>
+                <input
+                  type="date"
+                  value={formData.startDate}
+                  onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Deadline (End Date) *
+                </label>
+                <input
+                  type="date"
+                  value={formData.targetCompletionDate}
+                  onChange={(e) => setFormData({ ...formData, targetCompletionDate: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Initial Budget *
+                </label>
+                <input
+                  type="number"
+                  value={formData.initialBudget}
+                  onChange={(e) => setFormData({ ...formData, initialBudget: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+                  placeholder="0.00"
+                  step="0.01"
+                  min="0"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Site Manager *
+                </label>
+                <select
+                  value={formData.siteManager}
+                  onChange={(e) => setFormData({ ...formData, siteManager: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+                  required
+                >
+                  <option value="">Select Site Manager</option>
+                  {users.map((user) => (
+                    <option key={user._id} value={user._id}>
+                      {user.name} ({user.role})
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Status *
+                </label>
+                <select
+                  value={formData.status}
+                  onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+                  required
+                >
+                  <option value="Planning">Planning</option>
+                  <option value="Active">Active</option>
+                  <option value="On Hold">On Hold</option>
+                  <option value="Completed">Completed</option>
+                  <option value="Cancelled">Cancelled</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="mt-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Description *
+              </label>
+              <textarea
+                value={formData.description}
+                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+                rows={3}
+                placeholder="Project description..."
+                required
+              />
+            </div>
+          </div>
+
+          {/* Milestones/Stages */}
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">Milestones/Stages</h3>
+              <button
+                type="button"
+                onClick={handleAddMilestone}
+                className="text-sm text-indigo-600 hover:text-indigo-700 font-medium"
+              >
+                + Add Milestone
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              {milestones.map((milestone, index) => (
+                <div key={index} className="border border-gray-200 rounded-lg p-4 relative">
+                  {milestones.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveMilestone(index)}
+                      className="absolute top-2 right-2 text-red-500 hover:text-red-700"
+                    >
+                      <X size={20} />
+                    </button>
+                  )}
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Milestone Name
+                      </label>
+                      <input
+                        type="text"
+                        value={milestone.name}
+                        onChange={(e) => handleMilestoneChange(index, 'name', e.target.value)}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+                        placeholder="e.g., Foundation Work"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Description
+                      </label>
+                      <input
+                        type="text"
+                        value={milestone.description}
+                        onChange={(e) => handleMilestoneChange(index, 'description', e.target.value)}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+                        placeholder="Brief description"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Deadline
+                      </label>
+                      <input
+                        type="date"
+                        value={milestone.deadline}
+                        onChange={(e) => handleMilestoneChange(index, 'deadline', e.target.value)}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex gap-3 pt-4 border-t border-gray-200">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={loading}
+              className="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition disabled:opacity-50"
+            >
+              {loading ? 'Creating...' : 'Create Project'}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
