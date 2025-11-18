@@ -1,5 +1,6 @@
 import { Response, NextFunction } from 'express';
 import Material from '../models/Material.model';
+import Vendor from '../models/Vendor.model';
 import PurchaseOrder from '../models/PurchaseOrder.model';
 import GoodsReceipt from '../models/GoodsReceipt.model';
 import Inventory from '../models/Inventory.model';
@@ -16,7 +17,19 @@ export const createMaterial = async (
   next: NextFunction
 ) => {
   try {
-    const material = await Material.create(req.body);
+    const materialData = { ...req.body };
+    
+    // If initialStock is provided, set currentStock and avgUnitCost
+    if (materialData.initialStock && materialData.initialStock > 0) {
+      materialData.currentStock = materialData.initialStock;
+      materialData.avgUnitCost = materialData.costPerUnit || 0;
+    } else {
+      // If no initial stock, set avgUnitCost to costPerUnit for future use
+      materialData.avgUnitCost = materialData.costPerUnit || 0;
+      materialData.currentStock = 0;
+    }
+    
+    const material = await Material.create(materialData);
     logger.info(`Material created: ${material.sku}`);
 
     res.status(201).json({
@@ -48,28 +61,23 @@ export const getMaterials = async (
       ];
     }
 
-    const materials = await Material.find(query).sort({ name: 1 });
+    let materials = await Material.find(query).sort({ name: 1 }).lean();
+
+    // Calculate total_value for each material (stock × avgUnitCost)
+    materials = materials.map((material: any) => ({
+      ...material,
+      totalValue: material.currentStock * material.avgUnitCost,
+    }));
 
     // Filter for low stock if requested
-    let result: any[] = materials;
     if (lowStock === 'true') {
-      result = [];
-      for (const material of materials) {
-        const totalStock = await Inventory.aggregate([
-          { $match: { material: material._id } },
-          { $group: { _id: null, total: { $sum: '$quantity' } } },
-        ]);
-        const stock = totalStock[0]?.total || 0;
-        if (stock < material.reorderPoint) {
-          result.push({ ...material.toObject(), currentStock: stock } as any);
-        }
-      }
+      materials = materials.filter((m: any) => m.currentStock < m.reorderPoint);
     }
 
     res.json({
       success: true,
-      count: result.length,
-      data: result,
+      count: materials.length,
+      data: materials,
     });
   } catch (error) {
     next(error);
@@ -140,12 +148,33 @@ export const createPurchaseOrder = async (
   next: NextFunction
 ) => {
   try {
+    // Calculate total amount from line items
+    const items = req.body.items || [];
+    const totalAmount = items.reduce((sum: number, item: any) => {
+      const itemTotal = item.quantity * item.unitPrice;
+      item.totalPrice = itemTotal;
+      return sum + itemTotal;
+    }, 0);
+
     const poData = {
       ...req.body,
+      items,
+      totalAmount,
       createdBy: req.user._id,
     };
 
     const purchaseOrder = await PurchaseOrder.create(poData);
+    
+    // Update vendor if provided
+    if (purchaseOrder.vendor) {
+      await Vendor.findByIdAndUpdate(purchaseOrder.vendor, {
+        $inc: { 
+          totalPurchases: totalAmount,
+          outstandingPayments: totalAmount 
+        },
+      });
+    }
+
     logger.info(`Purchase Order created: ${purchaseOrder.poNumber}`);
 
     res.status(201).json({
@@ -166,14 +195,17 @@ export const getPurchaseOrders = async (
   next: NextFunction
 ) => {
   try {
-    const { project, status } = req.query;
+    const { project, status, vendor, paymentStatus } = req.query;
 
     const query: any = {};
     if (project) query.project = project;
     if (status) query.status = status;
+    if (vendor) query.vendor = vendor;
+    if (paymentStatus) query.paymentStatus = paymentStatus;
 
     const purchaseOrders = await PurchaseOrder.find(query)
       .populate('project', 'projectName projectCode')
+      .populate('vendor', 'name vendorCode')
       .populate('items.material', 'sku name unit')
       .populate('createdBy', 'name email')
       .populate('approvedBy', 'name email')
@@ -253,6 +285,250 @@ export const approvePurchaseOrder = async (
   }
 };
 
+// Update PO status to Received and calculate Moving Average Cost
+export const receivePurchaseOrder = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const po = await PurchaseOrder.findById(req.params.id).populate('items.material');
+
+    if (!po) {
+      return next(new AppError('Purchase order not found', 404));
+    }
+
+    if (po.status === 'Received') {
+      return next(new AppError('Purchase order already received', 400));
+    }
+
+    // Update material stock and calculate Moving Average Cost for each item
+    for (const item of po.items) {
+      const material = await Material.findById(item.material);
+      
+      if (material) {
+        const oldStock = material.currentStock;
+        const oldAvgCost = material.avgUnitCost;
+        const newQuantity = item.quantity;
+        const newCost = item.unitPrice;
+
+        // Moving Average Cost Formula:
+        // New Avg Cost = [(Old Stock × Old Avg Cost) + (New Qty × New Cost)] / (Old Stock + New Qty)
+        let newAvgCost: number;
+        
+        if (oldStock === 0) {
+          newAvgCost = newCost;
+        } else {
+          const totalOldValue = oldStock * oldAvgCost;
+          const newValue = newQuantity * newCost;
+          const newTotalStock = oldStock + newQuantity;
+          newAvgCost = (totalOldValue + newValue) / newTotalStock;
+        }
+
+        material.currentStock = oldStock + newQuantity;
+        material.avgUnitCost = newAvgCost;
+        await material.save();
+
+        logger.info(`Material ${material.sku} updated: Stock ${oldStock} → ${material.currentStock}, Avg Cost ${oldAvgCost.toFixed(2)} → ${newAvgCost.toFixed(2)}`);
+      }
+    }
+
+    // Update PO status
+    po.status = 'Received';
+    po.receivedAt = new Date();
+    await po.save();
+
+    logger.info(`Purchase Order received: ${po.poNumber}`);
+
+    res.json({
+      success: true,
+      data: po,
+      message: 'Purchase order received and material costs updated',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// ===== VENDORS =====
+
+export const createVendor = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const vendor = await Vendor.create(req.body);
+    logger.info(`Vendor created: ${vendor.vendorCode}`);
+
+    res.status(201).json({
+      success: true,
+      data: vendor,
+    });
+  } catch (error: any) {
+    if (error.code === 11000) {
+      return next(new AppError('Vendor code already exists', 400));
+    }
+    next(error);
+  }
+};
+
+export const getVendors = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { search } = req.query;
+
+    const query: any = { isActive: true };
+    if (search) {
+      query.$or = [
+        { vendorCode: { $regex: search, $options: 'i' } },
+        { name: { $regex: search, $options: 'i' } },
+      ];
+    }
+
+    const vendors = await Vendor.find(query).sort({ name: 1 });
+
+    res.json({
+      success: true,
+      count: vendors.length,
+      data: vendors,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getVendorById = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const vendor = await Vendor.findById(req.params.id);
+
+    if (!vendor) {
+      return next(new AppError('Vendor not found', 404));
+    }
+
+    // Get vendor's purchase orders
+    const purchaseOrders = await PurchaseOrder.find({ vendor: vendor._id })
+      .populate('project', 'projectName')
+      .select('poNumber totalAmount status orderDate')
+      .sort({ orderDate: -1 })
+      .limit(10);
+
+    res.json({
+      success: true,
+      data: {
+        vendor,
+        recentPurchaseOrders: purchaseOrders,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateVendor = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const vendor = await Vendor.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true, runValidators: true }
+    );
+
+    if (!vendor) {
+      return next(new AppError('Vendor not found', 404));
+    }
+
+    logger.info(`Vendor updated: ${vendor.vendorCode}`);
+
+    res.json({
+      success: true,
+      data: vendor,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// ===== MATERIAL ANALYTICS =====
+
+export const getMaterialAnalytics = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    // Calculate total inventory value
+    const materials = await Material.find({ isActive: true });
+    const totalInventoryValue = materials.reduce((sum, m) => sum + (m.currentStock * m.avgUnitCost), 0);
+
+    // Get outstanding payments from POs
+    const outstandingPos = await PurchaseOrder.aggregate([
+      {
+        $match: {
+          status: { $in: ['Approved', 'Received', 'Partially Received'] },
+          paymentStatus: { $in: ['Pending', 'Partial'] },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: { $subtract: ['$totalAmount', '$paidAmount'] } },
+        },
+      },
+    ]);
+    const outstandingPayments = outstandingPos[0]?.total || 0;
+
+    // Calculate monthly spend (current month)
+    const startOfMonth = new Date();
+    startOfMonth.setDate(1);
+    startOfMonth.setHours(0, 0, 0, 0);
+
+    const monthlySpend = await PurchaseOrder.aggregate([
+      {
+        $match: {
+          orderDate: { $gte: startOfMonth },
+          status: { $ne: 'Cancelled' },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: '$totalAmount' },
+        },
+      },
+    ]);
+
+    // Low stock items
+    const lowStockCount = materials.filter(m => m.currentStock < m.reorderPoint).length;
+
+    // Total materials
+    const totalMaterials = materials.length;
+
+    res.json({
+      success: true,
+      data: {
+        totalInventoryValue,
+        outstandingPayments,
+        monthlySpend: monthlySpend[0]?.total || 0,
+        lowStockCount,
+        totalMaterials,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // ===== GOODS RECEIPT =====
 
 export const createGoodsReceipt = async (
@@ -316,7 +592,7 @@ export const createGoodsReceipt = async (
         }
       }
 
-      po.status = allReceived ? 'Fully Received' : 'Partially Received';
+      po.status = allReceived ? 'Received' : 'Partially Received';
       await po.save();
     }
 

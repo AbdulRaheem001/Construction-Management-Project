@@ -90,7 +90,6 @@ const projectSchema = new Schema<IProject>(
   }
 );
 
-projectSchema.index({ projectCode: 1 });
 projectSchema.index({ status: 1 });
 projectSchema.index({ siteManager: 1 });
 

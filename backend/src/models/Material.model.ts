@@ -6,9 +6,12 @@ export interface IMaterial extends Document {
   description?: string;
   unit: string;
   costPerUnit: number;
+  avgUnitCost: number; // Moving Average Cost
+  currentStock: number;
   reorderPoint: number;
   supplier?: string;
   category?: string;
+  project?: mongoose.Types.ObjectId;
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -42,6 +45,16 @@ const materialSchema = new Schema<IMaterial>(
       required: [true, 'Cost per unit is required'],
       min: [0, 'Cost cannot be negative'],
     },
+    avgUnitCost: {
+      type: Number,
+      default: 0,
+      min: [0, 'Average unit cost cannot be negative'],
+    },
+    currentStock: {
+      type: Number,
+      default: 0,
+      min: [0, 'Current stock cannot be negative'],
+    },
     reorderPoint: {
       type: Number,
       default: 10,
@@ -55,6 +68,10 @@ const materialSchema = new Schema<IMaterial>(
       type: String,
       enum: ['Cement', 'Steel', 'Bricks', 'Sand', 'Aggregate', 'Paint', 'Electrical', 'Plumbing', 'Hardware', 'Other'],
       default: 'Other',
+    },
+    project: {
+      type: Schema.Types.ObjectId,
+      ref: 'Project',
     },
     isActive: {
       type: Boolean,

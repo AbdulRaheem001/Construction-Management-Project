@@ -19,12 +19,14 @@ export const authenticate = async (
     const token = req.headers.authorization?.replace('Bearer ', '');
 
     if (!token) {
+      console.log('❌ No token provided');
       throw new AppError('Authentication required', 401);
     }
 
     const decoded = verifyToken(token);
 
     if (!decoded) {
+      console.log('❌ Invalid token');
       throw new AppError('Invalid or expired token', 401);
     }
 
@@ -37,12 +39,15 @@ export const authenticate = async (
     });
 
     if (!user || !user.isActive) {
+      console.log('❌ User not found or inactive:', decoded.id);
       throw new AppError('User not found or inactive', 401);
     }
 
+    console.log('✅ User authenticated:', user.email);
     req.user = user;
     next();
   } catch (error) {
+    console.log('❌ Authentication error:', error);
     next(error);
   }
 };
