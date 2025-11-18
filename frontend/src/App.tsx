@@ -13,6 +13,7 @@ import Equipment from './pages/Equipment';
 import Warehouse from './pages/Warehouse';
 import Expenses from './pages/Expenses';
 import Users from './pages/Users';
+import Roles from './pages/Roles';
 import './App.css';
 
 function App() {
@@ -49,6 +50,7 @@ function App() {
           <Route path="warehouse/*" element={<Warehouse />} />
           <Route path="expenses/*" element={<Expenses />} />
           <Route path="users/*" element={<Users />} />
+          <Route path="roles/*" element={<Roles />} />
         </Route>
       </Routes>
     </BrowserRouter>

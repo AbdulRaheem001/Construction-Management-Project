@@ -40,6 +40,12 @@ export const permissions: Record<string, UserRole[]> = {
   
   // User management - ONLY Administrator
   manageUsers: ['Administrator'],
+  
+  // Role management - ONLY Administrator
+  createRoles: ['Administrator'],
+  editRoles: ['Administrator'],
+  deleteRoles: ['Administrator'],
+  viewRoles: ['Administrator'],
 };
 
 export const hasPermission = (userRole: UserRole, permission: keyof typeof permissions): boolean => {
@@ -64,6 +70,8 @@ export const canAccessModule = (userRole: UserRole, module: string): boolean => 
       return hasPermission(userRole, 'viewExpense');
     case 'users':
       return hasPermission(userRole, 'manageUsers');
+    case 'roles':
+      return hasPermission(userRole, 'viewRoles');
     default:
       return false;
   }

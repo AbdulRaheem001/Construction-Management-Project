@@ -11,6 +11,7 @@ export interface IUser {
   password: string;
   name: string;
   role: UserRole;
+  roles: any[];
   contact?: string;
   isActive: boolean;
   createdAt: Date;

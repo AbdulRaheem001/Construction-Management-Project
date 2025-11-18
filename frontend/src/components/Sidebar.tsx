@@ -11,6 +11,7 @@ import {
   DollarSign,
   FileText,
   Settings,
+  Shield,
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react';
@@ -30,6 +31,7 @@ const menuItems = [
   { id: 'expenses', label: 'Expenses', icon: DollarSign, path: '/expenses' },
   { id: 'reports', label: 'Reports', icon: FileText, path: '/reports' },
   { id: 'users', label: 'Users', icon: Settings, path: '/users' },
+  { id: 'roles', label: 'Roles', icon: Shield, path: '/roles' },
 ];
 
 export default function Sidebar({ open, setOpen }: SidebarProps) {

@@ -30,7 +30,16 @@ export const getAllUsers = async (
       ];
     }
 
-    const users = await User.find(filter).sort({ createdAt: -1 });
+    const users = await User.find(filter)
+      .populate({
+        path: 'roles',
+        select: 'name code permissions',
+        populate: {
+          path: 'permissions',
+          select: 'name code'
+        }
+      })
+      .sort({ createdAt: -1 });
 
     res.json({
       success: true,
@@ -47,7 +56,14 @@ export const getUserById = async (
   next: NextFunction
 ) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.params.id).populate({
+      path: 'roles',
+      select: 'name code permissions',
+      populate: {
+        path: 'permissions',
+        select: 'name code'
+      }
+    });
 
     if (!user) {
       throw new AppError('User not found', 404);
@@ -68,7 +84,7 @@ export const createUser = async (
   next: NextFunction
 ) => {
   try {
-    const { email, password, name, role, contact } = req.body;
+    const { email, password, name, role, roles, contact } = req.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -80,6 +96,7 @@ export const createUser = async (
       password,
       name,
       role,
+      roles: roles || [],
       contact,
     });
 
@@ -91,6 +108,9 @@ export const createUser = async (
       resourceId: user._id.toString(),
       ipAddress: req.ip,
     });
+
+    // Populate roles before sending response
+    await user.populate('roles');
 
     res.status(201).json({
       success: true,
@@ -108,13 +128,18 @@ export const updateUser = async (
   next: NextFunction
 ) => {
   try {
-    const { name, role, contact, isActive } = req.body;
+    const { name, role, roles, contact, isActive } = req.body;
+
+    const updateData: any = { name, role, contact, isActive };
+    if (roles !== undefined) {
+      updateData.roles = roles;
+    }
 
     const user = await User.findByIdAndUpdate(
       req.params.id,
-      { name, role, contact, isActive },
+      updateData,
       { new: true, runValidators: true }
-    );
+    ).populate('roles');
 
     if (!user) {
       throw new AppError('User not found', 404);
@@ -126,7 +151,7 @@ export const updateUser = async (
       action: 'UPDATE',
       resource: 'User',
       resourceId: user._id.toString(),
-      changes: { name, role, contact, isActive },
+      changes: { name, role, roles, contact, isActive },
       ipAddress: req.ip,
     });
 

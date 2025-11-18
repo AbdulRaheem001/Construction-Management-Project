@@ -4,8 +4,15 @@ import { api } from '../lib/api';
 import { formatDate } from '../utils/formatters';
 import PermissionGuard from '../components/PermissionGuard';
 import toast from 'react-hot-toast';
-import { Plus, Search, UserCheck, UserX, Edit2, Mail, Phone, Shield } from 'lucide-react';
+import { Plus, Search, UserCheck, UserX, Edit2, Mail, Phone, Shield, X } from 'lucide-react';
 import type { User } from '../types';
+
+interface Role {
+  _id: string;
+  name: string;
+  code: string;
+  isActive: boolean;
+}
 
 export default function Users() {
   return (
@@ -17,6 +24,7 @@ export default function Users() {
 
 function UsersList() {
   const [users, setUsers] = useState<User[]>([]);
+  const [roles, setRoles] = useState<Role[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterRole, setFilterRole] = useState('');
@@ -26,6 +34,7 @@ function UsersList() {
 
   useEffect(() => {
     fetchUsers();
+    fetchRoles();
   }, []);
 
   const fetchUsers = async () => {
@@ -45,6 +54,15 @@ function UsersList() {
     }
   };
 
+  const fetchRoles = async () => {
+    try {
+      const response = await api.get('/roles?isActive=true');
+      setRoles(response.data || []);
+    } catch (error) {
+      console.error('Error fetching roles:', error);
+    }
+  };
+
   useEffect(() => {
     const timer = setTimeout(() => {
       fetchUsers();
@@ -57,6 +75,7 @@ function UsersList() {
       await api.put(`/users/${user._id}`, {
         name: user.name,
         role: user.role,
+        roles: (user as any).roles?.map((r: any) => typeof r === 'string' ? r : r._id) || [],
         contact: user.contact,
         isActive: !user.isActive,
       });
@@ -247,6 +266,7 @@ function UsersList() {
       {/* Modals */}
       {showCreateModal && (
         <UserFormModal
+          availableRoles={roles}
           onClose={handleCloseModals}
           onSuccess={handleCloseModals}
         />
@@ -254,6 +274,7 @@ function UsersList() {
       {editingUser && (
         <UserFormModal
           user={editingUser}
+          availableRoles={roles}
           onClose={handleCloseModals}
           onSuccess={handleCloseModals}
         />
@@ -264,16 +285,18 @@ function UsersList() {
 
 interface UserFormModalProps {
   user?: User;
+  availableRoles: Role[];
   onClose: () => void;
   onSuccess: () => void;
 }
 
-function UserFormModal({ user, onClose, onSuccess }: UserFormModalProps) {
+function UserFormModal({ user, availableRoles, onClose, onSuccess }: UserFormModalProps) {
   const [formData, setFormData] = useState({
     name: user?.name || '',
     email: user?.email || '',
     password: '',
     role: user?.role || 'Labourer',
+    roles: (user as any)?.roles?.map((r: any) => typeof r === 'string' ? r : r._id) || [],
     contact: user?.contact || '',
   });
   const [loading, setLoading] = useState(false);
@@ -288,13 +311,17 @@ function UserFormModal({ user, onClose, onSuccess }: UserFormModalProps) {
         await api.put(`/users/${user._id}`, {
           name: formData.name,
           role: formData.role,
+          roles: formData.roles,
           contact: formData.contact,
           isActive: user.isActive,
         });
         toast.success('User updated successfully');
       } else {
         // Create new user
-        await api.post('/users', formData);
+        await api.post('/users', {
+          ...formData,
+          roles: formData.roles,
+        });
         toast.success('User created successfully');
       }
       onSuccess();
@@ -364,7 +391,7 @@ function UserFormModal({ user, onClose, onSuccess }: UserFormModalProps) {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Role *
+              Legacy Role * (for backward compatibility)
             </label>
             <select
               value={formData.role}
@@ -377,6 +404,57 @@ function UserFormModal({ user, onClose, onSuccess }: UserFormModalProps) {
               <option value="Accountant">Accountant</option>
               <option value="Labourer">Labourer</option>
             </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Roles (New RBAC System)
+            </label>
+            <div className="border border-gray-300 rounded-lg p-3 max-h-48 overflow-y-auto">
+              {availableRoles.length === 0 ? (
+                <p className="text-sm text-gray-500">Loading roles...</p>
+              ) : (
+                <div className="space-y-2">
+                  {availableRoles.map((role) => (
+                    <label key={role._id} className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-2 rounded">
+                        <input
+                        type="checkbox"
+                        checked={formData.roles.includes(role._id)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setFormData({ ...formData, roles: [...formData.roles, role._id] });
+                          } else {
+                            setFormData({ ...formData, roles: formData.roles.filter((id: string) => id !== role._id) });
+                          }
+                        }}
+                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      />
+                      <span className="text-sm text-gray-900">{role.name}</span>
+                      <span className="text-xs text-gray-500">({role.code})</span>
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
+            {formData.roles.length > 0 && (
+              <div className="mt-2 flex flex-wrap gap-2">
+                {formData.roles.map((roleId: string) => {
+                  const role = availableRoles.find(r => r._id === roleId);
+                  return role ? (
+                    <span key={roleId} className="inline-flex items-center gap-1 px-2 py-1 bg-indigo-100 text-indigo-700 text-xs rounded">
+                      {role.name}
+                      <button
+                        type="button"
+                        onClick={() => setFormData({ ...formData, roles: formData.roles.filter((id: string) => id !== roleId) })}
+                        className="hover:text-indigo-900"
+                      >
+                        <X size={12} />
+                      </button>
+                    </span>
+                  ) : null;
+                })}
+              </div>
+            )}
           </div>
 
           <div>

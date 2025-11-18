@@ -31,6 +31,12 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>(
       required: [true, 'Role is required'],
       default: UserRole.LABOURER,
     },
+    roles: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Role',
+      },
+    ],
     contact: {
       type: String,
       trim: true,

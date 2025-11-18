@@ -15,6 +15,8 @@ import equipmentRoutes from './routes/equipment.routes';
 import warehouseRoutes from './routes/warehouse.routes';
 import expenseRoutes from './routes/expense.routes';
 import dailyLogRoutes from './routes/dailyLog.routes';
+import roleRoutes from './routes/role.routes';
+import permissionRoutes from './routes/permission.routes';
 
 // Load environment variables
 dotenv.config();
@@ -49,6 +51,8 @@ app.use('/api/equipment', equipmentRoutes);
 app.use('/api/warehouse', warehouseRoutes);
 app.use('/api/expenses', expenseRoutes);
 app.use('/api/daily-logs', dailyLogRoutes);
+app.use('/api/roles', roleRoutes);
+app.use('/api/permissions', permissionRoutes);
 
 // Error handling middleware (must be last)
 app.use(errorHandler);
