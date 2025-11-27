@@ -92,17 +92,6 @@ export default function Login() {
               )}
             </button>
           </form>
-
-          <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-            <p className="text-xs text-gray-600 font-semibold mb-2">Demo Accounts:</p>
-            <div className="text-xs text-gray-600 space-y-1">
-              <div>Admin: <code className="bg-white px-1">admin@cms.com</code></div>
-              <div>Site Manager: <code className="bg-white px-1">manager@cms.com</code></div>
-              <div>Accountant: <code className="bg-white px-1">accountant@cms.com</code></div>
-              <div>Labourer: <code className="bg-white px-1">labourer@cms.com</code></div>
-              <div className="mt-1">Password: <code className="bg-white px-1">password</code></div>
-            </div>
-          </div>
         </div>
       </div>
     </div>

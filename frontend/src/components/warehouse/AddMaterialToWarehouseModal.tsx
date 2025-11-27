@@ -64,7 +64,7 @@ export default function AddMaterialToWarehouseModal({ warehouse, onClose, onSucc
 
     try {
       // Create material with warehouse
-      const materialResponse = await api.post('/materials', {
+      await api.post('/materials', {
         sku: formData.sku.toUpperCase(),
         name: formData.name,
         description: formData.description,
@@ -76,8 +76,6 @@ export default function AddMaterialToWarehouseModal({ warehouse, onClose, onSucc
         supplier: formData.supplier,
         warehouse: warehouse._id,
       });
-
-      const material = materialResponse.data.data;
 
       // If warehouse is linked to project, create expense record (vendor ledger auto-calculated from expenses)
       if (warehouse.project && totalAmount > 0) {

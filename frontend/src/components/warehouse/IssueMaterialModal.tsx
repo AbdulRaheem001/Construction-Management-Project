@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { api } from '../../lib/api';
 import toast from 'react-hot-toast';
 import { X } from 'lucide-react';
-import type { Inventory, Warehouse, Project, Material } from '../../types';
+import type { Inventory, Warehouse, Project } from '../../types';
 import { formatCurrency } from '../../utils/formatters';
 
 interface IssueMaterialModalProps {

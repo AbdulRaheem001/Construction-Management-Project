@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { api } from '../lib/api';
 import toast from 'react-hot-toast';
-import { Plus, X, Search, Building2, Phone, Mail, MapPin, DollarSign } from 'lucide-react';
-import { formatCurrency, formatDate } from '../utils/formatters';
+import { Plus, X, Search, Building2, Phone, Mail, MapPin } from 'lucide-react';
+import { formatCurrency } from '../utils/formatters';
 import PermissionGuard from '../components/PermissionGuard';
 
 interface Vendor {

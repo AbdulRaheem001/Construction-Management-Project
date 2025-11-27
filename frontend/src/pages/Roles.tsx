@@ -430,9 +430,6 @@ function RoleFormModal({ role, permissions, onClose, onSuccess }: RoleFormModalP
                   const allSelected = modulePerms.every((id) =>
                     formData.selectedPermissions.includes(id)
                   );
-                  const someSelected = modulePerms.some((id) =>
-                    formData.selectedPermissions.includes(id)
-                  );
 
                   return (
                     <div key={module} className="border border-gray-200 rounded-lg overflow-hidden">

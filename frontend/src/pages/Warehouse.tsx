@@ -3,7 +3,7 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import { api } from '../lib/api';
 import PermissionGuard from '../components/PermissionGuard';
 import toast from 'react-hot-toast';
-import { Plus, Warehouse as WarehouseIcon, X } from 'lucide-react';
+import { Plus, Warehouse as WarehouseIcon } from 'lucide-react';
 import type { Warehouse as WarehouseType, Inventory, Project } from '../types';
 import WarehouseDetail from './WarehouseDetail';
 

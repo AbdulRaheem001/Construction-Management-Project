@@ -4,8 +4,8 @@ import { api } from '../lib/api';
 import { formatCurrency, formatDate, getStatusColor } from '../utils/formatters';
 import PermissionGuard from '../components/PermissionGuard';
 import toast from 'react-hot-toast';
-import { Plus, Search, Package, AlertTriangle, X, TrendingUp, DollarSign, ShoppingCart, Trash2, CheckCircle, MapPin, ArrowRightLeft, ChevronDown, ChevronUp, Warehouse as WarehouseIcon } from 'lucide-react';
-import type { Material, PurchaseOrder, Project, Inventory, Warehouse, StockTransfer } from '../types';
+import { Plus, Search, Package, AlertTriangle, X, TrendingUp, DollarSign, Trash2, CheckCircle, MapPin, ArrowRightLeft, ChevronDown, ChevronUp, Warehouse as WarehouseIcon } from 'lucide-react';
+import type { Material, PurchaseOrder, Project, Inventory, Warehouse } from '../types';
 import { hasPermission } from '../utils/permissions';
 import { useAuthStore } from '../store/authStore';
 
