@@ -4,8 +4,8 @@ import { api } from '../lib/api';
 import { formatCurrency, formatDate, getStatusColor } from '../utils/formatters';
 import PermissionGuard from '../components/PermissionGuard';
 import toast from 'react-hot-toast';
-import { Plus, Search, Filter, X, ArrowLeft, Calendar, MapPin, User as UserIcon, DollarSign, TrendingUp, Clock, Edit, Package } from 'lucide-react';
-import type { Project, User } from '../types';
+import { Plus, Search, Filter, X, ArrowLeft, Calendar, MapPin, User as UserIcon, DollarSign, TrendingUp, Clock, Edit, Package, Store, ArrowRight, ArrowDown, ArrowUp } from 'lucide-react';
+import type { Project, User, Inventory, Material, Warehouse } from '../types';
 import { useAuthStore } from '../store/authStore';
 
 export default function Projects() {
@@ -195,9 +195,19 @@ function ProjectDetails() {
   const [loading, setLoading] = useState(true);
   const [showEditModal, setShowEditModal] = useState(false);
 
+  // Project Store states
+  const [projectInventory, setProjectInventory] = useState<Inventory[]>([]);
+  const [loadingInventory, setLoadingInventory] = useState(false);
+  const [showIssueMaterialModal, setShowIssueMaterialModal] = useState(false);
+  const [showTransferRequestModal, setShowTransferRequestModal] = useState(false);
+  const [selectedInventory, setSelectedInventory] = useState<Inventory | null>(null);
+  const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
+
   useEffect(() => {
     if (id) {
       fetchProjectDetails();
+      fetchProjectInventory();
+      fetchWarehouses();
     }
   }, [id]);
 
@@ -211,6 +221,32 @@ function ProjectDetails() {
       toast.error('Failed to load project details');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchProjectInventory = async () => {
+    if (!id) return;
+    setLoadingInventory(true);
+    try {
+      const response = await api.get(`/stock-transfers/inventory/Project/${id}`);
+      const inventoryData = response.data.data || response.data || [];
+      // Ensure it's always an array
+      setProjectInventory(Array.isArray(inventoryData) ? inventoryData : []);
+    } catch (error) {
+      console.error('Error fetching project inventory:', error);
+      toast.error('Failed to load project inventory');
+      setProjectInventory([]); // Set empty array on error
+    } finally {
+      setLoadingInventory(false);
+    }
+  };
+
+  const fetchWarehouses = async () => {
+    try {
+      const response = await api.get('/warehouse');
+      setWarehouses(response.data.data || []);
+    } catch (error) {
+      console.error('Error fetching warehouses:', error);
     }
   };
 
@@ -432,6 +468,134 @@ function ProjectDetails() {
         </div>
       </div>
 
+      {/* Project Store */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-indigo-100 rounded-lg">
+              <Store size={24} className="text-indigo-600" />
+            </div>
+            <h2 className="text-xl font-bold text-gray-900">Project Store</h2>
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setShowTransferRequestModal(true)}
+              className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+            >
+              <ArrowDown size={18} />
+              Request Transfer
+            </button>
+          </div>
+        </div>
+
+        {loadingInventory ? (
+          <div className="flex items-center justify-center h-32">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+          </div>
+        ) : projectInventory.length === 0 ? (
+          <div className="text-center py-8 text-gray-500">
+            <Package size={48} className="mx-auto mb-4 text-gray-400" />
+            <p>No materials in project store</p>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-gray-200">
+                  <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Material</th>
+                  <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">SKU</th>
+                  <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Category</th>
+                  <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Unit</th>
+                  <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700">Stock Qty</th>
+                  <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Bin Location</th>
+                  <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700">Unit Price</th>
+                  <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700">Total Value</th>
+                  <th className="text-center py-3 px-4 text-sm font-semibold text-gray-700">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {projectInventory.map((inventory) => {
+                  const material = inventory.material as Material;
+                  const totalValue = inventory.quantity * material.costPerUnit;
+                  return (
+                    <tr key={inventory._id} className="border-b border-gray-100 hover:bg-gray-50">
+                      <td className="py-3 px-4">
+                        <p className="font-medium text-gray-900">{material.name}</p>
+                      </td>
+                      <td className="py-3 px-4 text-gray-700">{material.sku}</td>
+                      <td className="py-3 px-4">
+                        <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">
+                          {material.category}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 text-gray-700">{material.unit}</td>
+                      <td className="py-3 px-4 text-right">
+                        <span className={`font-semibold ${
+                          inventory.quantity <= material.reorderPoint 
+                            ? 'text-red-600' 
+                            : 'text-gray-900'
+                        }`}>
+                          {inventory.quantity}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 text-gray-700">
+                        {inventory.binLocation || '-'}
+                      </td>
+                      <td className="py-3 px-4 text-right text-gray-700">
+                        {formatCurrency(material.costPerUnit)}
+                      </td>
+                      <td className="py-3 px-4 text-right font-semibold text-gray-900">
+                        {formatCurrency(totalValue)}
+                      </td>
+                      <td className="py-3 px-4">
+                        <div className="flex items-center justify-center gap-2">
+                          <button
+                            onClick={() => {
+                              setSelectedInventory(inventory);
+                              setShowIssueMaterialModal(true);
+                            }}
+                            className="text-green-600 hover:text-green-700 transition"
+                            title="Issue Material"
+                          >
+                            <ArrowRight size={18} />
+                          </button>
+                          <button
+                            onClick={() => {
+                              setSelectedInventory(inventory);
+                              setShowTransferRequestModal(true);
+                            }}
+                            className="text-blue-600 hover:text-blue-700 transition"
+                            title="Transfer to Another Location"
+                          >
+                            <ArrowUp size={18} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+              <tfoot>
+                <tr className="border-t-2 border-gray-300 bg-gray-50">
+                  <td colSpan={7} className="py-3 px-4 text-right font-bold text-gray-900">
+                    Total Inventory Value:
+                  </td>
+                  <td className="py-3 px-4 text-right font-bold text-indigo-600">
+                    {formatCurrency(
+                      projectInventory.reduce((sum, inv) => {
+                        const material = inv.material as Material;
+                        return sum + (inv.quantity * material.costPerUnit);
+                      }, 0)
+                    )}
+                  </td>
+                  <td></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        )}
+      </div>
+
       {/* Material Consumption History */}
       <MaterialConsumptionHistory projectId={project._id} />
 
@@ -443,6 +607,45 @@ function ProjectDetails() {
           onSuccess={() => {
             setShowEditModal(false);
             fetchProjectDetails();
+          }}
+        />
+      )}
+
+      {/* Issue Material Modal */}
+      {showIssueMaterialModal && selectedInventory && (
+        <IssueMaterialModal
+          inventory={selectedInventory}
+          projectId={project._id}
+          projectName={project.projectName}
+          onClose={() => {
+            setShowIssueMaterialModal(false);
+            setSelectedInventory(null);
+          }}
+          onSuccess={() => {
+            setShowIssueMaterialModal(false);
+            setSelectedInventory(null);
+            fetchProjectInventory();
+            toast.success('Material issued successfully');
+          }}
+        />
+      )}
+
+      {/* Transfer Request Modal */}
+      {showTransferRequestModal && (
+        <TransferRequestModal
+          projectId={project._id}
+          projectName={project.projectName}
+          warehouses={warehouses}
+          inventory={selectedInventory}
+          onClose={() => {
+            setShowTransferRequestModal(false);
+            setSelectedInventory(null);
+          }}
+          onSuccess={() => {
+            setShowTransferRequestModal(false);
+            setSelectedInventory(null);
+            fetchProjectInventory();
+            toast.success('Transfer request created successfully');
           }}
         />
       )}
@@ -678,6 +881,510 @@ function EditProjectModal({ project, onClose, onSuccess }: EditProjectModalProps
               className="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition disabled:opacity-50"
             >
               {loading ? 'Updating...' : 'Update Project'}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+interface IssueMaterialModalProps {
+  inventory: Inventory;
+  projectId: string;
+  projectName: string;
+  onClose: () => void;
+  onSuccess: () => void;
+}
+
+function IssueMaterialModal({ inventory, projectId, projectName, onClose, onSuccess }: IssueMaterialModalProps) {
+  const material = inventory.material as Material;
+  const [formData, setFormData] = useState({
+    quantity: '',
+    usedBy: '',
+    notes: '',
+  });
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    const quantity = parseFloat(formData.quantity);
+    if (isNaN(quantity) || quantity <= 0) {
+      toast.error('Please enter a valid quantity');
+      return;
+    }
+
+    if (quantity > inventory.quantity) {
+      toast.error(`Only ${inventory.quantity} ${material.unit} available in stock`);
+      return;
+    }
+
+    if (!formData.usedBy.trim()) {
+      toast.error('Please specify who is using this material');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      await api.post('/material/consume', {
+        materialId: material._id,
+        projectId,
+        quantity,
+        usedBy: formData.usedBy,
+        notes: formData.notes,
+      });
+      
+      onSuccess();
+    } catch (error: any) {
+      console.error('Error issuing material:', error);
+      toast.error(error.response?.data?.message || 'Failed to issue material');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <div className="bg-white rounded-xl shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+        <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-bold text-gray-900">Issue Material</h2>
+            <button
+              onClick={onClose}
+              className="text-gray-400 hover:text-gray-600 transition"
+            >
+              <X size={24} />
+            </button>
+          </div>
+        </div>
+
+        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          {/* Material Info */}
+          <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+            <p className="text-sm text-gray-600 mb-1">Material</p>
+            <p className="font-bold text-gray-900">{material.name}</p>
+            <p className="text-sm text-gray-600 mt-2">SKU: {material.sku}</p>
+            <p className="text-sm text-gray-600">Available Stock: <span className="font-semibold text-green-600">{inventory.quantity} {material.unit}</span></p>
+          </div>
+
+          {/* Project Info */}
+          <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
+            <p className="text-sm text-gray-600">Project</p>
+            <p className="font-semibold text-gray-900">{projectName}</p>
+          </div>
+
+          {/* Quantity */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Quantity to Issue <span className="text-red-500">*</span>
+            </label>
+            <div className="relative">
+              <input
+                type="number"
+                step="0.01"
+                min="0"
+                max={inventory.quantity}
+                value={formData.quantity}
+                onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+                placeholder="Enter quantity"
+                required
+              />
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
+                {material.unit}
+              </span>
+            </div>
+          </div>
+
+          {/* Used By */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Used By (Person/Team) <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              value={formData.usedBy}
+              onChange={(e) => setFormData({ ...formData, usedBy: e.target.value })}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+              placeholder="e.g., John Doe, Masonry Team"
+              required
+            />
+          </div>
+
+          {/* Notes */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Notes (Optional)
+            </label>
+            <textarea
+              value={formData.notes}
+              onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+              rows={3}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+              placeholder="Enter any additional notes about this material usage..."
+            />
+          </div>
+
+          {/* Actions */}
+          <div className="flex gap-3 pt-4">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={loading}
+              className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? 'Issuing...' : 'Issue Material'}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+interface TransferRequestModalProps {
+  projectId: string;
+  projectName: string;
+  warehouses: Warehouse[];
+  inventory: Inventory | null;
+  onClose: () => void;
+  onSuccess: () => void;
+}
+
+function TransferRequestModal({ projectId, projectName, warehouses, inventory, onClose, onSuccess }: TransferRequestModalProps) {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [materials, setMaterials] = useState<Material[]>([]);
+  const [formData, setFormData] = useState({
+    sourceType: inventory ? 'Project' : '',
+    sourceId: inventory ? projectId : '',
+    destinationType: inventory ? '' : 'Project',
+    destinationId: inventory ? '' : projectId,
+    materialId: inventory ? (inventory.material as Material)._id : '',
+    quantity: '',
+    notes: '',
+  });
+  const [loading, setLoading] = useState(false);
+  const [availableQuantity, setAvailableQuantity] = useState(0);
+
+  useEffect(() => {
+    fetchProjects();
+    if (!inventory) {
+      fetchMaterials();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (formData.sourceType && formData.sourceId && formData.materialId) {
+      fetchAvailableQuantity();
+    }
+  }, [formData.sourceType, formData.sourceId, formData.materialId]);
+
+  const fetchProjects = async () => {
+    try {
+      const response = await api.get('/projects?status=Active,Planning');
+      setProjects(response.data.data || []);
+    } catch (error) {
+      console.error('Error fetching projects:', error);
+    }
+  };
+
+  const fetchMaterials = async () => {
+    try {
+      const response = await api.get('/material');
+      setMaterials(response.data.data || []);
+    } catch (error) {
+      console.error('Error fetching materials:', error);
+    }
+  };
+
+  const fetchAvailableQuantity = async () => {
+    try {
+      const response = await api.get(
+        `/stock-transfers/inventory/${formData.sourceType}/${formData.sourceId}`
+      );
+      const inventoryList = response.data.data || [];
+      const foundInventory = inventoryList.find(
+        (inv: Inventory) => (inv.material as Material)._id === formData.materialId
+      );
+      setAvailableQuantity(foundInventory ? foundInventory.quantity : 0);
+    } catch (error) {
+      console.error('Error fetching available quantity:', error);
+      setAvailableQuantity(0);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const quantity = parseFloat(formData.quantity);
+    if (isNaN(quantity) || quantity <= 0) {
+      toast.error('Please enter a valid quantity');
+      return;
+    }
+
+    if (quantity > availableQuantity && formData.sourceType) {
+      toast.error(`Only ${availableQuantity} available in source location`);
+      return;
+    }
+
+    if (formData.sourceType === formData.destinationType && formData.sourceId === formData.destinationId) {
+      toast.error('Source and destination cannot be the same');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      await api.post('/stock-transfers', {
+        fromLocationType: formData.sourceType,
+        fromLocation: formData.sourceId,
+        toLocationType: formData.destinationType,
+        toLocation: formData.destinationId,
+        items: [
+          {
+            material: formData.materialId,
+            quantity,
+          },
+        ],
+        notes: formData.notes,
+      });
+
+      onSuccess();
+    } catch (error: any) {
+      console.error('Error creating transfer request:', error);
+      toast.error(error.response?.data?.message || 'Failed to create transfer request');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const selectedMaterial = inventory 
+    ? (inventory.material as Material)
+    : materials.find(m => m._id === formData.materialId);
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-bold text-gray-900">
+              {inventory ? 'Transfer Material' : 'Request Material Transfer'}
+            </h2>
+            <button
+              onClick={onClose}
+              className="text-gray-400 hover:text-gray-600 transition"
+            >
+              <X size={24} />
+            </button>
+          </div>
+        </div>
+
+        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          {/* Current Project Info */}
+          <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
+            <p className="text-sm text-gray-600">Current Project</p>
+            <p className="font-semibold text-gray-900">🏗️ {projectName}</p>
+          </div>
+
+          {/* Material Selection (only if not pre-selected) */}
+          {!inventory && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Select Material <span className="text-red-500">*</span>
+              </label>
+              <select
+                value={formData.materialId}
+                onChange={(e) => setFormData({ ...formData, materialId: e.target.value })}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+                required
+              >
+                <option value="">-- Select Material --</option>
+                {materials.map((material) => (
+                  <option key={material._id} value={material._id}>
+                    {material.name} ({material.sku}) - {material.category}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          {/* Material Info (if pre-selected or selected) */}
+          {selectedMaterial && (
+            <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+              <p className="text-sm text-gray-600 mb-1">Material</p>
+              <p className="font-bold text-gray-900">{selectedMaterial.name}</p>
+              <p className="text-sm text-gray-600">SKU: {selectedMaterial.sku}</p>
+            </div>
+          )}
+
+          {/* Source Location */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Transfer From <span className="text-red-500">*</span>
+              </label>
+              <select
+                value={formData.sourceType}
+                onChange={(e) => setFormData({ ...formData, sourceType: e.target.value, sourceId: '' })}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+                required
+                disabled={!!inventory}
+              >
+                <option value="">-- Select Type --</option>
+                <option value="Warehouse">🏢 Company Warehouse</option>
+                <option value="Project">🏗️ Project Store</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Source Location <span className="text-red-500">*</span>
+              </label>
+              <select
+                value={formData.sourceId}
+                onChange={(e) => setFormData({ ...formData, sourceId: e.target.value })}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+                required
+                disabled={!!inventory || !formData.sourceType}
+              >
+                <option value="">-- Select Location --</option>
+                {formData.sourceType === 'Warehouse' && warehouses.map((wh) => (
+                  <option key={wh._id} value={wh._id}>
+                    {wh.name} ({wh.code})
+                  </option>
+                ))}
+                {formData.sourceType === 'Project' && projects.map((proj) => (
+                  <option key={proj._id} value={proj._id}>
+                    {proj.projectName} ({proj.projectCode})
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* Destination Location */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Transfer To <span className="text-red-500">*</span>
+              </label>
+              <select
+                value={formData.destinationType}
+                onChange={(e) => setFormData({ ...formData, destinationType: e.target.value, destinationId: '' })}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+                required
+                disabled={!!inventory}
+              >
+                <option value="">-- Select Type --</option>
+                <option value="Warehouse">🏢 Company Warehouse</option>
+                <option value="Project">🏗️ Project Store</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Destination Location <span className="text-red-500">*</span>
+              </label>
+              <select
+                value={formData.destinationId}
+                onChange={(e) => setFormData({ ...formData, destinationId: e.target.value })}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+                required
+                disabled={!formData.destinationType || (!!inventory && formData.destinationType === 'Project')}
+              >
+                <option value="">-- Select Location --</option>
+                {formData.destinationType === 'Warehouse' && warehouses.map((wh) => (
+                  <option key={wh._id} value={wh._id}>
+                    {wh.name} ({wh.code})
+                  </option>
+                ))}
+                {formData.destinationType === 'Project' && projects.map((proj) => (
+                  <option key={proj._id} value={proj._id} disabled={!!inventory && proj._id === projectId}>
+                    {proj.projectName} ({proj.projectCode})
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* Available Quantity */}
+          {availableQuantity > 0 && formData.sourceType && (
+            <div className="bg-green-50 rounded-lg p-3 border border-green-200">
+              <p className="text-sm text-green-800">
+                Available Stock at Source: <span className="font-bold">{availableQuantity} {selectedMaterial?.unit}</span>
+              </p>
+            </div>
+          )}
+
+          {/* Quantity */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Quantity to Transfer <span className="text-red-500">*</span>
+            </label>
+            <div className="relative">
+              <input
+                type="number"
+                step="0.01"
+                min="0"
+                max={availableQuantity || undefined}
+                value={formData.quantity}
+                onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+                placeholder="Enter quantity"
+                required
+              />
+              {selectedMaterial && (
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
+                  {selectedMaterial.unit}
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Notes */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Transfer Notes (Optional)
+            </label>
+            <textarea
+              value={formData.notes}
+              onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+              rows={3}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+              placeholder="Enter reason for transfer or any additional notes..."
+            />
+          </div>
+
+          {/* Transfer Status Info */}
+          <div className="bg-yellow-50 rounded-lg p-3 border border-yellow-200">
+            <p className="text-sm text-yellow-800">
+              ℹ️ This transfer will be created with <span className="font-bold">Pending</span> status and will require approval before materials are moved.
+            </p>
+          </div>
+
+          {/* Actions */}
+          <div className="flex gap-3 pt-4">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={loading}
+              className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? 'Creating...' : 'Create Transfer Request'}
             </button>
           </div>
         </form>
@@ -1037,8 +1744,6 @@ function MaterialConsumptionHistory({ projectId }: MaterialConsumptionHistoryPro
   const [issues, setIssues] = useState<any[]>([]);
   const [summary, setSummary] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [showIssueModal, setShowIssueModal] = useState(false);
-  const { user } = useAuthStore();
 
   useEffect(() => {
     fetchData();
@@ -1058,8 +1763,6 @@ function MaterialConsumptionHistory({ projectId }: MaterialConsumptionHistoryPro
       setLoading(false);
     }
   };
-
-  const canIssueMaterial = user && (user.role === 'Administrator' || user.role === 'Site Manager');
 
   if (loading) {
     return (
@@ -1082,15 +1785,6 @@ function MaterialConsumptionHistory({ projectId }: MaterialConsumptionHistoryPro
               Materials issued to this project • Total Cost: {formatCurrency(summary?.totalCost || 0)}
             </p>
           </div>
-          {canIssueMaterial && (
-            <button
-              onClick={() => setShowIssueModal(true)}
-              className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition"
-            >
-              <Plus size={20} />
-              Issue Material
-            </button>
-          )}
         </div>
 
         {/* Summary Cards */}
@@ -1122,14 +1816,6 @@ function MaterialConsumptionHistory({ projectId }: MaterialConsumptionHistoryPro
           <div className="text-center py-12 bg-gray-50 rounded-lg">
             <Package size={48} className="mx-auto text-gray-400 mb-3" />
             <p className="text-gray-500">No materials issued to this project yet</p>
-            {canIssueMaterial && (
-              <button
-                onClick={() => setShowIssueModal(true)}
-                className="mt-4 text-indigo-600 hover:text-indigo-700 font-medium"
-              >
-                Issue your first material →
-              </button>
-            )}
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -1186,210 +1872,10 @@ function MaterialConsumptionHistory({ projectId }: MaterialConsumptionHistoryPro
           </div>
         )}
       </div>
-
-      {/* Issue Material Modal */}
-      {showIssueModal && (
-        <IssueMaterialModal
-          projectId={projectId}
-          onClose={() => setShowIssueModal(false)}
-          onSuccess={() => {
-            setShowIssueModal(false);
-            fetchData();
-          }}
-        />
-      )}
     </>
   );
 }
 
-// Issue Material Modal Component
-interface IssueMaterialModalProps {
-  projectId: string;
-  onClose: () => void;
-  onSuccess: () => void;
-}
 
-function IssueMaterialModal({ projectId, onClose, onSuccess }: IssueMaterialModalProps) {
-  const [formData, setFormData] = useState({
-    material: '',
-    quantity: '',
-    issueDate: new Date().toISOString().split('T')[0],
-    notes: '',
-  });
-  const [materials, setMaterials] = useState<any[]>([]);
-  const [selectedMaterial, setSelectedMaterial] = useState<any>(null);
-  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    fetchMaterials();
-  }, []);
 
-  const fetchMaterials = async () => {
-    try {
-      const response = await api.get('/materials');
-      setMaterials(response.data.data || []);
-    } catch (error) {
-      console.error('Error fetching materials:', error);
-    }
-  };
-
-  const handleMaterialChange = (materialId: string) => {
-    setFormData({ ...formData, material: materialId });
-    const material = materials.find((m) => m._id === materialId);
-    setSelectedMaterial(material);
-  };
-
-  const calculateTotalCost = () => {
-    if (!selectedMaterial || !formData.quantity) return 0;
-    const unitCost = selectedMaterial.avgUnitCost || selectedMaterial.costPerUnit;
-    return parseFloat(formData.quantity) * unitCost;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      await api.post('/material-issues', {
-        project: projectId,
-        material: formData.material,
-        quantity: parseFloat(formData.quantity),
-        issueDate: formData.issueDate,
-        notes: formData.notes,
-      });
-
-      toast.success('Material issued successfully and expense logged');
-      onSuccess();
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Failed to issue material');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const availableMaterials = materials.filter((m) => m.currentStock > 0);
-
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="p-6 border-b border-gray-200 sticky top-0 bg-white z-10">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold text-gray-900">Issue Material to Project</h2>
-            <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition">
-              <X size={24} />
-            </button>
-          </div>
-        </div>
-
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Select Material *</label>
-            <select
-              value={formData.material}
-              onChange={(e) => handleMaterialChange(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
-              required
-            >
-              <option value="">Choose a material</option>
-              {availableMaterials.map((material) => (
-                <option key={material._id} value={material._id}>
-                  {material.name} ({material.sku}) - Stock: {material.currentStock} {material.unit}
-                </option>
-              ))}
-            </select>
-            {availableMaterials.length === 0 && (
-              <p className="text-sm text-red-600 mt-1">No materials available in stock</p>
-            )}
-          </div>
-
-          {selectedMaterial && (
-            <div className="bg-blue-50 rounded-lg p-4 space-y-2">
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                <div>
-                  <p className="text-gray-600">Available Stock</p>
-                  <p className="font-semibold text-gray-900">
-                    {selectedMaterial.currentStock} {selectedMaterial.unit}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-gray-600">Current Unit Cost</p>
-                  <p className="font-semibold text-gray-900">
-                    {formatCurrency(selectedMaterial.avgUnitCost || selectedMaterial.costPerUnit)}
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Quantity *</label>
-            <input
-              type="number"
-              value={formData.quantity}
-              onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
-              step="0.01"
-              min="0.01"
-              max={selectedMaterial?.currentStock || undefined}
-              required
-            />
-            {selectedMaterial && formData.quantity && parseFloat(formData.quantity) > selectedMaterial.currentStock && (
-              <p className="text-sm text-red-600 mt-1">
-                Quantity exceeds available stock ({selectedMaterial.currentStock} {selectedMaterial.unit})
-              </p>
-            )}
-          </div>
-
-          {formData.quantity && selectedMaterial && (
-            <div className="bg-green-50 rounded-lg p-4">
-              <p className="text-sm text-gray-600 mb-1">Estimated Total Cost</p>
-              <p className="text-2xl font-bold text-green-900">{formatCurrency(calculateTotalCost())}</p>
-              <p className="text-xs text-gray-500 mt-1">
-                This amount will be automatically logged as a project expense
-              </p>
-            </div>
-          )}
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Issue Date *</label>
-            <input
-              type="date"
-              value={formData.issueDate}
-              onChange={(e) => setFormData({ ...formData, issueDate: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Notes</label>
-            <textarea
-              value={formData.notes}
-              onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
-              rows={3}
-              placeholder="Optional notes about this material issue..."
-            />
-          </div>
-
-          <div className="flex gap-3 pt-4 border-t border-gray-200">
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={loading || !selectedMaterial || !formData.quantity || parseFloat(formData.quantity) > (selectedMaterial?.currentStock || 0)}
-              className="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition disabled:opacity-50"
-            >
-              {loading ? 'Issuing...' : 'Issue Material'}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
-}

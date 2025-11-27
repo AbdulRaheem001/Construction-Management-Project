@@ -5,6 +5,7 @@ import PurchaseOrder from '../models/PurchaseOrder.model';
 import GoodsReceipt from '../models/GoodsReceipt.model';
 import Inventory from '../models/Inventory.model';
 import MaterialConsumption from '../models/MaterialConsumption.model';
+import Expense from '../models/Expense.model';
 import { AuthRequest } from '../middleware/auth';
 import { AppError } from '../middleware/errorHandler';
 import { logger } from '../utils/logger';
@@ -18,10 +19,11 @@ export const createMaterial = async (
 ) => {
   try {
     const materialData = { ...req.body };
+    const { warehouse, initialStock } = req.body;
     
     // If initialStock is provided, set currentStock and avgUnitCost
-    if (materialData.initialStock && materialData.initialStock > 0) {
-      materialData.currentStock = materialData.initialStock;
+    if (initialStock && initialStock > 0) {
+      materialData.currentStock = initialStock;
       materialData.avgUnitCost = materialData.costPerUnit || 0;
     } else {
       // If no initial stock, set avgUnitCost to costPerUnit for future use
@@ -29,8 +31,31 @@ export const createMaterial = async (
       materialData.currentStock = 0;
     }
     
+    // Remove warehouse from material data (not a material field)
+    delete materialData.warehouse;
+    
     const material = await Material.create(materialData);
     logger.info(`Material created: ${material.sku}`);
+
+    // If warehouse and initial stock provided, create inventory record at warehouse
+    if (warehouse && initialStock && initialStock > 0) {
+      await Inventory.findOneAndUpdate(
+        {
+          material: material._id,
+          location: warehouse,
+          locationType: 'Warehouse',
+        },
+        {
+          $inc: { quantity: initialStock },
+          $set: {
+            lastUpdated: new Date(),
+            updatedBy: req.user._id,
+          },
+        },
+        { upsert: true, new: true }
+      );
+      logger.info(`Inventory created at warehouse for material: ${material.sku}, Qty: ${initialStock}`);
+    }
 
     res.status(201).json({
       success: true,
@@ -286,12 +311,15 @@ export const approvePurchaseOrder = async (
 };
 
 // Update PO status to Received and calculate Moving Average Cost
+// Now supports receiving to specific location (Project or Warehouse)
 export const receivePurchaseOrder = async (
   req: AuthRequest,
   res: Response,
   next: NextFunction
 ) => {
   try {
+    const { destination, destinationType } = req.body; // Can be Project ID or Warehouse ID
+    
     const po = await PurchaseOrder.findById(req.params.id).populate('items.material');
 
     if (!po) {
@@ -301,6 +329,14 @@ export const receivePurchaseOrder = async (
     if (po.status === 'Received') {
       return next(new AppError('Purchase order already received', 400));
     }
+
+    // If no destination specified, use the PO's project as destination
+    const finalDestination = destination || po.project;
+    const finalDestinationType = destinationType || 'Project';
+
+    // Generate GR number
+    const grCount = await GoodsReceipt.countDocuments();
+    const grNumber = `GR-${String(grCount + 1).padStart(6, '0')}`;
 
     // Update material stock and calculate Moving Average Cost for each item
     for (const item of po.items) {
@@ -329,21 +365,79 @@ export const receivePurchaseOrder = async (
         material.avgUnitCost = newAvgCost;
         await material.save();
 
+        // Update inventory at destination location
+        await Inventory.findOneAndUpdate(
+          {
+            material: material._id,
+            location: finalDestination,
+            locationType: finalDestinationType,
+          },
+          {
+            $inc: { quantity: newQuantity },
+            $set: { lastUpdated: new Date(), updatedBy: req.user._id },
+          },
+          { upsert: true, new: true }
+        );
+
         logger.info(`Material ${material.sku} updated: Stock ${oldStock} → ${material.currentStock}, Avg Cost ${oldAvgCost.toFixed(2)} → ${newAvgCost.toFixed(2)}`);
       }
     }
+
+    // Create Goods Receipt record
+    const grItems = po.items.map((item) => ({
+      material: item.material,
+      orderedQuantity: item.quantity,
+      receivedQuantity: item.quantity,
+      damagedQuantity: 0,
+    }));
+
+    await GoodsReceipt.create({
+      grNumber,
+      purchaseOrder: po._id,
+      receivedDate: new Date(),
+      receivedBy: req.user._id,
+      items: grItems,
+      destination: finalDestination,
+      destinationType: finalDestinationType,
+      status: 'Complete',
+    });
 
     // Update PO status
     po.status = 'Received';
     po.receivedAt = new Date();
     await po.save();
 
-    logger.info(`Purchase Order received: ${po.poNumber}`);
+    // Create expense record for the project to track material costs
+    if (po.project) {
+      const expenseCount = await Expense.countDocuments();
+      const expenseNumber = `EXP-${String(expenseCount + 1).padStart(6, '0')}`;
+
+      await Expense.create({
+        expenseNumber,
+        project: po.project,
+        category: 'Other',
+        expenseType: 'Material',
+        description: `Material Purchase - PO: ${po.poNumber} (${po.supplier})`,
+        amount: po.totalAmount,
+        amountPaid: po.paidAmount || 0,
+        date: new Date(),
+        vendor: po.supplier,
+        invoiceNumber: po.poNumber,
+        paymentStatus: po.paymentStatus === 'Paid' ? 'Paid' : 
+                       po.paymentStatus === 'Partial' ? 'Partially Paid' : 'Pending',
+        notes: `Goods Receipt: ${grNumber}. Materials received to ${finalDestinationType === 'Project' ? 'project site' : 'warehouse'}.`,
+        createdBy: req.user._id,
+      });
+
+      logger.info(`Expense record created for PO ${po.poNumber}: ${expenseNumber}`);
+    }
+
+    logger.info(`Purchase Order received: ${po.poNumber} to ${finalDestinationType}`);
 
     res.json({
       success: true,
       data: po,
-      message: 'Purchase order received and material costs updated',
+      message: `Purchase order received and stock added to ${finalDestinationType === 'Project' ? 'project' : 'company'} store`,
     });
   } catch (error) {
     next(error);
@@ -389,12 +483,29 @@ export const getVendors = async (
       ];
     }
 
-    const vendors = await Vendor.find(query).sort({ name: 1 });
+    const vendors = await Vendor.find(query).sort({ name: 1 }).lean();
+
+    // Calculate ledger from expenses for each vendor
+    const vendorsWithLedger = await Promise.all(
+      vendors.map(async (vendor) => {
+        const expenses = await Expense.find({ vendor: vendor._id });
+        
+        const totalPurchases = expenses.reduce((sum, exp) => sum + (exp.amount || 0), 0);
+        const totalPaid = expenses.reduce((sum, exp) => sum + (exp.amountPaid || 0), 0);
+        const outstandingPayments = totalPurchases - totalPaid;
+
+        return {
+          ...vendor,
+          totalPurchases,
+          outstandingPayments,
+        };
+      })
+    );
 
     res.json({
       success: true,
-      count: vendors.length,
-      data: vendors,
+      count: vendorsWithLedger.length,
+      data: vendorsWithLedger,
     });
   } catch (error) {
     next(error);
@@ -407,11 +518,17 @@ export const getVendorById = async (
   next: NextFunction
 ) => {
   try {
-    const vendor = await Vendor.findById(req.params.id);
+    const vendor = await Vendor.findById(req.params.id).lean();
 
     if (!vendor) {
       return next(new AppError('Vendor not found', 404));
     }
+
+    // Calculate ledger from expenses
+    const expenses = await Expense.find({ vendor: vendor._id });
+    const totalPurchases = expenses.reduce((sum, exp) => sum + (exp.amount || 0), 0);
+    const totalPaid = expenses.reduce((sum, exp) => sum + (exp.amountPaid || 0), 0);
+    const outstandingPayments = totalPurchases - totalPaid;
 
     // Get vendor's purchase orders
     const purchaseOrders = await PurchaseOrder.find({ vendor: vendor._id })
@@ -423,8 +540,13 @@ export const getVendorById = async (
     res.json({
       success: true,
       data: {
-        vendor,
+        vendor: {
+          ...vendor,
+          totalPurchases,
+          outstandingPayments,
+        },
         recentPurchaseOrders: purchaseOrders,
+        expenses: expenses.slice(0, 10), // Last 10 expenses
       },
     });
   } catch (error) {
@@ -618,35 +740,79 @@ export const recordMaterialConsumption = async (
   next: NextFunction
 ) => {
   try {
-    const { project, material, quantity, purpose, notes } = req.body;
+    const { projectId, materialId, warehouseId, quantity, usedBy, purpose, notes } = req.body;
+    
+    // Support both old and new field names
+    const project = projectId || req.body.project;
+    const material = materialId || req.body.material;
 
-    // Check if enough stock is available
+    if (!project || !material || !quantity) {
+      return next(new AppError('Project, material, and quantity are required', 400));
+    }
+
+    // Determine source location (warehouse or project)
+    const sourceLocationType = warehouseId ? 'Warehouse' : 'Project';
+    const sourceLocation = warehouseId || project;
+
+    // Check if enough stock is available at source
     const inventory = await Inventory.findOne({
       material,
-      location: project,
-      locationType: 'Project',
+      location: sourceLocation,
+      locationType: sourceLocationType,
     });
 
     if (!inventory || inventory.quantity < quantity) {
-      return next(new AppError('Insufficient stock available', 400));
+      return next(new AppError(`Insufficient stock available at ${sourceLocationType.toLowerCase()}`, 400));
     }
+
+    // Get material info for cost calculation
+    const materialDoc = await Material.findById(material);
+    if (!materialDoc) {
+      return next(new AppError('Material not found', 404));
+    }
+
+    const totalCost = quantity * (materialDoc.costPerUnit || 0);
+
+    // Generate consumption number if not provided
+    const consumptionNumber = req.body.consumptionNumber || `MC-${Date.now()}`;
 
     // Create consumption record
     const consumption = await MaterialConsumption.create({
-      consumptionNumber: req.body.consumptionNumber,
+      consumptionNumber,
       project,
       material,
       quantity,
-      purpose,
+      unitCost: materialDoc.costPerUnit || 0,
+      totalCost,
+      purpose: purpose || req.body.purpose,
       consumedBy: req.user._id,
       notes,
+      usedBy,
+      issuedFrom: warehouseId ? 'Warehouse' : 'Project',
+      warehouseId: warehouseId || null,
     });
 
-    // Deduct from inventory
+    // Deduct from source inventory
     inventory.quantity -= quantity;
     inventory.lastUpdated = new Date();
     inventory.updatedBy = req.user._id;
     await inventory.save();
+
+    // If issuing from warehouse to project, add to project inventory
+    if (warehouseId && warehouseId !== project) {
+      await Inventory.findOneAndUpdate(
+        {
+          material,
+          location: project,
+          locationType: 'Project',
+        },
+        {
+          $inc: { quantity },
+          $set: { lastUpdated: new Date(), updatedBy: req.user._id },
+        },
+        { upsert: true }
+      );
+    }
 
     logger.info(`Material consumption recorded: ${consumption.consumptionNumber}`);
 
@@ -669,13 +835,14 @@ export const getMaterialConsumption = async (
 ) => {
   try {
     const { project, material } = req.query;
+    const { materialId } = req.params;
 
     const query: any = {};
     if (project) query.project = project;
-    if (material) query.material = material;
+    if (material || materialId) query.material = material || materialId;
 
     const consumption = await MaterialConsumption.find(query)
-      .populate('project', 'projectName projectCode')
+      .populate('project', 'projectName projectCode location')
       .populate('material', 'sku name unit costPerUnit')
       .populate('consumedBy', 'name')
       .sort({ date: -1 });

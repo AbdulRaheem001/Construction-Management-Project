@@ -5,6 +5,7 @@ import {
   createWarehouse,
   getWarehouses,
   getWarehouseById,
+  updateInventory,
   createStockTransfer,
   getStockTransfers,
   approveStockTransfer,
@@ -14,6 +15,10 @@ import {
   getInventoryAdjustments,
   getInventoryReport,
 } from '../controllers/warehouse.controller';
+import {
+  syncMaterialStockToWarehouse,
+  getAllInventory,
+} from '../controllers/inventory.controller';
 
 const router = express.Router();
 
@@ -23,6 +28,9 @@ router.use(authenticate);
 // Warehouses - Only Administrator
 router.post('/', authorize(UserRole.ADMINISTRATOR), createWarehouse);
 router.get('/', getWarehouses);
+router.get('/inventory', getInventoryReport);
+router.post('/sync-stock', authorize(UserRole.ADMINISTRATOR), syncMaterialStockToWarehouse);
+router.put('/inventory/:id', authorize(UserRole.ADMINISTRATOR), updateInventory);
 router.get('/:id', getWarehouseById);
 
 // Stock Transfers - Only Administrator

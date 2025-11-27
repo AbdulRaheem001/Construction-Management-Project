@@ -16,6 +16,7 @@ export const createWarehouse = async (
 ) => {
   try {
     const warehouse = await Warehouse.create(req.body);
+    await warehouse.populate('project', 'projectName projectCode location');
     logger.info(`Warehouse created: ${warehouse.code}`);
 
     res.status(201).json({
@@ -38,6 +39,7 @@ export const getWarehouses = async (
   try {
     const warehouses = await Warehouse.find({ isActive: true })
       .populate('manager', 'name email contact')
+      .populate('project', 'projectName projectCode location')
       .sort({ name: 1 });
 
     res.json({
@@ -57,7 +59,8 @@ export const getWarehouseById = async (
 ) => {
   try {
     const warehouse = await Warehouse.findById(req.params.id)
-      .populate('manager', 'name email contact');
+      .populate('manager', 'name email contact')
+      .populate('project', 'projectName projectCode location');
 
     if (!warehouse) {
       return next(new AppError('Warehouse not found', 404));
@@ -75,6 +78,37 @@ export const getWarehouseById = async (
         warehouse,
         inventory,
       },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateInventory = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const inventory = await Inventory.findByIdAndUpdate(
+      req.params.id,
+      {
+        ...req.body,
+        lastUpdated: new Date(),
+        updatedBy: req.user._id,
+      },
+      { new: true, runValidators: true }
+    ).populate('material', 'sku name unit costPerUnit');
+
+    if (!inventory) {
+      return next(new AppError('Inventory not found', 404));
+    }
+
+    logger.info(`Inventory updated: ${inventory._id}`);
+
+    res.json({
+      success: true,
+      data: inventory,
     });
   } catch (error) {
     next(error);

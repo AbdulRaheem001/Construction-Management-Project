@@ -1,5 +1,13 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
+export interface IPaymentHistory {
+  amount: number;
+  paymentDate: Date;
+  paymentMethod?: string;
+  notes?: string;
+  paidBy?: mongoose.Types.ObjectId;
+}
+
 export interface IExpense extends Document {
   expenseNumber: string;
   project?: mongoose.Types.ObjectId;
@@ -7,6 +15,8 @@ export interface IExpense extends Document {
   expenseType: 'Material' | 'Labour' | 'Equipment' | 'General' | 'Overhead';
   description: string;
   amount: number;
+  amountPaid?: number;
+  paymentHistory?: IPaymentHistory[];
   date: Date;
   vendor?: string;
   invoiceNumber?: string;
@@ -72,6 +82,36 @@ const expenseSchema = new Schema<IExpense>(
       required: [true, 'Amount is required'],
       min: [0, 'Amount cannot be negative'],
     },
+    amountPaid: {
+      type: Number,
+      min: [0, 'Amount paid cannot be negative'],
+      default: 0,
+    },
+    paymentHistory: [
+      {
+        amount: {
+          type: Number,
+          required: true,
+          min: [0, 'Payment amount cannot be negative'],
+        },
+        paymentDate: {
+          type: Date,
+          required: true,
+          default: Date.now,
+        },
+        paymentMethod: {
+          type: String,
+          enum: ['Cash', 'Check', 'Bank Transfer', 'Credit Card', 'Online Payment'],
+        },
+        notes: {
+          type: String,
+        },
+        paidBy: {
+          type: Schema.Types.ObjectId,
+          ref: 'User',
+        },
+      },
+    ],
     date: {
       type: Date,
       required: [true, 'Date is required'],

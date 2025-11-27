@@ -31,9 +31,15 @@ export const permissions: Record<string, UserRole[]> = {
   editWarehouse: ['Administrator'],
   viewWarehouse: ['Administrator', 'Site Manager', 'Accountant'],
   
-  // Expense permissions - ONLY Administrator
+  // Vendor permissions - ONLY Administrator
+  createVendor: ['Administrator'],
+  editVendor: ['Administrator'],
+  viewVendor: ['Administrator', 'Site Manager', 'Accountant'],
+  
+  // Expense permissions - Administrator and Site Manager can update
   createExpense: ['Administrator'],
   editExpense: ['Administrator'],
+  updateExpense: ['Administrator', 'Site Manager'],
   viewExpense: ['Administrator', 'Site Manager', 'Accountant'],
   approveExpense: ['Administrator'],
   viewFinancialReports: ['Administrator', 'Accountant'],
@@ -66,6 +72,8 @@ export const canAccessModule = (userRole: UserRole, module: string): boolean => 
       return hasPermission(userRole, 'viewEquipment');
     case 'warehouse':
       return hasPermission(userRole, 'viewWarehouse');
+    case 'vendors':
+      return hasPermission(userRole, 'viewVendor');
     case 'expenses':
       return hasPermission(userRole, 'viewExpense');
     case 'users':

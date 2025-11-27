@@ -7,6 +7,7 @@ export interface IWarehouse extends Document {
   manager?: mongoose.Types.ObjectId;
   capacity?: number;
   isActive: boolean;
+  project?: mongoose.Types.ObjectId; // Optional reference to Project
   createdAt: Date;
   updatedAt: Date;
 }
@@ -41,6 +42,11 @@ const warehouseSchema = new Schema<IWarehouse>(
     isActive: {
       type: Boolean,
       default: true,
+    },
+    project: {
+      type: Schema.Types.ObjectId,
+      ref: 'Project',
+      default: null,
     },
   },
   {

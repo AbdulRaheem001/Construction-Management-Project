@@ -5,11 +5,16 @@ export interface IMaterialConsumption extends Document {
   project: mongoose.Types.ObjectId;
   material: mongoose.Types.ObjectId;
   quantity: number;
+  unitCost?: number;
+  totalCost?: number;
   date: Date;
   purpose?: string;
   consumedBy: mongoose.Types.ObjectId;
   approvedBy?: mongoose.Types.ObjectId;
   notes?: string;
+  usedBy?: string;
+  issuedFrom?: 'Warehouse' | 'Project';
+  warehouseId?: mongoose.Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -38,6 +43,14 @@ const materialConsumptionSchema = new Schema<IMaterialConsumption>(
       required: [true, 'Quantity is required'],
       min: [0, 'Quantity cannot be negative'],
     },
+    unitCost: {
+      type: Number,
+      default: 0,
+    },
+    totalCost: {
+      type: Number,
+      default: 0,
+    },
     date: {
       type: Date,
       required: [true, 'Date is required'],
@@ -59,6 +72,20 @@ const materialConsumptionSchema = new Schema<IMaterialConsumption>(
     notes: {
       type: String,
       trim: true,
+    },
+    usedBy: {
+      type: String,
+      trim: true,
+    },
+    issuedFrom: {
+      type: String,
+      enum: ['Warehouse', 'Project'],
+      default: 'Project',
+    },
+    warehouseId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Warehouse',
+      default: null,
     },
   },
   {

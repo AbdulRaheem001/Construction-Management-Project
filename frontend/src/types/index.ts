@@ -126,16 +126,50 @@ export interface Warehouse {
   capacity: number;
   manager?: User;
   isActive: boolean;
+  project?: Project | string;
 }
 
 export interface Inventory {
   _id: string;
   material: Material | string;
-  location: string;
+  location: Project | Warehouse | string;
   locationType: 'Project' | 'Warehouse';
   quantity: number;
   binLocation?: string;
   lastUpdated: string;
+  updatedBy?: User;
+}
+
+export interface StockTransferItem {
+  material: Material | string;
+  quantity: number;
+}
+
+export interface StockTransfer {
+  _id: string;
+  transferNumber: string;
+  fromLocation: Project | Warehouse | string;
+  fromLocationType: 'Project' | 'Warehouse';
+  toLocation: Project | Warehouse | string;
+  toLocationType: 'Project' | 'Warehouse';
+  items: StockTransferItem[];
+  status: 'Pending' | 'In Transit' | 'Received' | 'Cancelled';
+  transferDate: string;
+  receivedDate?: string;
+  requestedBy: User;
+  approvedBy?: User;
+  receivedBy?: User;
+  notes?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface PaymentHistory {
+  amount: number;
+  paymentDate: string;
+  paymentMethod?: string;
+  notes?: string;
+  paidBy?: User;
 }
 
 export interface Expense {
@@ -145,6 +179,8 @@ export interface Expense {
   category: string;
   expenseType: 'Material' | 'Labour' | 'Equipment' | 'General' | 'Overhead';
   amount: number;
+  amountPaid?: number;
+  paymentHistory?: PaymentHistory[];
   description: string;
   date: string;
   paymentStatus: 'Pending' | 'Paid' | 'Partially Paid' | 'Overdue';
@@ -181,6 +217,25 @@ export interface MaterialIssue {
   totalCost: number;
   issueDate: string;
   issuedBy: User;
+  notes?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface MaterialConsumption {
+  _id: string;
+  consumptionNumber: string;
+  project: Project | string;
+  material: Material | string;
+  quantity: number;
+  unitCost?: number;
+  totalCost?: number;
+  date: string;
+  purpose?: string;
+  consumedBy: User;
+  usedBy?: string;
+  issuedFrom?: 'Warehouse' | 'Project';
+  warehouseId?: Warehouse | string;
   notes?: string;
   createdAt: string;
   updatedAt: string;

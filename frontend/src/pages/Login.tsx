@@ -45,7 +45,7 @@ export default function Login() {
             Welcome Back
           </h1>
           <p className="text-center text-gray-600 mb-8">
-            Construction Management System
+            International Traders REGD Management System
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-6">

@@ -106,15 +106,40 @@ export const updateExpense = async (
   next: NextFunction
 ) => {
   try {
-    const expense = await Expense.findByIdAndUpdate(
-      req.params.id,
-      { $set: req.body },
-      { new: true, runValidators: true }
-    );
+    const expense = await Expense.findById(req.params.id);
 
     if (!expense) {
       return next(new AppError('Expense not found', 404));
     }
+
+    // If payment is being made, add to payment history
+    if (req.body.amountPaid !== undefined && req.body.amountPaid > (expense.amountPaid || 0)) {
+      const paymentAmount = req.body.amountPaid - (expense.amountPaid || 0);
+      
+      if (!expense.paymentHistory) {
+        expense.paymentHistory = [];
+      }
+
+      expense.paymentHistory.push({
+        amount: paymentAmount,
+        paymentDate: req.body.paymentDate ? new Date(req.body.paymentDate) : new Date(),
+        paymentMethod: req.body.paymentMethod,
+        notes: req.body.notes,
+        paidBy: req.user._id,
+      });
+    }
+
+    // Update other fields
+    Object.keys(req.body).forEach((key) => {
+      if (key !== 'paymentHistory') {
+        (expense as any)[key] = req.body[key];
+      }
+    });
+
+    await expense.save();
+    await expense.populate('project', 'projectName projectCode');
+    await expense.populate('createdBy', 'name email');
+    await expense.populate('paymentHistory.paidBy', 'name email');
 
     logger.info(`Expense updated: ${expense.expenseNumber}`);
 
@@ -183,6 +208,10 @@ export const getFinancialReport = async (
           acc.totalPaid += expense.amount;
         } else if (expense.paymentStatus === 'Pending') {
           acc.totalPending += expense.amount;
+        } else if (expense.paymentStatus === 'Partially Paid') {
+          const amountPaid = (expense as any).amountPaid || 0;
+          acc.totalPaid += amountPaid;
+          acc.totalPending += (expense.amount - amountPaid);
         }
 
         if (!acc.byType[expense.expenseType]) {

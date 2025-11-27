@@ -11,6 +11,7 @@ import Materials from './pages/Materials';
 import Labour from './pages/Labour';
 import Equipment from './pages/Equipment';
 import Warehouse from './pages/Warehouse';
+import Vendors from './pages/Vendors';
 import Expenses from './pages/Expenses';
 import Users from './pages/Users';
 import Roles from './pages/Roles';
@@ -48,6 +49,7 @@ function App() {
           <Route path="labour/*" element={<Labour />} />
           <Route path="equipment/*" element={<Equipment />} />
           <Route path="warehouse/*" element={<Warehouse />} />
+          <Route path="vendors/*" element={<Vendors />} />
           <Route path="expenses/*" element={<Expenses />} />
           <Route path="users/*" element={<Users />} />
           <Route path="roles/*" element={<Roles />} />
