@@ -102,7 +102,7 @@ const stockTransferSchema = new Schema<IStockTransfer>(
   }
 );
 
-stockTransferSchema.index({ transferNumber: 1 });
+// Note: transferNumber already has unique: true, which creates an index
 stockTransferSchema.index({ fromLocation: 1 });
 stockTransferSchema.index({ toLocation: 1 });
 stockTransferSchema.index({ status: 1 });

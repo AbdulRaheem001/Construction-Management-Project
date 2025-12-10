@@ -30,8 +30,8 @@ const PORT = process.env.PORT || 5000;
 app.use(helmet()); // Security headers
 app.use(cors({ origin: process.env.CORS_ORIGIN || 'http://localhost:5173' }));
 app.use(compression()); // Compress responses
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '50mb' })); // Increase limit for image uploads
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // Request logging
 app.use((req, _res, next) => {

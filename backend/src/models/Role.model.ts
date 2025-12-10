@@ -50,6 +50,6 @@ const roleSchema = new Schema<IRole>(
   }
 );
 
-roleSchema.index({ code: 1 });
+// Note: code already has unique: true, which creates an index
 
 export default mongoose.model<IRole>('Role', roleSchema);

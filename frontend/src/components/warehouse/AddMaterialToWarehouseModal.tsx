@@ -39,6 +39,7 @@ export default function AddMaterialToWarehouseModal({ warehouse, onClose, onSucc
     invoiceNumber: '',
     notes: '',
   });
+  const [images, setImages] = useState<File[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -58,11 +59,91 @@ export default function AddMaterialToWarehouseModal({ warehouse, onClose, onSucc
   const paidAmount = parseFloat(formData.paidAmount) || 0;
   const remainingAmount = totalAmount - paidAmount;
 
+  const compressImage = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+          
+          const maxWidth = 1920;
+          const maxHeight = 1920;
+          
+          if (width > height) {
+            if (width > maxWidth) {
+              height = (height * maxWidth) / width;
+              width = maxWidth;
+            }
+          } else {
+            if (height > maxHeight) {
+              width = (width * maxHeight) / height;
+              height = maxHeight;
+            }
+          }
+          
+          canvas.width = width;
+          canvas.height = height;
+          
+          const ctx = canvas.getContext('2d');
+          ctx?.drawImage(img, 0, 0, width, height);
+          
+          const compressedBase64 = canvas.toDataURL('image/jpeg', 0.8);
+          resolve(compressedBase64);
+        };
+        img.onerror = reject;
+        img.src = e.target?.result as string;
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleImageChange = (files: FileList | null) => {
+    if (files) {
+      const fileArray = Array.from(files);
+      
+      const maxSize = 10 * 1024 * 1024; // 10MB
+      const oversizedFiles = fileArray.filter(f => f.size > maxSize);
+      if (oversizedFiles.length > 0) {
+        toast.error(`Some files are too large. Maximum size is 10MB per image.`);
+        return;
+      }
+      
+      const currentImageCount = images.length;
+      const newImageCount = fileArray.length;
+      if (currentImageCount + newImageCount > 10) {
+        toast.error(`Maximum 10 images allowed. You already have ${currentImageCount} image(s).`);
+        return;
+      }
+      
+      setImages([...images, ...fileArray]);
+      toast.success(`${fileArray.length} image(s) added`);
+    }
+  };
+
+  const handleRemoveImage = (index: number) => {
+    setImages(images.filter((_, i) => i !== index));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
+      // Convert and compress images to base64
+      const imageBase64Array: string[] = [];
+      if (images.length > 0) {
+        toast.loading(`Compressing ${images.length} image(s)...`, { id: 'compress' });
+        for (let i = 0; i < images.length; i++) {
+          const base64 = await compressImage(images[i]);
+          imageBase64Array.push(base64);
+        }
+        toast.success('Images compressed successfully', { id: 'compress' });
+      }
+
       // Create material with warehouse
       await api.post('/materials', {
         sku: formData.sku.toUpperCase(),
@@ -75,6 +156,7 @@ export default function AddMaterialToWarehouseModal({ warehouse, onClose, onSucc
         reorderPoint: parseInt(formData.reorderPoint),
         supplier: formData.supplier,
         warehouse: warehouse._id,
+        images: imageBase64Array.length > 0 ? imageBase64Array : undefined,
       });
 
       // If warehouse is linked to project, create expense record (vendor ledger auto-calculated from expenses)
@@ -404,6 +486,56 @@ export default function AddMaterialToWarehouseModal({ warehouse, onClose, onSucc
                 rows={2}
                 placeholder="Material description..."
               />
+            </div>
+
+            {/* Image Upload */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Images (Optional)</label>
+              <div className="space-y-3">
+                <div className="flex items-center justify-center w-full">
+                  <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition">
+                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                      <svg className="w-8 h-8 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                      </svg>
+                      <p className="mb-2 text-sm text-gray-500">
+                        <span className="font-semibold">Click to upload</span> or drag and drop
+                      </p>
+                      <p className="text-xs text-gray-500">PNG, JPG, JPEG up to 10MB each (Max 10 images)</p>
+                    </div>
+                    <input
+                      type="file"
+                      className="hidden"
+                      accept="image/png,image/jpeg,image/jpg"
+                      multiple
+                      onChange={(e) => handleImageChange(e.target.files)}
+                    />
+                  </label>
+                </div>
+                
+                {/* Preview uploaded images */}
+                {images.length > 0 && (
+                  <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                    {images.map((file, index) => (
+                      <div key={index} className="relative group">
+                        <img
+                          src={URL.createObjectURL(file)}
+                          alt={`Preview ${index + 1}`}
+                          className="w-full h-20 object-cover rounded-lg border border-gray-200"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveImage(index)}
+                          className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition"
+                        >
+                          <X size={14} />
+                        </button>
+                        <p className="text-xs text-gray-500 mt-1 truncate">{file.name}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
 
             <div>

@@ -1,0 +1,42 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4f46e5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6366f1;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="512" height="512" rx="115" fill="url(#grad1)"/>
+  
+  <!-- Building Icon -->
+  <g transform="translate(106, 106)">
+    <!-- Main Building -->
+    <rect x="80" y="60" width="140" height="240" fill="#ffffff" rx="8"/>
+    
+    <!-- Windows -->
+    <rect x="100" y="80" width="30" height="35" fill="#4f46e5" rx="4"/>
+    <rect x="145" y="80" width="30" height="35" fill="#4f46e5" rx="4"/>
+    <rect x="190" y="80" width="30" height="35" fill="#4f46e5" rx="4"/>
+    
+    <rect x="100" y="130" width="30" height="35" fill="#4f46e5" rx="4"/>
+    <rect x="145" y="130" width="30" height="35" fill="#4f46e5" rx="4"/>
+    <rect x="190" y="130" width="30" height="35" fill="#4f46e5" rx="4"/>
+    
+    <rect x="100" y="180" width="30" height="35" fill="#4f46e5" rx="4"/>
+    <rect x="145" y="180" width="30" height="35" fill="#4f46e5" rx="4"/>
+    <rect x="190" y="180" width="30" height="35" fill="#4f46e5" rx="4"/>
+    
+    <!-- Door -->
+    <rect x="135" y="240" width="50" height="60" fill="#4f46e5" rx="6"/>
+    
+    <!-- Crane -->
+    <line x1="40" y1="100" x2="40" y2="20" stroke="#ffffff" stroke-width="6"/>
+    <line x1="40" y1="20" x2="130" y2="20" stroke="#ffffff" stroke-width="6"/>
+    <line x1="130" y1="20" x2="130" y2="50" stroke="#ffffff" stroke-width="4"/>
+    <rect x="125" y="50" width="10" height="15" fill="#fbbf24" rx="2"/>
+    
+    <!-- Ground -->
+    <line x1="0" y1="300" x2="300" y2="300" stroke="#ffffff" stroke-width="4"/>
+  </g>
+</svg>

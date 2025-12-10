@@ -89,7 +89,7 @@ const equipmentSchema = new Schema<IEquipment>(
   }
 );
 
-equipmentSchema.index({ assetId: 1 });
+// Note: assetId already has unique: true, which creates an index
 equipmentSchema.index({ location: 1 });
 equipmentSchema.index({ category: 1 });
 

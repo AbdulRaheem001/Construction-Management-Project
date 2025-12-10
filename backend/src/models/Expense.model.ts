@@ -21,6 +21,7 @@ export interface IExpense extends Document {
   vendor?: string;
   invoiceNumber?: string;
   invoiceAttachment?: string;
+  images?: string[];
   paymentStatus: 'Pending' | 'Paid' | 'Partially Paid' | 'Overdue';
   paymentMethod?: string;
   paymentDate?: Date;
@@ -129,6 +130,10 @@ const expenseSchema = new Schema<IExpense>(
       type: String,
       trim: true,
     },
+    images: {
+      type: [String],
+      default: [],
+    },
     paymentStatus: {
       type: String,
       enum: ['Pending', 'Paid', 'Partially Paid', 'Overdue'],
@@ -164,7 +169,7 @@ const expenseSchema = new Schema<IExpense>(
   }
 );
 
-expenseSchema.index({ expenseNumber: 1 });
+// Note: expenseNumber already has unique: true, which creates an index
 expenseSchema.index({ project: 1 });
 expenseSchema.index({ expenseType: 1 });
 expenseSchema.index({ paymentStatus: 1 });

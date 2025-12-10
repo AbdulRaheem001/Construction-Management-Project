@@ -91,7 +91,7 @@ const employeeSchema = new Schema<IEmployee>(
   }
 );
 
-employeeSchema.index({ employeeId: 1 });
+// Note: employeeId already has unique: true, which creates an index
 employeeSchema.index({ name: 1 });
 employeeSchema.index({ team: 1 });
 

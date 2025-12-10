@@ -4,7 +4,7 @@ import { api } from '../lib/api';
 import { formatCurrency, formatDate, getStatusColor } from '../utils/formatters';
 import PermissionGuard from '../components/PermissionGuard';
 import toast from 'react-hot-toast';
-import { Plus, Search, DollarSign, TrendingUp, FileText, X, Edit2 } from 'lucide-react';
+import { Plus, Search, DollarSign, TrendingUp, FileText, X, Edit2, Image as ImageIcon, ChevronLeft, ChevronRight } from 'lucide-react';
 import type { Expense, Project } from '../types';
 
 export default function Expenses() {
@@ -24,6 +24,7 @@ function ExpensesList() {
   const [showExpenseModal, setShowExpenseModal] = useState(false);
   const [activeStatCard, setActiveStatCard] = useState<'all' | 'paid' | 'pending'>('all');
   const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
+  const [viewingImages, setViewingImages] = useState<{ expense: Expense; currentIndex: number } | null>(null);
 
   useEffect(() => {
     fetchExpenses();
@@ -32,7 +33,19 @@ function ExpensesList() {
   const fetchExpenses = async () => {
     try {
       const response = await api.get('/expenses');
-      setExpenses(response.data.data || []);
+      const expensesData = response.data.data || [];
+      
+      // Debug: Check for expenses with images
+      const expensesWithImages = expensesData.filter((e: Expense) => e.images && e.images.length > 0);
+      console.log(`📸 Found ${expensesWithImages.length} expenses with images out of ${expensesData.length} total`);
+      if (expensesWithImages.length > 0) {
+        console.log('Expenses with images:', expensesWithImages.map((e: Expense) => ({
+          number: e.expenseNumber,
+          imageCount: e.images?.length
+        })));
+      }
+      
+      setExpenses(expensesData);
     } catch (error) {
       console.error('Error fetching expenses:', error);
     } finally {
@@ -335,15 +348,34 @@ function ExpensesList() {
                                 </span>
                               </td>
                               <td className="px-6 py-4">
-                                <PermissionGuard permission="updateExpense" showMessage={false}>
-                                  <button
-                                    onClick={() => setEditingExpense(expense)}
-                                    className="text-indigo-600 hover:text-indigo-900 transition"
-                                    title="Edit expense"
-                                  >
-                                    <Edit2 size={18} />
-                                  </button>
-                                </PermissionGuard>
+                                <div className="flex items-center gap-3">
+                                  {/* View Images Button */}
+                                  {expense.images && expense.images.length > 0 && (
+                                    <button
+                                      onClick={() => setViewingImages({ expense, currentIndex: 0 })}
+                                      className="text-blue-600 hover:text-blue-900 transition relative"
+                                      title={`View ${expense.images.length} image${expense.images.length > 1 ? 's' : ''}`}
+                                    >
+                                      <ImageIcon size={18} />
+                                      {expense.images.length > 1 && (
+                                        <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
+                                          {expense.images.length}
+                                        </span>
+                                      )}
+                                    </button>
+                                  )}
+                                  
+                                  {/* Edit Button */}
+                                  <PermissionGuard permission="updateExpense" showMessage={false}>
+                                    <button
+                                      onClick={() => setEditingExpense(expense)}
+                                      className="text-indigo-600 hover:text-indigo-900 transition"
+                                      title="Edit expense"
+                                    >
+                                      <Edit2 size={18} />
+                                    </button>
+                                  </PermissionGuard>
+                                </div>
                               </td>
                             </tr>
                           );
@@ -380,6 +412,16 @@ function ExpensesList() {
           }}
         />
       )}
+
+      {/* Image Viewer Modal */}
+      {viewingImages && (
+        <ImageViewerModal
+          expense={viewingImages.expense}
+          currentIndex={viewingImages.currentIndex}
+          onClose={() => setViewingImages(null)}
+          onIndexChange={(newIndex) => setViewingImages({ ...viewingImages, currentIndex: newIndex })}
+        />
+      )}
     </div>
   );
 }
@@ -400,6 +442,7 @@ interface ExpenseFormData {
   date: string;
   vendor: string;
   invoiceNumber: string;
+  images: File[];
   notes: string;
   amountPaid: string;
 }
@@ -415,6 +458,7 @@ function NewExpenseModal({ onClose, onSuccess }: NewExpenseModalProps) {
     date: new Date().toISOString().split('T')[0],
     vendor: '',
     invoiceNumber: '',
+    images: [],
     notes: '',
     amountPaid: '',
   };
@@ -454,8 +498,92 @@ function NewExpenseModal({ onClose, onSuccess }: NewExpenseModalProps) {
 
   const handleExpenseChange = (index: number, field: keyof ExpenseFormData, value: string) => {
     const newExpenses = [...expenses];
-    newExpenses[index][field] = value;
+    if (field !== 'images') {
+      newExpenses[index][field] = value;
+      setExpenses(newExpenses);
+    }
+  };
+
+  const handleImageChange = (index: number, files: FileList | null) => {
+    if (files) {
+      const newExpenses = [...expenses];
+      const fileArray = Array.from(files);
+      
+      // Validate file sizes (max 10MB per file)
+      const maxSize = 10 * 1024 * 1024; // 10MB
+      const oversizedFiles = fileArray.filter(f => f.size > maxSize);
+      if (oversizedFiles.length > 0) {
+        toast.error(`Some files are too large. Maximum size is 10MB per image.`);
+        return;
+      }
+      
+      // Limit total images to 10
+      const currentImageCount = newExpenses[index].images.length;
+      const newImageCount = fileArray.length;
+      if (currentImageCount + newImageCount > 10) {
+        toast.error(`Maximum 10 images allowed per expense. You already have ${currentImageCount} image(s).`);
+        return;
+      }
+      
+      newExpenses[index].images = [...newExpenses[index].images, ...fileArray];
+      setExpenses(newExpenses);
+      toast.success(`${fileArray.length} image(s) added`);
+    }
+  };
+
+  const handleRemoveImage = (expenseIndex: number, imageIndex: number) => {
+    const newExpenses = [...expenses];
+    newExpenses[expenseIndex].images = newExpenses[expenseIndex].images.filter((_, i) => i !== imageIndex);
     setExpenses(newExpenses);
+  };
+
+  const compressImage = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+          
+          // Max dimensions
+          const maxWidth = 1920;
+          const maxHeight = 1920;
+          
+          // Calculate new dimensions
+          if (width > height) {
+            if (width > maxWidth) {
+              height = (height * maxWidth) / width;
+              width = maxWidth;
+            }
+          } else {
+            if (height > maxHeight) {
+              width = (width * maxHeight) / height;
+              height = maxHeight;
+            }
+          }
+          
+          canvas.width = width;
+          canvas.height = height;
+          
+          const ctx = canvas.getContext('2d');
+          ctx?.drawImage(img, 0, 0, width, height);
+          
+          // Compress to JPEG with 0.8 quality
+          const compressedBase64 = canvas.toDataURL('image/jpeg', 0.8);
+          resolve(compressedBase64);
+        };
+        img.onerror = reject;
+        img.src = e.target?.result as string;
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const convertImageToBase64 = (file: File): Promise<string> => {
+    return compressImage(file);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -469,6 +597,18 @@ function NewExpenseModal({ onClose, onSuccess }: NewExpenseModalProps) {
       // Submit all expenses
       for (const expense of expenses) {
         try {
+          // Convert and compress images to base64
+          const imageBase64Array: string[] = [];
+          if (expense.images && expense.images.length > 0) {
+            toast.loading(`Compressing ${expense.images.length} image(s)...`, { id: 'compress' });
+            for (let i = 0; i < expense.images.length; i++) {
+              const imageFile = expense.images[i];
+              const base64 = await convertImageToBase64(imageFile);
+              imageBase64Array.push(base64);
+            }
+            toast.success('Images compressed successfully', { id: 'compress' });
+          }
+
           const expenseData: any = {
             project: expense.project,
             description: expense.description,
@@ -479,6 +619,7 @@ function NewExpenseModal({ onClose, onSuccess }: NewExpenseModalProps) {
             date: expense.date,
             vendor: expense.vendor || undefined,
             invoiceNumber: expense.invoiceNumber || undefined,
+            images: imageBase64Array.length > 0 ? imageBase64Array : undefined,
             notes: expense.notes || undefined,
           };
 
@@ -756,6 +897,56 @@ function NewExpenseModal({ onClose, onSuccess }: NewExpenseModalProps) {
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
                     placeholder="Invoice number"
                   />
+                </div>
+              </div>
+
+              {/* Image Upload */}
+              <div className="mt-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Images (Optional)</label>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-center w-full">
+                    <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition">
+                      <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                        <svg className="w-8 h-8 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                        </svg>
+                        <p className="mb-2 text-sm text-gray-500">
+                          <span className="font-semibold">Click to upload</span> or drag and drop
+                        </p>
+                        <p className="text-xs text-gray-500">PNG, JPG, JPEG up to 10MB each</p>
+                      </div>
+                      <input
+                        type="file"
+                        className="hidden"
+                        accept="image/png,image/jpeg,image/jpg"
+                        multiple
+                        onChange={(e) => handleImageChange(index, e.target.files)}
+                      />
+                    </label>
+                  </div>
+                  
+                  {/* Preview uploaded images */}
+                  {expense.images.length > 0 && (
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                      {expense.images.map((file, imgIndex) => (
+                        <div key={imgIndex} className="relative group">
+                          <img
+                            src={URL.createObjectURL(file)}
+                            alt={`Preview ${imgIndex + 1}`}
+                            className="w-full h-24 object-cover rounded-lg border border-gray-200"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveImage(index, imgIndex)}
+                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition"
+                          >
+                            <X size={14} />
+                          </button>
+                          <p className="text-xs text-gray-500 mt-1 truncate">{file.name}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -1130,6 +1321,138 @@ function EditExpenseModal({ expense, onClose, onSuccess }: EditExpenseModalProps
           </div>
         </form>
       </div>
+    </div>
+  );
+}
+
+// Image Viewer Modal Component
+interface ImageViewerModalProps {
+  expense: Expense;
+  currentIndex: number;
+  onClose: () => void;
+  onIndexChange: (index: number) => void;
+}
+
+function ImageViewerModal({ expense, currentIndex, onClose, onIndexChange }: ImageViewerModalProps) {
+  const images = expense.images || [];
+  const totalImages = images.length;
+
+  if (totalImages === 0) return null;
+
+  const handlePrevious = () => {
+    onIndexChange(currentIndex > 0 ? currentIndex - 1 : totalImages - 1);
+  };
+
+  const handleNext = () => {
+    onIndexChange(currentIndex < totalImages - 1 ? currentIndex + 1 : 0);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'ArrowLeft') handlePrevious();
+    if (e.key === 'ArrowRight') handleNext();
+    if (e.key === 'Escape') onClose();
+  };
+
+  return (
+    <div
+      className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50"
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+    >
+      {/* Close Button */}
+      <button
+        onClick={onClose}
+        className="absolute top-4 right-4 text-white hover:text-gray-300 transition z-10"
+        title="Close (Esc)"
+      >
+        <X size={32} />
+      </button>
+
+      {/* Image Counter */}
+      <div className="absolute top-4 left-4 bg-black bg-opacity-60 text-white px-4 py-2 rounded-lg">
+        <p className="text-sm font-medium">
+          Image {currentIndex + 1} of {totalImages}
+        </p>
+        <p className="text-xs text-gray-300 mt-1">
+          {expense.expenseNumber} - {expense.description}
+        </p>
+      </div>
+
+      {/* Previous Button */}
+      {totalImages > 1 && (
+        <button
+          onClick={handlePrevious}
+          className="absolute left-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-60 hover:bg-opacity-80 text-white p-3 rounded-full transition"
+          title="Previous (←)"
+        >
+          <ChevronLeft size={32} />
+        </button>
+      )}
+
+      {/* Image Display */}
+      <div className="max-w-6xl max-h-[90vh] w-full h-full flex items-center justify-center p-4">
+        <img
+          src={images[currentIndex]}
+          alt={`Expense ${expense.expenseNumber} - Image ${currentIndex + 1}`}
+          className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+          onError={(e) => {
+            e.currentTarget.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect width="200" height="200" fill="%23ddd"/><text x="50%" y="50%" text-anchor="middle" dy=".3em" fill="%23999">Image not found</text></svg>';
+          }}
+        />
+      </div>
+
+      {/* Next Button */}
+      {totalImages > 1 && (
+        <button
+          onClick={handleNext}
+          className="absolute right-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-60 hover:bg-opacity-80 text-white p-3 rounded-full transition"
+          title="Next (→)"
+        >
+          <ChevronRight size={32} />
+        </button>
+      )}
+
+      {/* Thumbnail Navigation */}
+      {totalImages > 1 && (
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black bg-opacity-60 rounded-lg p-3">
+          <div className="flex gap-2 max-w-screen-lg overflow-x-auto">
+            {images.map((img, index) => (
+              <button
+                key={index}
+                onClick={() => onIndexChange(index)}
+                className={`flex-shrink-0 w-16 h-16 rounded border-2 transition overflow-hidden ${
+                  index === currentIndex
+                    ? 'border-blue-500 ring-2 ring-blue-400'
+                    : 'border-gray-500 hover:border-gray-300'
+                }`}
+              >
+                <img
+                  src={img}
+                  alt={`Thumbnail ${index + 1}`}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.currentTarget.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><rect width="64" height="64" fill="%23ddd"/></svg>';
+                  }}
+                />
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Download Button */}
+      <a
+        href={images[currentIndex]}
+        download={`${expense.expenseNumber}-image-${currentIndex + 1}.jpg`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="absolute bottom-4 right-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition flex items-center gap-2"
+      >
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+        </svg>
+        Download
+      </a>
     </div>
   );
 }

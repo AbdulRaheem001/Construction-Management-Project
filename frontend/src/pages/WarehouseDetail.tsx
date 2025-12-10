@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { api } from '../lib/api';
 import toast from 'react-hot-toast';
-import { ArrowLeft, Package, ArrowRight, History, Warehouse as WarehouseIcon, RefreshCw, Plus, RotateCw } from 'lucide-react';
+import { ArrowLeft, Package, ArrowRight, History, Warehouse as WarehouseIcon, RefreshCw, Plus, RotateCw, Image as ImageIcon, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import type { Warehouse, Inventory } from '../types';
 import { formatCurrency } from '../utils/formatters';
 import { hasPermission } from '../utils/permissions';
@@ -28,6 +28,7 @@ export default function WarehouseDetail() {
   const [showAddMaterialModal, setShowAddMaterialModal] = useState(false);
   const [showRestockModal, setShowRestockModal] = useState(false);
   const [restockInventory, setRestockInventory] = useState<Inventory | null>(null);
+  const [viewingImages, setViewingImages] = useState<{ material: any; currentIndex: number } | null>(null);
 
   useEffect(() => {
     if (id) {
@@ -253,6 +254,22 @@ export default function WarehouseDetail() {
                       {canIssue && (
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-2">
+                            {/* View Images Button */}
+                            {material.images && material.images.length > 0 && (
+                              <button
+                                onClick={() => setViewingImages({ material, currentIndex: 0 })}
+                                className="text-blue-600 hover:text-blue-900 transition relative"
+                                title={`View ${material.images.length} image${material.images.length > 1 ? 's' : ''}`}
+                              >
+                                <ImageIcon size={18} />
+                                {material.images.length > 1 && (
+                                  <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
+                                    {material.images.length}
+                                  </span>
+                                )}
+                              </button>
+                            )}
+                            
                             <button
                               onClick={() => {
                                 setRestockInventory(item);
@@ -345,6 +362,149 @@ export default function WarehouseDetail() {
           }}
         />
       )}
+
+      {/* Image Viewer Modal */}
+      {viewingImages && (
+        <MaterialImageViewerModal
+          material={viewingImages.material}
+          currentIndex={viewingImages.currentIndex}
+          onClose={() => setViewingImages(null)}
+          onIndexChange={(newIndex: number) => setViewingImages({ ...viewingImages, currentIndex: newIndex })}
+        />
+      )}
     </div>
   );
 }
+
+// Material Image Viewer Modal Component
+interface MaterialImageViewerModalProps {
+  material: any;
+  currentIndex: number;
+  onClose: () => void;
+  onIndexChange: (index: number) => void;
+}
+
+function MaterialImageViewerModal({ material, currentIndex, onClose, onIndexChange }: MaterialImageViewerModalProps) {
+  const images = material.images || [];
+  const totalImages = images.length;
+
+  if (totalImages === 0) return null;
+
+  const handlePrevious = () => {
+    onIndexChange(currentIndex > 0 ? currentIndex - 1 : totalImages - 1);
+  };
+
+  const handleNext = () => {
+    onIndexChange(currentIndex < totalImages - 1 ? currentIndex + 1 : 0);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'ArrowLeft') handlePrevious();
+    if (e.key === 'ArrowRight') handleNext();
+    if (e.key === 'Escape') onClose();
+  };
+
+  return (
+    <div
+      className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50"
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+    >
+      {/* Close Button */}
+      <button
+        onClick={onClose}
+        className="absolute top-4 right-4 text-white hover:text-gray-300 transition z-10"
+        title="Close (Esc)"
+      >
+        <X size={32} />
+      </button>
+
+      {/* Image Counter */}
+      <div className="absolute top-4 left-4 bg-black bg-opacity-60 text-white px-4 py-2 rounded-lg">
+        <p className="text-sm font-medium">
+          Image {currentIndex + 1} of {totalImages}
+        </p>
+        <p className="text-xs text-gray-300 mt-1">
+          {material.sku} - {material.name}
+        </p>
+      </div>
+
+      {/* Previous Button */}
+      {totalImages > 1 && (
+        <button
+          onClick={handlePrevious}
+          className="absolute left-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-60 hover:bg-opacity-80 text-white p-3 rounded-full transition"
+          title="Previous (←)"
+        >
+          <ChevronLeft size={32} />
+        </button>
+      )}
+
+      {/* Image Display */}
+      <div className="max-w-6xl max-h-[90vh] w-full h-full flex items-center justify-center p-4">
+        <img
+          src={images[currentIndex]}
+          alt={`Material ${material.sku} - Image ${currentIndex + 1}`}
+          className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+          onError={(e) => {
+            e.currentTarget.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect width="200" height="200" fill="%23ddd"/><text x="50%" y="50%" text-anchor="middle" dy=".3em" fill="%23999">Image not found</text></svg>';
+          }}
+        />
+      </div>
+
+      {/* Next Button */}
+      {totalImages > 1 && (
+        <button
+          onClick={handleNext}
+          className="absolute right-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-60 hover:bg-opacity-80 text-white p-3 rounded-full transition"
+          title="Next (→)"
+        >
+          <ChevronRight size={32} />
+        </button>
+      )}
+
+      {/* Thumbnail Navigation */}
+      {totalImages > 1 && (
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black bg-opacity-60 rounded-lg p-3">
+          <div className="flex gap-2 max-w-screen-lg overflow-x-auto">
+            {images.map((img: string, index: number) => (
+              <button
+                key={index}
+                onClick={() => onIndexChange(index)}
+                className={`flex-shrink-0 w-16 h-16 rounded border-2 transition overflow-hidden ${
+                  index === currentIndex
+                    ? 'border-blue-500 ring-2 ring-blue-400'
+                    : 'border-gray-500 hover:border-gray-300'
+                }`}
+              >
+                <img
+                  src={img}
+                  alt={`Thumbnail ${index + 1}`}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.currentTarget.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><rect width="64" height="64" fill="%23ddd"/></svg>';
+                  }}
+                />
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Download Button */}
+      <a
+        href={images[currentIndex]}
+        download={`${material.sku}-image-${currentIndex + 1}.jpg`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="absolute bottom-4 right-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition flex items-center gap-2"
+      >
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+        </svg>
+        Download
+      </a>
+    </div>
+  );
+}
+

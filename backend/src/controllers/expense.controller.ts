@@ -3,6 +3,7 @@ import Expense from '../models/Expense.model';
 import { AuthRequest } from '../middleware/auth';
 import { AppError } from '../middleware/errorHandler';
 import { logger } from '../utils/logger';
+import { uploadMultipleImagesToCloudinary } from '../utils/cloudinary';
 
 export const createExpense = async (
   req: AuthRequest,
@@ -17,9 +18,23 @@ export const createExpense = async (
       expenseNumber = `EXP-${String(expenseCount + 1).padStart(6, '0')}`;
     }
 
+    // Handle image uploads to Cloudinary
+    let imageUrls: string[] = [];
+    if (req.body.images && Array.isArray(req.body.images) && req.body.images.length > 0) {
+      try {
+        imageUrls = await uploadMultipleImagesToCloudinary(req.body.images, 'expenses');
+        logger.info(`Uploaded ${imageUrls.length} images to Cloudinary for expense ${expenseNumber}`);
+      } catch (error) {
+        logger.error('Error uploading images to Cloudinary:', error);
+        // Continue with expense creation even if image upload fails
+        logger.warn('Continuing expense creation without images');
+      }
+    }
+
     const expenseData = {
       ...req.body,
       expenseNumber,
+      images: imageUrls.length > 0 ? imageUrls : undefined,
       createdBy: req.user._id,
     };
 

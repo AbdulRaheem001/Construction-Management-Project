@@ -93,7 +93,7 @@ const materialConsumptionSchema = new Schema<IMaterialConsumption>(
   }
 );
 
-materialConsumptionSchema.index({ consumptionNumber: 1 });
+// Note: consumptionNumber already has unique: true, which creates an index
 materialConsumptionSchema.index({ project: 1 });
 materialConsumptionSchema.index({ material: 1 });
 

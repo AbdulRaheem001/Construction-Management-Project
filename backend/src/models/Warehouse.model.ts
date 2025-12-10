@@ -54,6 +54,6 @@ const warehouseSchema = new Schema<IWarehouse>(
   }
 );
 
-warehouseSchema.index({ code: 1 });
+// Note: code already has unique: true, which creates an index
 
 export default mongoose.model<IWarehouse>('Warehouse', warehouseSchema);

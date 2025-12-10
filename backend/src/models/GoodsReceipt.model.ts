@@ -96,7 +96,7 @@ const goodsReceiptSchema = new Schema<IGoodsReceipt>(
   }
 );
 
-goodsReceiptSchema.index({ grNumber: 1 });
+// Note: grNumber already has unique: true, which creates an index
 goodsReceiptSchema.index({ purchaseOrder: 1 });
 
 export default mongoose.model<IGoodsReceipt>('GoodsReceipt', goodsReceiptSchema);

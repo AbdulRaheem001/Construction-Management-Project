@@ -396,3 +396,431 @@
 {"level":"info","message":"PUT /api/users/691b953409789dc87c21f6bc","timestamp":"2025-11-18 12:56:12"}
 {"level":"info","message":"GET /api/users","timestamp":"2025-11-18 12:56:13"}
 {"level":"info","message":"GET /api/users","timestamp":"2025-11-18 12:56:21"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-12-08 22:35:57"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-08 22:37:09"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-12-08 22:37:09"}
+{"level":"info","message":"POST /api/auth/login","timestamp":"2025-12-08 22:38:26"}
+{"level":"error","message":"Invalid credentials","method":"POST","path":"/api/auth/login","stack":"Error: Invalid credentials\n    at login (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/src/controllers/auth.controller.ts:73:13)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)","statusCode":401,"timestamp":"2025-12-08 22:38:26"}
+{"level":"info","message":"POST /api/auth/login","timestamp":"2025-12-08 22:41:09"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 22:41:10"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 22:41:10"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 22:41:10"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 22:41:11"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 22:41:36"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 22:41:36"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 22:41:40"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 22:41:40"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-08 22:45:15"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-12-08 22:45:15"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 22:45:16"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 22:45:16"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 22:45:17"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 22:45:17"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 22:45:17"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 22:45:17"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 22:45:26"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 22:45:26"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 22:45:28"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 22:45:28"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 22:45:31"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 22:45:31"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 22:45:45"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 22:45:45"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 22:46:26"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 22:46:27"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 22:46:32"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 22:46:33"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 22:49:35"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 22:49:35"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-08 22:51:57"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-12-08 22:51:57"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-08 22:52:19"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-12-08 22:52:19"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-08 22:52:51"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-12-08 22:52:51"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-08 22:54:36"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-12-08 22:54:36"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 22:55:20"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 22:55:20"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 22:55:20"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 22:55:21"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 22:55:21"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 22:55:21"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 22:55:24"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 22:55:24"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 22:57:04"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 22:57:05"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-08 22:57:47"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-08 22:58:05"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-12-08 22:58:05"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 22:58:15"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 22:58:15"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 22:58:16"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 22:58:16"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 22:58:16"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 22:58:16"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 22:58:18"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 22:58:18"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 22:58:26"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 22:58:26"}
+{"level":"info","message":"POST /api/expenses","timestamp":"2025-12-08 22:59:11"}
+{"level":"error","message":"Error uploading images to Cloudinary: Failed to upload images to Cloudinary","stack":"Error: Failed to upload images to Cloudinary\n    at uploadMultipleImagesToCloudinary (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/src/utils/cloudinary.ts:59:11)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async createExpense (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/src/controllers/expense.controller.ts:25:21)","timestamp":"2025-12-08 22:59:13"}
+{"level":"warn","message":"Continuing expense creation without images","timestamp":"2025-12-08 22:59:13"}
+{"level":"info","message":"Expense created: EXP-000016","timestamp":"2025-12-08 22:59:13"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 22:59:13"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-08 23:01:17"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-12-08 23:01:17"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-08 23:01:17"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:04:26"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:04:26"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:04:27"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:04:27"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:04:27"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:04:28"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:05:06"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:05:07"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:05:08"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:05:09"}
+{"level":"info","message":"POST /api/expenses","timestamp":"2025-12-08 23:06:19"}
+{"level":"error","message":"Error uploading images to Cloudinary: Failed to upload images to Cloudinary","stack":"Error: Failed to upload images to Cloudinary\n    at uploadMultipleImagesToCloudinary (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/src/utils/cloudinary.ts:59:11)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async createExpense (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/src/controllers/expense.controller.ts:25:21)","timestamp":"2025-12-08 23:06:22"}
+{"level":"warn","message":"Continuing expense creation without images","timestamp":"2025-12-08 23:06:22"}
+{"level":"info","message":"Expense created: EXP-000017","timestamp":"2025-12-08 23:06:22"}
+{"level":"info","message":"POST /api/expenses","timestamp":"2025-12-08 23:06:22"}
+{"level":"error","message":"Error uploading images to Cloudinary: Failed to upload images to Cloudinary","stack":"Error: Failed to upload images to Cloudinary\n    at uploadMultipleImagesToCloudinary (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/src/utils/cloudinary.ts:59:11)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async createExpense (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/src/controllers/expense.controller.ts:25:21)","timestamp":"2025-12-08 23:06:25"}
+{"level":"warn","message":"Continuing expense creation without images","timestamp":"2025-12-08 23:06:25"}
+{"level":"info","message":"Expense created: EXP-000018","timestamp":"2025-12-08 23:06:25"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:06:25"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:08:13"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:08:28"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:08:29"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:08:39"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:08:58"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:09:22"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:09:22"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:09:26"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:09:26"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:09:26"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:09:26"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:09:27"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:09:27"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:09:29"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:09:30"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:09:35"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:09:39"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:09:40"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:09:40"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:09:40"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:09:40"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:09:40"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:09:43"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:09:43"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:09:52"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:09:52"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:09:52"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:09:52"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:09:52"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:09:53"}
+{"level":"info","message":"GET /api/users","timestamp":"2025-12-08 23:09:55"}
+{"level":"info","message":"GET /api/roles","timestamp":"2025-12-08 23:09:55"}
+{"level":"info","message":"GET /api/roles","timestamp":"2025-12-08 23:09:55"}
+{"level":"info","message":"GET /api/users","timestamp":"2025-12-08 23:09:56"}
+{"level":"info","message":"GET /api/users","timestamp":"2025-12-08 23:09:57"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:09:59"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:09:59"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:10:19"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:10:19"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:10:20"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:10:20"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:10:20"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:10:20"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:10:21"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:10:21"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:10:22"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:10:23"}
+{"level":"info","message":"POST /api/expenses","timestamp":"2025-12-08 23:10:48"}
+{"level":"error","message":"Error uploading images to Cloudinary: Failed to upload images to Cloudinary","stack":"Error: Failed to upload images to Cloudinary\n    at uploadMultipleImagesToCloudinary (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/src/utils/cloudinary.ts:59:11)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async createExpense (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/src/controllers/expense.controller.ts:25:21)","timestamp":"2025-12-08 23:10:51"}
+{"level":"warn","message":"Continuing expense creation without images","timestamp":"2025-12-08 23:10:51"}
+{"level":"info","message":"Expense created: EXP-000019","timestamp":"2025-12-08 23:10:51"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:10:51"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:12:52"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:12:52"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:12:52"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:12:52"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:12:52"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:12:52"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:12:54"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:12:55"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-08 23:13:46"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-12-08 23:13:46"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:14:19"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:15:06"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:15:07"}
+{"level":"info","message":"POST /api/expenses","timestamp":"2025-12-08 23:15:34"}
+{"level":"info","message":"Uploaded 1 images to Cloudinary for expense EXP-000020","timestamp":"2025-12-08 23:15:38"}
+{"level":"info","message":"Expense created: EXP-000020","timestamp":"2025-12-08 23:15:38"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:15:38"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:18:04"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:18:05"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:18:35"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:18:35"}
+{"level":"error","message":"request entity too large","method":"POST","path":"/api/expenses","stack":"PayloadTooLargeError: request entity too large\n    at readStream (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/node_modules/raw-body/index.js:163:17)\n    at getRawBody (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/node_modules/raw-body/index.js:116:12)\n    at read (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/node_modules/body-parser/lib/read.js:79:3)\n    at jsonParser (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/node_modules/body-parser/lib/types/json.js:138:5)\n    at Layer.handle [as handle_request] (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/node_modules/express/lib/router/index.js:328:13)\n    at /home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/node_modules/express/lib/router/index.js:286:9\n    at Function.process_params (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/node_modules/express/lib/router/index.js:346:12)\n    at next (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/node_modules/express/lib/router/index.js:280:10)\n    at compression (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/node_modules/compression/index.js:243:5)","statusCode":500,"timestamp":"2025-12-08 23:19:25"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:19:25"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:19:30"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:19:30"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:19:30"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:19:30"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:19:31"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:19:31"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:19:32"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:19:32"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:19:36"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:19:36"}
+{"level":"error","message":"request entity too large","method":"POST","path":"/api/expenses","stack":"PayloadTooLargeError: request entity too large\n    at readStream (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/node_modules/raw-body/index.js:163:17)\n    at getRawBody (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/node_modules/raw-body/index.js:116:12)\n    at read (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/node_modules/body-parser/lib/read.js:79:3)\n    at jsonParser (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/node_modules/body-parser/lib/types/json.js:138:5)\n    at Layer.handle [as handle_request] (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/node_modules/express/lib/router/index.js:328:13)\n    at /home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/node_modules/express/lib/router/index.js:286:9\n    at Function.process_params (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/node_modules/express/lib/router/index.js:346:12)\n    at next (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/node_modules/express/lib/router/index.js:280:10)\n    at compression (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/node_modules/compression/index.js:243:5)","statusCode":500,"timestamp":"2025-12-08 23:20:02"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:20:02"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:20:09"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:20:09"}
+{"level":"error","message":"request entity too large","method":"POST","path":"/api/expenses","stack":"PayloadTooLargeError: request entity too large\n    at readStream (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/node_modules/raw-body/index.js:163:17)\n    at getRawBody (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/node_modules/raw-body/index.js:116:12)\n    at read (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/node_modules/body-parser/lib/read.js:79:3)\n    at jsonParser (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/node_modules/body-parser/lib/types/json.js:138:5)\n    at Layer.handle [as handle_request] (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/node_modules/express/lib/router/layer.js:95:5)\n    at trim_prefix (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/node_modules/express/lib/router/index.js:328:13)\n    at /home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/node_modules/express/lib/router/index.js:286:9\n    at Function.process_params (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/node_modules/express/lib/router/index.js:346:12)\n    at next (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/node_modules/express/lib/router/index.js:280:10)\n    at compression (/home/momina/moonbridge/Raheem/Construction-Management-Project-main/backend/node_modules/compression/index.js:243:5)","statusCode":500,"timestamp":"2025-12-08 23:20:38"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:20:38"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-08 23:22:51"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-12-08 23:22:51"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:23:57"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:24:13"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:24:25"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:24:37"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:24:38"}
+{"level":"info","message":"GET /api/health","timestamp":"2025-12-08 23:24:43"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:25:02"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:25:03"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:25:03"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:25:03"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:25:03"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:25:03"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:25:05"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:25:06"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:25:07"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:25:07"}
+{"level":"info","message":"POST /api/expenses","timestamp":"2025-12-08 23:25:31"}
+{"level":"info","message":"Uploaded 3 images to Cloudinary for expense EXP-000021","timestamp":"2025-12-08 23:25:34"}
+{"level":"info","message":"Expense created: EXP-000021","timestamp":"2025-12-08 23:25:34"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:25:34"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-08 23:26:23"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-12-08 23:26:23"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:26:24"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:26:25"}
+{"level":"info","message":"GET /api/warehouse","timestamp":"2025-12-08 23:26:30"}
+{"level":"info","message":"GET /api/warehouse","timestamp":"2025-12-08 23:26:30"}
+{"level":"info","message":"GET /api/warehouse/6925a722f0267a0116f653bd","timestamp":"2025-12-08 23:26:33"}
+{"level":"info","message":"GET /api/warehouse/6925a722f0267a0116f653bd","timestamp":"2025-12-08 23:26:34"}
+{"level":"info","message":"GET /api/materials/vendors","timestamp":"2025-12-08 23:26:38"}
+{"level":"info","message":"GET /api/materials/vendors","timestamp":"2025-12-08 23:26:39"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-08 23:29:46"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-12-08 23:29:46"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-08 23:30:04"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-12-08 23:30:04"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-08 23:30:23"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-12-08 23:30:23"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:30:48"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-08 23:30:48"}
+{"level":"info","message":"GET /api/warehouse","timestamp":"2025-12-08 23:30:58"}
+{"level":"info","message":"GET /api/warehouse","timestamp":"2025-12-08 23:30:58"}
+{"level":"info","message":"GET /api/warehouse/6925a722f0267a0116f653bd","timestamp":"2025-12-08 23:31:00"}
+{"level":"info","message":"GET /api/warehouse/6925a722f0267a0116f653bd","timestamp":"2025-12-08 23:31:00"}
+{"level":"info","message":"GET /api/materials/vendors","timestamp":"2025-12-08 23:31:03"}
+{"level":"info","message":"GET /api/materials/vendors","timestamp":"2025-12-08 23:31:03"}
+{"level":"info","message":"GET /api/materials/vendors","timestamp":"2025-12-08 23:31:22"}
+{"level":"info","message":"GET /api/materials/vendors","timestamp":"2025-12-08 23:31:37"}
+{"level":"info","message":"GET /api/warehouse/6925a722f0267a0116f653bd","timestamp":"2025-12-08 23:32:07"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:32:07"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:32:08"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:32:08"}
+{"level":"info","message":"GET /api/warehouse/6925a722f0267a0116f653bd","timestamp":"2025-12-08 23:32:08"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:32:08"}
+{"level":"info","message":"GET /api/warehouse","timestamp":"2025-12-08 23:32:29"}
+{"level":"info","message":"GET /api/warehouse","timestamp":"2025-12-08 23:32:30"}
+{"level":"info","message":"GET /api/warehouse/6925a722f0267a0116f653bd","timestamp":"2025-12-08 23:32:32"}
+{"level":"info","message":"GET /api/warehouse/6925a722f0267a0116f653bd","timestamp":"2025-12-08 23:32:32"}
+{"level":"info","message":"GET /api/materials/vendors","timestamp":"2025-12-08 23:32:35"}
+{"level":"info","message":"GET /api/materials/vendors","timestamp":"2025-12-08 23:32:35"}
+{"level":"info","message":"POST /api/materials","timestamp":"2025-12-08 23:33:44"}
+{"level":"info","message":"Uploaded 3 images to Cloudinary for material ABCD","timestamp":"2025-12-08 23:33:47"}
+{"level":"info","message":"Material created: ABCD","timestamp":"2025-12-08 23:33:47"}
+{"level":"info","message":"Inventory created at warehouse for material: ABCD, Qty: 100","timestamp":"2025-12-08 23:33:47"}
+{"level":"info","message":"POST /api/expenses","timestamp":"2025-12-08 23:33:47"}
+{"level":"info","message":"Expense created: EXP-MAT-827442","timestamp":"2025-12-08 23:33:47"}
+{"level":"info","message":"GET /api/warehouse/6925a722f0267a0116f653bd","timestamp":"2025-12-08 23:33:47"}
+{"level":"info","message":"GET /api/materials/consumption/history/69371a0bcbc610a82b2d90a5","timestamp":"2025-12-08 23:33:59"}
+{"level":"info","message":"GET /api/warehouse/6925a722f0267a0116f653bd","timestamp":"2025-12-08 23:34:29"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:34:29"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:34:30"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:34:30"}
+{"level":"info","message":"GET /api/warehouse/6925a722f0267a0116f653bd","timestamp":"2025-12-08 23:34:30"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:34:30"}
+{"level":"info","message":"GET /api/warehouse","timestamp":"2025-12-08 23:34:31"}
+{"level":"info","message":"GET /api/warehouse","timestamp":"2025-12-08 23:34:32"}
+{"level":"info","message":"GET /api/warehouse/6925a722f0267a0116f653bd","timestamp":"2025-12-08 23:34:33"}
+{"level":"info","message":"GET /api/warehouse/6925a722f0267a0116f653bd","timestamp":"2025-12-08 23:34:34"}
+{"level":"info","message":"GET /api/warehouse/6925a722f0267a0116f653bd","timestamp":"2025-12-08 23:39:46"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:39:46"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:39:46"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:39:46"}
+{"level":"info","message":"GET /api/warehouse/6925a722f0267a0116f653bd","timestamp":"2025-12-08 23:39:46"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:39:46"}
+{"level":"info","message":"GET /api/warehouse","timestamp":"2025-12-08 23:39:49"}
+{"level":"info","message":"GET /api/warehouse","timestamp":"2025-12-08 23:39:49"}
+{"level":"info","message":"GET /api/warehouse/6925a722f0267a0116f653bd","timestamp":"2025-12-08 23:39:51"}
+{"level":"info","message":"GET /api/warehouse/6925a722f0267a0116f653bd","timestamp":"2025-12-08 23:39:52"}
+{"level":"info","message":"GET /api/materials/vendors","timestamp":"2025-12-08 23:39:59"}
+{"level":"info","message":"GET /api/materials/vendors","timestamp":"2025-12-08 23:40:00"}
+{"level":"info","message":"POST /api/materials","timestamp":"2025-12-08 23:41:00"}
+{"level":"info","message":"Uploaded 3 images to Cloudinary for material DC23","timestamp":"2025-12-08 23:41:03"}
+{"level":"info","message":"Material created: DC23","timestamp":"2025-12-08 23:41:03"}
+{"level":"info","message":"Inventory created at warehouse for material: DC23, Qty: 122","timestamp":"2025-12-08 23:41:03"}
+{"level":"info","message":"POST /api/expenses","timestamp":"2025-12-08 23:41:03"}
+{"level":"info","message":"Expense created: EXP-MAT-263400","timestamp":"2025-12-08 23:41:03"}
+{"level":"info","message":"GET /api/warehouse/6925a722f0267a0116f653bd","timestamp":"2025-12-08 23:41:03"}
+{"level":"info","message":"GET /api/warehouse/6925a722f0267a0116f653bd","timestamp":"2025-12-08 23:41:14"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:41:14"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:41:15"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:41:15"}
+{"level":"info","message":"GET /api/warehouse/6925a722f0267a0116f653bd","timestamp":"2025-12-08 23:41:15"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:41:15"}
+{"level":"info","message":"GET /api/warehouse","timestamp":"2025-12-08 23:41:18"}
+{"level":"info","message":"GET /api/warehouse","timestamp":"2025-12-08 23:41:18"}
+{"level":"info","message":"GET /api/warehouse/6925a722f0267a0116f653bd","timestamp":"2025-12-08 23:41:21"}
+{"level":"info","message":"GET /api/warehouse/6925a722f0267a0116f653bd","timestamp":"2025-12-08 23:41:22"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-08 23:44:56"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-12-08 23:44:56"}
+{"level":"info","message":"GET /api/warehouse/6925a722f0267a0116f653bd","timestamp":"2025-12-08 23:47:56"}
+{"level":"info","message":"GET /api/warehouse/6925a722f0267a0116f653bd","timestamp":"2025-12-08 23:48:15"}
+{"level":"info","message":"GET /api/warehouse/6925a722f0267a0116f653bd","timestamp":"2025-12-08 23:48:16"}
+{"level":"info","message":"GET /api/warehouse/6925a722f0267a0116f653bd","timestamp":"2025-12-08 23:48:30"}
+{"level":"info","message":"GET /api/warehouse/6925a722f0267a0116f653bd","timestamp":"2025-12-08 23:49:10"}
+{"level":"info","message":"GET /api/warehouse/6925a722f0267a0116f653bd","timestamp":"2025-12-08 23:49:37"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:49:37"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:49:38"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:49:38"}
+{"level":"info","message":"GET /api/warehouse/6925a722f0267a0116f653bd","timestamp":"2025-12-08 23:49:38"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-08 23:49:38"}
+{"level":"info","message":"GET /api/warehouse","timestamp":"2025-12-08 23:49:41"}
+{"level":"info","message":"GET /api/warehouse","timestamp":"2025-12-08 23:49:41"}
+{"level":"info","message":"GET /api/warehouse/6925a722f0267a0116f653bd","timestamp":"2025-12-08 23:49:43"}
+{"level":"info","message":"GET /api/warehouse/6925a722f0267a0116f653bd","timestamp":"2025-12-08 23:49:43"}
+{"level":"info","message":"GET /api/materials/vendors","timestamp":"2025-12-08 23:49:46"}
+{"level":"info","message":"GET /api/materials/vendors","timestamp":"2025-12-08 23:49:46"}
+{"level":"info","message":"POST /api/materials","timestamp":"2025-12-08 23:50:32"}
+{"level":"info","message":"Uploaded 3 images to Cloudinary for material NHB7667","timestamp":"2025-12-08 23:50:34"}
+{"level":"info","message":"Material created: NHB7667","timestamp":"2025-12-08 23:50:34"}
+{"level":"info","message":"Inventory created at warehouse for material: NHB7667, Qty: 90","timestamp":"2025-12-08 23:50:34"}
+{"level":"info","message":"POST /api/expenses","timestamp":"2025-12-08 23:50:34"}
+{"level":"info","message":"Expense created: EXP-MAT-834916","timestamp":"2025-12-08 23:50:35"}
+{"level":"info","message":"GET /api/warehouse/6925a722f0267a0116f653bd","timestamp":"2025-12-08 23:50:35"}
+{"level":"info","message":"GET /api/materials/consumption/history/691cdf004a24435ab54cee7a","timestamp":"2025-12-08 23:50:41"}
+{"level":"info","message":"GET /api/materials/vendors","timestamp":"2025-12-08 23:50:45"}
+{"level":"info","message":"GET /api/materials/vendors","timestamp":"2025-12-08 23:50:46"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-09 13:09:51"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-12-09 13:09:51"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-09 13:36:10"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-09 13:36:40"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-09 13:40:21"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-09 13:43:24"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-09 13:43:36"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-09 13:43:52"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-09 13:45:25"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-09 13:46:55"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-09 13:47:07"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-09 13:47:19"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-09 13:47:45"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-09 13:48:10"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-09 13:48:24"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-10 12:59:49"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-12-10 12:59:49"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 12:59:53"}
+{"level":"error","message":"Invalid or expired token","method":"GET","path":"/api/projects","stack":"Error: Invalid or expired token\n    at authenticate (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\src\\middleware\\auth.ts:30:13)\n    at Layer.handle [as handle_request] (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at trim_prefix (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:328:13)\n    at C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:286:9\n    at router.process_params (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:346:12)\n    at next (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:280:10)\n    at router.handle (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:175:3)\n    at router (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:47:12)\n    at Layer.handle [as handle_request] (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at trim_prefix (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:328:13)","statusCode":401,"timestamp":"2025-12-10 12:59:53"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 12:59:54"}
+{"level":"error","message":"Invalid or expired token","method":"GET","path":"/api/projects","stack":"Error: Invalid or expired token\n    at authenticate (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\src\\middleware\\auth.ts:30:13)\n    at Layer.handle [as handle_request] (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at trim_prefix (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:328:13)\n    at C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:286:9\n    at router.process_params (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:346:12)\n    at next (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:280:10)\n    at router.handle (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:175:3)\n    at router (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:47:12)\n    at Layer.handle [as handle_request] (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at trim_prefix (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:328:13)","statusCode":401,"timestamp":"2025-12-10 12:59:54"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 12:59:54"}
+{"level":"error","message":"Invalid or expired token","method":"GET","path":"/api/projects","stack":"Error: Invalid or expired token\n    at authenticate (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\src\\middleware\\auth.ts:30:13)\n    at Layer.handle [as handle_request] (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at trim_prefix (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:328:13)\n    at C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:286:9\n    at router.process_params (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:346:12)\n    at next (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:280:10)\n    at router.handle (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:175:3)\n    at router (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:47:12)\n    at Layer.handle [as handle_request] (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at trim_prefix (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:328:13)","statusCode":401,"timestamp":"2025-12-10 12:59:54"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 12:59:54"}
+{"level":"error","message":"Authentication required","method":"GET","path":"/api/projects","stack":"Error: Authentication required\n    at authenticate (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\src\\middleware\\auth.ts:23:13)\n    at Layer.handle [as handle_request] (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at trim_prefix (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:328:13)\n    at C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:286:9\n    at router.process_params (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:346:12)\n    at next (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:280:10)\n    at router.handle (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:175:3)\n    at router (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:47:12)\n    at Layer.handle [as handle_request] (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at trim_prefix (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:328:13)","statusCode":401,"timestamp":"2025-12-10 12:59:54"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 12:59:54"}
+{"level":"error","message":"Invalid or expired token","method":"GET","path":"/api/projects","stack":"Error: Invalid or expired token\n    at authenticate (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\src\\middleware\\auth.ts:30:13)\n    at Layer.handle [as handle_request] (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at trim_prefix (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:328:13)\n    at C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:286:9\n    at router.process_params (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:346:12)\n    at next (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:280:10)\n    at router.handle (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:175:3)\n    at router (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:47:12)\n    at Layer.handle [as handle_request] (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at trim_prefix (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:328:13)","statusCode":401,"timestamp":"2025-12-10 12:59:54"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 12:59:54"}
+{"level":"error","message":"Authentication required","method":"GET","path":"/api/projects","stack":"Error: Authentication required\n    at authenticate (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\src\\middleware\\auth.ts:23:13)\n    at Layer.handle [as handle_request] (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at trim_prefix (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:328:13)\n    at C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:286:9\n    at router.process_params (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:346:12)\n    at next (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:280:10)\n    at router.handle (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:175:3)\n    at router (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:47:12)\n    at Layer.handle [as handle_request] (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at trim_prefix (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:328:13)","statusCode":401,"timestamp":"2025-12-10 12:59:54"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 12:59:54"}
+{"level":"error","message":"Authentication required","method":"GET","path":"/api/projects","stack":"Error: Authentication required\n    at authenticate (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\src\\middleware\\auth.ts:23:13)\n    at Layer.handle [as handle_request] (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at trim_prefix (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:328:13)\n    at C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:286:9\n    at router.process_params (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:346:12)\n    at next (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:280:10)\n    at router.handle (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:175:3)\n    at router (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:47:12)\n    at Layer.handle [as handle_request] (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at trim_prefix (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:328:13)","statusCode":401,"timestamp":"2025-12-10 12:59:54"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 12:59:54"}
+{"level":"error","message":"Authentication required","method":"GET","path":"/api/projects","stack":"Error: Authentication required\n    at authenticate (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\src\\middleware\\auth.ts:23:13)\n    at Layer.handle [as handle_request] (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at trim_prefix (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:328:13)\n    at C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:286:9\n    at router.process_params (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:346:12)\n    at next (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:280:10)\n    at router.handle (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:175:3)\n    at router (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:47:12)\n    at Layer.handle [as handle_request] (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at trim_prefix (C:\\Users\\hp\\Documents\\cons\\Construction-Management-Project-main\\backend\\node_modules\\express\\lib\\router\\index.js:328:13)","statusCode":401,"timestamp":"2025-12-10 12:59:54"}
+{"level":"info","message":"POST /api/auth/login","timestamp":"2025-12-10 13:00:44"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 13:00:44"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 13:00:45"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 13:00:45"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 13:00:46"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 13:01:01"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 13:01:03"}
+{"level":"info","message":"GET /api/materials","timestamp":"2025-12-10 13:01:24"}
+{"level":"info","message":"GET /api/materials/analytics","timestamp":"2025-12-10 13:01:24"}
+{"level":"info","message":"GET /api/warehouse","timestamp":"2025-12-10 13:01:24"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 13:01:24"}
+{"level":"info","message":"GET /api/materials","timestamp":"2025-12-10 13:01:24"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 13:01:25"}
+{"level":"info","message":"GET /api/warehouse","timestamp":"2025-12-10 13:01:25"}
+{"level":"info","message":"GET /api/materials/analytics","timestamp":"2025-12-10 13:01:25"}
+{"level":"info","message":"GET /api/roles","timestamp":"2025-12-10 13:02:12"}
+{"level":"info","message":"GET /api/permissions/by-module","timestamp":"2025-12-10 13:02:12"}
+{"level":"info","message":"GET /api/permissions/by-module","timestamp":"2025-12-10 13:02:13"}
+{"level":"info","message":"GET /api/roles","timestamp":"2025-12-10 13:02:13"}
+{"level":"info","message":"GET /api/users","timestamp":"2025-12-10 13:02:17"}
+{"level":"info","message":"GET /api/roles","timestamp":"2025-12-10 13:02:17"}
+{"level":"info","message":"GET /api/roles","timestamp":"2025-12-10 13:02:18"}
+{"level":"info","message":"GET /api/users","timestamp":"2025-12-10 13:02:18"}
+{"level":"info","message":"GET /api/users","timestamp":"2025-12-10 13:02:18"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-10 13:02:20"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-10 13:02:20"}
+{"level":"info","message":"GET /api/materials/vendors","timestamp":"2025-12-10 13:02:21"}
+{"level":"info","message":"GET /api/materials/vendors","timestamp":"2025-12-10 13:02:21"}
+{"level":"info","message":"GET /api/warehouse","timestamp":"2025-12-10 13:02:22"}
+{"level":"info","message":"GET /api/warehouse","timestamp":"2025-12-10 13:02:23"}
+{"level":"info","message":"GET /api/equipment","timestamp":"2025-12-10 13:02:23"}
+{"level":"info","message":"GET /api/equipment","timestamp":"2025-12-10 13:02:24"}
+{"level":"info","message":"GET /api/labour/employees","timestamp":"2025-12-10 13:02:24"}
+{"level":"info","message":"GET /api/labour/employees","timestamp":"2025-12-10 13:02:24"}
+{"level":"info","message":"GET /api/warehouse","timestamp":"2025-12-10 13:02:25"}
+{"level":"info","message":"GET /api/materials","timestamp":"2025-12-10 13:02:25"}
+{"level":"info","message":"GET /api/materials/analytics","timestamp":"2025-12-10 13:02:25"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 13:02:25"}
+{"level":"info","message":"GET /api/materials","timestamp":"2025-12-10 13:02:26"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 13:02:26"}
+{"level":"info","message":"GET /api/warehouse","timestamp":"2025-12-10 13:02:26"}
+{"level":"info","message":"GET /api/materials/analytics","timestamp":"2025-12-10 13:02:26"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 13:02:27"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 13:02:27"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 13:02:28"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 13:02:28"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 13:02:28"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 13:02:29"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 13:09:31"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 13:09:32"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 13:09:32"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 13:09:32"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 13:09:32"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 13:09:33"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 13:09:33"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 13:09:33"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 13:09:38"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 13:09:39"}
+{"level":"info","message":"GET /api/labour/employees","timestamp":"2025-12-10 13:09:41"}
+{"level":"info","message":"GET /api/labour/employees","timestamp":"2025-12-10 13:09:41"}
+{"level":"info","message":"GET /api/equipment","timestamp":"2025-12-10 13:09:45"}
+{"level":"info","message":"GET /api/equipment","timestamp":"2025-12-10 13:09:45"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-10 13:14:23"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-12-10 13:14:23"}
+{"level":"info","message":"GET /api/equipment","timestamp":"2025-12-10 13:15:02"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 13:15:02"}
+{"level":"info","message":"GET /api/equipment","timestamp":"2025-12-10 13:15:03"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 13:15:03"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 13:15:03"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 13:15:04"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 13:15:12"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 13:15:12"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 13:15:12"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-10 13:15:13"}

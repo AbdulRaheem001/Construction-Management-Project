@@ -94,7 +94,7 @@ const inventoryAdjustmentSchema = new Schema<IInventoryAdjustment>(
   }
 );
 
-inventoryAdjustmentSchema.index({ adjustmentNumber: 1 });
+// Note: adjustmentNumber already has unique: true, which creates an index
 inventoryAdjustmentSchema.index({ material: 1 });
 inventoryAdjustmentSchema.index({ location: 1 });
 inventoryAdjustmentSchema.index({ status: 1 });

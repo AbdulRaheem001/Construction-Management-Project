@@ -132,7 +132,7 @@ const purchaseOrderSchema = new Schema<IPurchaseOrder>(
   }
 );
 
-purchaseOrderSchema.index({ poNumber: 1 });
+// Note: poNumber already has unique: true, which creates an index
 purchaseOrderSchema.index({ project: 1 });
 purchaseOrderSchema.index({ status: 1 });
 

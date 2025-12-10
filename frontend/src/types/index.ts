@@ -48,6 +48,7 @@ export interface Material {
   currentStock: number;
   reorderPoint: number;
   supplier?: string;
+  images?: string[];
   isActive: boolean;
   totalValue?: number;
 }
@@ -188,6 +189,7 @@ export interface Expense {
   paymentDate?: string;
   vendor?: string;
   invoiceNumber?: string;
+  images?: string[];
   notes?: string;
   createdBy: User;
   approvedBy?: User;

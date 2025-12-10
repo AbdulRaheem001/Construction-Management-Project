@@ -88,7 +88,7 @@ const vendorSchema = new Schema<IVendor>(
   }
 );
 
-vendorSchema.index({ vendorCode: 1 });
+// Note: vendorCode already has unique: true, which creates an index
 vendorSchema.index({ name: 1 });
 
 export default mongoose.model<IVendor>('Vendor', vendorSchema);

@@ -9,6 +9,7 @@ import Expense from '../models/Expense.model';
 import { AuthRequest } from '../middleware/auth';
 import { AppError } from '../middleware/errorHandler';
 import { logger } from '../utils/logger';
+import { uploadMultipleImagesToCloudinary } from '../utils/cloudinary';
 
 // ===== MATERIALS =====
 
@@ -21,6 +22,18 @@ export const createMaterial = async (
     const materialData = { ...req.body };
     const { warehouse, initialStock } = req.body;
     
+    // Handle image uploads to Cloudinary
+    let imageUrls: string[] = [];
+    if (req.body.images && Array.isArray(req.body.images) && req.body.images.length > 0) {
+      try {
+        imageUrls = await uploadMultipleImagesToCloudinary(req.body.images, 'materials');
+        logger.info(`Uploaded ${imageUrls.length} images to Cloudinary for material ${materialData.sku}`);
+      } catch (error) {
+        logger.error('Error uploading images to Cloudinary:', error);
+        logger.warn('Continuing material creation without images');
+      }
+    }
+    
     // If initialStock is provided, set currentStock and avgUnitCost
     if (initialStock && initialStock > 0) {
       materialData.currentStock = initialStock;
@@ -29,6 +42,11 @@ export const createMaterial = async (
       // If no initial stock, set avgUnitCost to costPerUnit for future use
       materialData.avgUnitCost = materialData.costPerUnit || 0;
       materialData.currentStock = 0;
+    }
+    
+    // Add image URLs
+    if (imageUrls.length > 0) {
+      materialData.images = imageUrls;
     }
     
     // Remove warehouse from material data (not a material field)

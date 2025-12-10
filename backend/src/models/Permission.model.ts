@@ -43,7 +43,7 @@ const permissionSchema = new Schema<IPermission>(
   }
 );
 
-permissionSchema.index({ code: 1 });
+// Note: code already has unique: true, which creates an index
 permissionSchema.index({ module: 1 });
 
 export default mongoose.model<IPermission>('Permission', permissionSchema);

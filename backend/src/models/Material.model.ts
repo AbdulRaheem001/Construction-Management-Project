@@ -11,6 +11,7 @@ export interface IMaterial extends Document {
   reorderPoint: number;
   supplier?: string;
   category?: string;
+  images?: string[];
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -68,6 +69,10 @@ const materialSchema = new Schema<IMaterial>(
       enum: ['Cement', 'Steel', 'Bricks', 'Sand', 'Aggregate', 'Paint', 'Electrical', 'Plumbing', 'Hardware', 'Other'],
       default: 'Other',
     },
+    images: {
+      type: [String],
+      default: [],
+    },
     isActive: {
       type: Boolean,
       default: true,
@@ -78,7 +83,7 @@ const materialSchema = new Schema<IMaterial>(
   }
 );
 
-materialSchema.index({ sku: 1 });
+// Note: sku already has unique: true, which creates an index
 materialSchema.index({ name: 1 });
 materialSchema.index({ category: 1 });
 
