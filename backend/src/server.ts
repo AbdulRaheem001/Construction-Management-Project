@@ -34,6 +34,8 @@ const allowedOrigins = [
   'http://localhost:5173',
   'http://127.0.0.1:5173',
   'http://34.79.228.82:5173',
+  'https://34.79.228.82:5173',
+  'https://internationaltradersregd.duckdns.org',
   process.env.CORS_ORIGIN
 ].filter(Boolean);
 
