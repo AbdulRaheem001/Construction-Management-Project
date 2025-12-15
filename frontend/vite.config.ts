@@ -126,4 +126,10 @@ export default defineConfig({
       }
     })
   ],
+  server: {
+    host: true,
+    allowedHosts: [
+      'internationaltradersregd.duckdns.org'
+    ]
+  }
 })
