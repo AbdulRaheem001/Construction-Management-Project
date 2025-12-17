@@ -255,7 +255,7 @@ function MaterialsList() {
         {/* Search */}
         <div className="p-4">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} className="sm:w-5 sm:h-5" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 sm:w-5 sm:h-5" size={18} />
             <input
               type="text"
               placeholder={`Search ${tab}...`}

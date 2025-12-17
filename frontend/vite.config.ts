@@ -117,7 +117,7 @@ export default defineConfig({
             }
           }
         ],
-        navigateFallback: undefined,
+        navigateFallback: '/index.html',
         navigateFallbackDenylist: [/^\/api/]
       },
       devOptions: {
