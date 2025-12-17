@@ -149,27 +149,27 @@ function MaterialsList() {
   const canCreate = user && hasPermission(user.role, 'createMaterial');
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Material Management</h1>
-          <p className="text-gray-600 mt-1">Track materials, purchase orders, and inventory</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Material Management</h1>
+          <p className="text-sm sm:text-base text-gray-600 mt-1">Track materials, purchase orders, and inventory</p>
         </div>
         <PermissionGuard permission="createMaterial" showMessage>
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
             <button 
               onClick={() => setShowMaterialModal(true)}
-              className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition"
+              className="flex items-center justify-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition text-sm sm:text-base w-full sm:w-auto"
             >
-              <Plus size={20} />
+              <Plus size={18} className="sm:w-5 sm:h-5" />
               New Material
             </button>
             <button 
               onClick={() => setShowPOModal(true)}
-              className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
+              className="flex items-center justify-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition text-sm sm:text-base w-full sm:w-auto"
             >
-              <Plus size={20} />
+              <Plus size={18} className="sm:w-5 sm:h-5" />
               New PO
             </button>
           </div>
@@ -178,19 +178,19 @@ function MaterialsList() {
 
       {/* Summary Cards */}
       {analytics && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div className="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6">
             <div className="flex items-center gap-3 mb-2">
               <div className="p-2 bg-indigo-100 rounded-lg">
-                <Package size={24} className="text-indigo-600" />
+                <Package size={18} className="sm:w-6 sm:h-6 text-indigo-600" />
               </div>
-              <span className="text-sm text-gray-600">Total Inventory Value</span>
+              <span className="text-xs sm:text-sm text-gray-600">Total Inventory Value</span>
             </div>
-            <p className="text-2xl font-bold text-gray-900">{formatCurrency(analytics.totalInventoryValue)}</p>
+            <p className="text-xl sm:text-2xl font-bold text-gray-900">{formatCurrency(analytics.totalInventoryValue)}</p>
             <p className="text-xs text-gray-500 mt-1">{analytics.totalMaterials} materials</p>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6">
             <div className="flex items-center gap-3 mb-2">
               <div className="p-2 bg-red-100 rounded-lg">
                 <DollarSign size={24} className="text-red-600" />
@@ -201,32 +201,32 @@ function MaterialsList() {
             <p className="text-xs text-gray-500 mt-1">Pending to vendors</p>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6">
             <div className="flex items-center gap-3 mb-2">
               <div className="p-2 bg-green-100 rounded-lg">
-                <TrendingUp size={24} className="text-green-600" />
+                <TrendingUp size={18} className="sm:w-6 sm:h-6 text-green-600" />
               </div>
-              <span className="text-sm text-gray-600">Monthly Spend</span>
+              <span className="text-xs sm:text-sm text-gray-600">Monthly Spend</span>
             </div>
-            <p className="text-2xl font-bold text-gray-900">{formatCurrency(analytics.monthlySpend)}</p>
+            <p className="text-xl sm:text-2xl font-bold text-gray-900">{formatCurrency(analytics.monthlySpend)}</p>
             <p className="text-xs text-gray-500 mt-1">Current month</p>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6">
             <div className="flex items-center gap-3 mb-2">
               <div className="p-2 bg-yellow-100 rounded-lg">
-                <AlertTriangle size={24} className="text-yellow-600" />
+                <AlertTriangle size={18} className="sm:w-6 sm:h-6 text-yellow-600" />
               </div>
-              <span className="text-sm text-gray-600">Low Stock Items</span>
+              <span className="text-xs sm:text-sm text-gray-600">Low Stock Items</span>
             </div>
-            <p className="text-2xl font-bold text-yellow-600">{analytics.lowStockCount}</p>
+            <p className="text-xl sm:text-2xl font-bold text-yellow-600">{analytics.lowStockCount}</p>
             <p className="text-xs text-gray-500 mt-1">Needs reordering</p>
           </div>
         </div>
       )}
 
       {/* Tabs */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+      <div className="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-200">
         <div className="border-b border-gray-200">
           <nav className="flex gap-4 px-6">
             <button
@@ -255,13 +255,13 @@ function MaterialsList() {
         {/* Search */}
         <div className="p-4">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} className="sm:w-5 sm:h-5" />
             <input
               type="text"
               placeholder={`Search ${tab}...`}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+              className="w-full pl-10 pr-4 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none text-sm sm:text-base"
             />
           </div>
         </div>
@@ -273,7 +273,7 @@ function MaterialsList() {
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
         </div>
       ) : tab === 'materials' ? (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div className="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-200 overflow-hidden">
           <table className="w-full">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
@@ -413,7 +413,7 @@ function MaterialsList() {
                                   No stock allocated to any location yet
                                 </div>
                               ) : (
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                                   {locations.map((inv: any) => {
                                     const location = inv.location;
                                     const locationName = inv.locationType === 'Project' 
@@ -486,7 +486,7 @@ function MaterialsList() {
           </table>
         </div>
       ) : (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div className="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-200 overflow-hidden">
           <table className="w-full">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>

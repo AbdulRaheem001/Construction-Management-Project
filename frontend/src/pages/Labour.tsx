@@ -48,19 +48,19 @@ function LabourList() {
   const canApprove = user && hasPermission(user.role, 'approveTimesheet');
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Labour Management</h1>
-          <p className="text-gray-600 mt-1">Manage employees, timesheets, and payroll</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Labour Management</h1>
+          <p className="text-sm sm:text-base text-gray-600 mt-1">Manage employees, timesheets, and payroll</p>
         </div>
         <PermissionGuard permission="createEmployee" showMessage>
           <button 
             onClick={() => toast(`${tab === 'employees' ? 'Add Employee' : 'Create Timesheet'} form coming soon!`, { icon: '🚧' })}
-            className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition"
+            className="flex items-center justify-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition text-sm sm:text-base w-full sm:w-auto"
           >
-            <Plus size={20} />
+            <Plus size={18} className="sm:w-5 sm:h-5" />
             {tab === 'employees' ? 'Add Employee' : 'New Timesheet'}
           </button>
         </PermissionGuard>

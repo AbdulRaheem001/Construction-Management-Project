@@ -125,33 +125,33 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-        <p className="text-gray-600 mt-1">Welcome to your construction management overview</p>
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Dashboard</h1>
+        <p className="text-sm sm:text-base text-gray-600 mt-1">Welcome to your construction management overview</p>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Stats Grid - Mobile: 1 column, Tablet: 2 columns, Desktop: 4 columns */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
         {statCards.map((stat, index) => {
           const Icon = stat.icon;
           return (
-            <div key={index} className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+            <div key={index} className="bg-white rounded-lg sm:rounded-xl shadow-sm p-4 sm:p-6 border border-gray-200">
               <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600 mb-1">{stat.label}</p>
-                  <p className="text-2xl font-bold text-gray-900">
+                <div className="flex-1">
+                  <p className="text-xs sm:text-sm text-gray-600 mb-1">{stat.label}</p>
+                  <p className="text-xl sm:text-2xl font-bold text-gray-900">
                     {typeof stat.value === 'number' ? stat.value : stat.value}
-                    {stat.total && <span className="text-sm text-gray-500">/{stat.total}</span>}
+                    {stat.total && <span className="text-xs sm:text-sm text-gray-500">/{stat.total}</span>}
                   </p>
                   {stat.change && (
-                    <p className={`text-sm mt-2 ${stat.change.startsWith('+') ? 'text-green-600' : 'text-red-600'}`}>
+                    <p className={`text-xs sm:text-sm mt-1 sm:mt-2 ${stat.change.startsWith('+') ? 'text-green-600' : 'text-red-600'}`}>
                       {stat.change} from last month
                     </p>
                   )}
                 </div>
-                <div className={`${stat.color} w-12 h-12 rounded-lg flex items-center justify-center`}>
-                  <Icon className="w-6 h-6 text-white" />
+                <div className={`${stat.color} w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0 ml-2`}>
+                  <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                 </div>
               </div>
             </div>
@@ -159,26 +159,26 @@ export default function Dashboard() {
         })}
       </div>
 
-      {/* Recent Projects */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">Active Projects</h2>
+      {/* Recent Projects - Stack on mobile */}
+      <div className="grid grid-cols-1 gap-4 sm:gap-6">
+        <div className="bg-white rounded-lg sm:rounded-xl shadow-sm p-4 sm:p-6 border border-gray-200">
+          <h2 className="text-base sm:text-lg font-bold text-gray-900 mb-3 sm:mb-4">Active Projects</h2>
           
           {recentProjects.length === 0 ? (
-            <p className="text-gray-500 text-center py-8">No active projects</p>
+            <p className="text-gray-500 text-center py-6 sm:py-8 text-sm sm:text-base">No active projects</p>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {recentProjects.map((project) => (
-                <div key={project._id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                  <div>
-                    <h3 className="font-medium text-gray-900">{project.projectName}</h3>
-                    <p className="text-sm text-gray-600">{project.projectCode}</p>
+                <div key={project._id} className="flex items-center justify-between p-3 sm:p-4 bg-gray-50 rounded-lg">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-medium text-gray-900 text-sm sm:text-base truncate">{project.projectName}</h3>
+                    <p className="text-xs sm:text-sm text-gray-600">{project.projectCode}</p>
                   </div>
-                  <div className="text-right">
-                    <p className="text-sm font-medium text-gray-900">
+                  <div className="text-right ml-2 flex-shrink-0">
+                    <p className="text-xs sm:text-sm font-medium text-gray-900">
                       {formatCurrency(project.initialBudget)}
                     </p>
-                    <span className={`inline-block px-2 py-1 text-xs rounded-full ${
+                    <span className={`inline-block px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs rounded-full ${
                       project.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
                     }`}>
                       {project.status}
@@ -191,10 +191,10 @@ export default function Dashboard() {
         </div>
 
         {/* Quick Actions */}
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">Quick Actions</h2>
+        <div className="bg-white rounded-lg sm:rounded-xl shadow-sm p-4 sm:p-6 border border-gray-200">
+          <h2 className="text-base sm:text-lg font-bold text-gray-900 mb-3 sm:mb-4">Quick Actions</h2>
           
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4">
             <QuickAction icon={Building2} label="New Project" to="/projects" />
             <QuickAction icon={Package} label="Materials" to="/materials" />
             <QuickAction icon={Users} label="Labour" to="/labour" />
@@ -222,10 +222,10 @@ function QuickAction({ icon: Icon, label, to }: QuickActionProps) {
   return (
     <button
       onClick={handleClick}
-      className="flex flex-col items-center justify-center p-6 bg-gradient-to-br from-indigo-50 to-blue-50 rounded-lg hover:shadow-md transition border border-indigo-100 cursor-pointer"
+      className="flex flex-col items-center justify-center p-4 sm:p-6 bg-gradient-to-br from-indigo-50 to-blue-50 rounded-lg hover:shadow-md transition border border-indigo-100 cursor-pointer"
     >
-      <Icon className="w-8 h-8 text-indigo-600 mb-2" />
-      <span className="text-sm font-medium text-gray-900">{label}</span>
+      <Icon className="w-6 h-6 sm:w-8 sm:h-8 text-indigo-600 mb-1 sm:mb-2" />
+      <span className="text-xs sm:text-sm font-medium text-gray-900">{label}</span>
     </button>
   );
 }

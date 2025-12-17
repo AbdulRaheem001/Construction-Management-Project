@@ -95,36 +95,36 @@ function ExpensesList() {
   }, 0);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Expense Management</h1>
-          <p className="text-gray-600 mt-1">Track expenses, payments, and financial reports</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Expense Management</h1>
+          <p className="text-sm sm:text-base text-gray-600 mt-1">Track expenses, payments, and financial reports</p>
         </div>
         <PermissionGuard permission="createExpense" showMessage>
           <button 
             onClick={() => setShowExpenseModal(true)}
-            className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition"
+            className="flex items-center justify-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition text-sm sm:text-base w-full sm:w-auto"
           >
-            <Plus size={20} />
+            <Plus size={18} className="sm:w-5 sm:h-5" />
             New Expense
           </button>
         </PermissionGuard>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
         <button
           onClick={() => setActiveStatCard('all')}
-          className={`bg-white rounded-xl shadow-sm p-6 border-2 transition-all hover:shadow-md ${
+          className={`bg-white rounded-lg sm:rounded-xl shadow-sm p-4 sm:p-6 border-2 transition-all hover:shadow-md ${
             activeStatCard === 'all' ? 'border-blue-500 ring-2 ring-blue-200' : 'border-gray-200'
           }`}
         >
           <div className="flex items-center justify-between">
             <div className="text-left">
-              <p className="text-sm text-gray-600 mb-1">Total Expenses</p>
-              <p className="text-2xl font-bold text-gray-900">{formatCurrency(totalExpenses)}</p>
+              <p className="text-xs sm:text-sm text-gray-600 mb-1">Total Expenses</p>
+              <p className="text-xl sm:text-2xl font-bold text-gray-900">{formatCurrency(totalExpenses)}</p>
               {activeStatCard === 'all' && (
                 <p className="text-xs text-blue-600 mt-1">Showing all expenses</p>
               )}
@@ -139,14 +139,14 @@ function ExpensesList() {
 
         <button
           onClick={() => setActiveStatCard('paid')}
-          className={`bg-white rounded-xl shadow-sm p-6 border-2 transition-all hover:shadow-md ${
+          className={`bg-white rounded-lg sm:rounded-xl shadow-sm p-4 sm:p-6 border-2 transition-all hover:shadow-md ${
             activeStatCard === 'paid' ? 'border-green-500 ring-2 ring-green-200' : 'border-gray-200'
           }`}
         >
           <div className="flex items-center justify-between">
             <div className="text-left">
-              <p className="text-sm text-gray-600 mb-1">Paid</p>
-              <p className="text-2xl font-bold text-green-600">{formatCurrency(paidExpenses)}</p>
+              <p className="text-xs sm:text-sm text-gray-600 mb-1">Paid</p>
+              <p className="text-xl sm:text-2xl font-bold text-green-600">{formatCurrency(paidExpenses)}</p>
               {activeStatCard === 'paid' && (
                 <p className="text-xs text-green-600 mt-1">Showing paid expenses</p>
               )}
@@ -161,14 +161,14 @@ function ExpensesList() {
 
         <button
           onClick={() => setActiveStatCard('pending')}
-          className={`bg-white rounded-xl shadow-sm p-6 border-2 transition-all hover:shadow-md ${
+          className={`bg-white rounded-lg sm:rounded-xl shadow-sm p-4 sm:p-6 border-2 transition-all hover:shadow-md ${
             activeStatCard === 'pending' ? 'border-orange-500 ring-2 ring-orange-200' : 'border-gray-200'
           }`}
         >
           <div className="flex items-center justify-between">
             <div className="text-left">
-              <p className="text-sm text-gray-600 mb-1">Pending</p>
-              <p className="text-2xl font-bold text-orange-600">{formatCurrency(pendingExpenses)}</p>
+              <p className="text-xs sm:text-sm text-gray-600 mb-1">Pending</p>
+              <p className="text-xl sm:text-2xl font-bold text-orange-600">{formatCurrency(pendingExpenses)}</p>
               {activeStatCard === 'pending' && (
                 <p className="text-xs text-orange-600 mt-1">Showing pending & partial</p>
               )}
@@ -183,22 +183,22 @@ function ExpensesList() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-200">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="bg-white rounded-lg sm:rounded-xl shadow-sm p-4 border border-gray-200">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
             <input
               type="text"
               placeholder="Search expenses..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+              className="w-full pl-10 pr-4 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none text-sm sm:text-base"
             />
           </div>
           <select
             value={filterCategory}
             onChange={(e) => setFilterCategory(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+            className="px-4 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none text-sm sm:text-base"
           >
             <option value="">All Categories</option>
             <option value="Material">Material</option>
@@ -210,7 +210,7 @@ function ExpensesList() {
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+            className="px-4 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none text-sm sm:text-base"
           >
             <option value="">All Status</option>
             <option value="Pending">Pending</option>
@@ -228,7 +228,7 @@ function ExpensesList() {
       ) : (
         <div className="space-y-6">
           {filteredExpenses.length === 0 ? (
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center text-gray-500">
+            <div className="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-200 p-12 text-center text-gray-500">
               No expenses found
             </div>
           ) : (
@@ -273,7 +273,7 @@ function ExpensesList() {
                 }, 0);
 
                 return (
-                  <div key={projectId} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                  <div key={projectId} className="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                     {/* Project Header */}
                     <div className="bg-gradient-to-r from-indigo-50 to-blue-50 px-6 py-4 border-b border-gray-200">
                       <div className="flex items-center justify-between">
@@ -304,13 +304,13 @@ function ExpensesList() {
                     <table className="w-full">
                       <thead className="bg-gray-50 border-b border-gray-200">
                         <tr>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Expense #</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Description</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Amount</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                          <th className="px-6 py-3 text-left text-xs sm:text-xs font-medium text-gray-500 uppercase">Expense #</th>
+                          <th className="px-6 py-3 text-left text-xs sm:text-xs font-medium text-gray-500 uppercase">Description</th>
+                          <th className="px-6 py-3 text-left text-xs sm:text-xs font-medium text-gray-500 uppercase">Type</th>
+                          <th className="px-6 py-3 text-left text-xs sm:text-xs font-medium text-gray-500 uppercase">Amount</th>
+                          <th className="px-6 py-3 text-left text-xs sm:text-xs font-medium text-gray-500 uppercase">Date</th>
+                          <th className="px-6 py-3 text-left text-xs sm:text-xs font-medium text-gray-500 uppercase">Status</th>
+                          <th className="px-6 py-3 text-left text-xs sm:text-xs font-medium text-gray-500 uppercase">Actions</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-gray-200">
