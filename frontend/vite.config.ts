@@ -117,11 +117,11 @@ export default defineConfig({
             }
           }
         ],
-        navigateFallback: '/offline.html',
+        navigateFallback: undefined,
         navigateFallbackDenylist: [/^\/api/]
       },
       devOptions: {
-        enabled: true,
+        enabled: false,
         type: 'module'
       }
     })

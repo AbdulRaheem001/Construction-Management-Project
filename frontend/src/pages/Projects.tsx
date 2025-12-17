@@ -49,17 +49,17 @@ function ProjectsList() {
   });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Projects</h1>
-          <p className="text-gray-600 mt-1">Manage construction projects and track budgets</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Projects</h1>
+          <p className="text-sm sm:text-base text-gray-600 mt-1">Manage construction projects and track budgets</p>
         </div>
         <PermissionGuard permission="createProject" showMessage>
           <button 
             onClick={() => setShowCreateModal(true)}
-            className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition"
+            className="flex items-center justify-center gap-2 bg-indigo-600 text-white px-4 py-2.5 rounded-lg hover:bg-indigo-700 transition text-sm sm:text-base w-full sm:w-auto"
           >
             <Plus size={20} />
             New Project
@@ -68,24 +68,24 @@ function ProjectsList() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-200">
-        <div className="flex flex-col md:flex-row gap-4">
+      <div className="bg-white rounded-lg sm:rounded-xl shadow-sm p-3 sm:p-4 border border-gray-200">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
             <input
               type="text"
               placeholder="Search projects..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+              className="w-full pl-10 pr-4 py-2 sm:py-2.5 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
             />
           </div>
           <div className="flex items-center gap-2">
-            <Filter size={20} className="text-gray-400" />
+            <Filter size={18} className="text-gray-400" />
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+              className="flex-1 sm:flex-none px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
             >
               <option value="">All Status</option>
               <option value="Planning">Planning</option>
@@ -104,38 +104,38 @@ function ProjectsList() {
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
         </div>
       ) : filteredProjects.length === 0 ? (
-        <div className="bg-white rounded-xl shadow-sm p-12 text-center border border-gray-200">
-          <p className="text-gray-500">No projects found</p>
+        <div className="bg-white rounded-lg sm:rounded-xl shadow-sm p-8 sm:p-12 text-center border border-gray-200">
+          <p className="text-gray-500 text-sm sm:text-base">No projects found</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {filteredProjects.map((project) => (
-            <div key={project._id} className="bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition overflow-hidden">
-              <div className="p-6">
-                <div className="flex items-start justify-between mb-4">
-                  <div>
-                    <h3 className="font-bold text-lg text-gray-900">{project.projectName}</h3>
-                    <p className="text-sm text-gray-600">{project.projectCode}</p>
+            <div key={project._id} className="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition overflow-hidden">
+              <div className="p-4 sm:p-6">
+                <div className="flex items-start justify-between mb-3 sm:mb-4">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-bold text-base sm:text-lg text-gray-900 truncate">{project.projectName}</h3>
+                    <p className="text-xs sm:text-sm text-gray-600">{project.projectCode}</p>
                   </div>
-                  <span className={`px-3 py-1 text-xs font-medium rounded-full ${getStatusColor(project.status)}`}>
+                  <span className={`px-2 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-xs font-medium rounded-full flex-shrink-0 ml-2 ${getStatusColor(project.status)}`}>
                     {project.status}
                   </span>
                 </div>
 
-                <div className="space-y-2 mb-4">
-                  <div className="flex justify-between text-sm">
+                <div className="space-y-1.5 sm:space-y-2 mb-3 sm:mb-4">
+                  <div className="flex justify-between text-xs sm:text-sm">
                     <span className="text-gray-600">Client:</span>
-                    <span className="font-medium text-gray-900">{project.client}</span>
+                    <span className="font-medium text-gray-900 truncate ml-2">{project.client}</span>
                   </div>
-                  <div className="flex justify-between text-sm">
+                  <div className="flex justify-between text-xs sm:text-sm">
                     <span className="text-gray-600">Location:</span>
-                    <span className="font-medium text-gray-900">{project.location}</span>
+                    <span className="font-medium text-gray-900 truncate ml-2">{project.location}</span>
                   </div>
-                  <div className="flex justify-between text-sm">
+                  <div className="flex justify-between text-xs sm:text-sm">
                     <span className="text-gray-600">Start Date:</span>
                     <span className="font-medium text-gray-900">{formatDate(project.startDate)}</span>
                   </div>
-                  <div className="flex justify-between text-sm">
+                  <div className="flex justify-between text-xs sm:text-sm">
                     <span className="text-gray-600">Budget:</span>
                     <span className="font-medium text-gray-900">{formatCurrency(project.initialBudget)}</span>
                   </div>
@@ -143,14 +143,14 @@ function ProjectsList() {
 
                 {/* Budget Progress */}
                 {project.budgetUtilization !== undefined && (
-                  <div className="mb-4">
-                    <div className="flex justify-between text-xs mb-1">
+                  <div className="mb-3 sm:mb-4">
+                    <div className="flex justify-between text-[10px] sm:text-xs mb-1">
                       <span className="text-gray-600">Budget Used</span>
                       <span className="font-medium text-gray-900">{project.budgetUtilization}%</span>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="w-full bg-gray-200 rounded-full h-1.5 sm:h-2">
                       <div
-                        className={`h-2 rounded-full ${
+                        className={`h-1.5 sm:h-2 rounded-full ${
                           project.budgetUtilization > 90 ? 'bg-red-500' :
                           project.budgetUtilization > 75 ? 'bg-yellow-500' : 'bg-green-500'
                         }`}
@@ -162,7 +162,7 @@ function ProjectsList() {
 
                 <button 
                   onClick={() => navigate(`/projects/${project._id}`)}
-                  className="w-full bg-indigo-50 text-indigo-600 py-2 rounded-lg hover:bg-indigo-100 transition font-medium text-sm"
+                  className="w-full bg-indigo-50 text-indigo-600 py-2 sm:py-2.5 rounded-lg hover:bg-indigo-100 transition font-medium text-xs sm:text-sm"
                 >
                   View Details
                 </button>
@@ -279,105 +279,108 @@ function ProjectDetails() {
   const budgetPercentage = parseFloat(budgetData?.budgetUtilization || '0');
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
-      <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
         <button
           onClick={() => navigate('/projects')}
-          className="p-2 hover:bg-gray-100 rounded-lg transition"
+          className="p-2 hover:bg-gray-100 rounded-lg transition self-start"
         >
-          <ArrowLeft size={24} />
+          <ArrowLeft size={20} className="sm:w-6 sm:h-6" />
         </button>
-        <div className="flex-1">
-          <h1 className="text-3xl font-bold text-gray-900">{project.projectName}</h1>
-          <p className="text-gray-600 mt-1">{project.projectCode}</p>
+        <div className="flex-1 min-w-0">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 truncate">{project.projectName}</h1>
+          <p className="text-sm sm:text-base text-gray-600 mt-1">{project.projectCode}</p>
         </div>
-        <span className={`px-4 py-2 text-sm font-medium rounded-full ${getStatusColor(project.status)}`}>
-          {project.status}
-        </span>
-        {isAdministrator && (
-          <button
-            onClick={() => setShowEditModal(true)}
-            className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition"
-          >
-            <Edit size={20} />
-            Edit Project
-          </button>
-        )}
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+          <span className={`px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium rounded-full ${getStatusColor(project.status)}`}>
+            {project.status}
+          </span>
+          {isAdministrator && (
+            <button
+              onClick={() => setShowEditModal(true)}
+              className="flex items-center gap-2 bg-indigo-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg hover:bg-indigo-700 transition text-sm"
+            >
+              <Edit size={16} className="sm:w-5 sm:h-5" />
+              <span className="hidden sm:inline">Edit Project</span>
+              <span className="sm:hidden">Edit</span>
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Main Info Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="p-2 bg-blue-100 rounded-lg">
-              <UserIcon size={20} className="text-blue-600" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
+        <div className="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6">
+          <div className="flex items-center gap-2 sm:gap-3 mb-2">
+            <div className="p-1.5 sm:p-2 bg-blue-100 rounded-lg">
+              <UserIcon size={16} className="text-blue-600 sm:w-5 sm:h-5" />
             </div>
-            <span className="text-sm text-gray-600">Client</span>
+            <span className="text-xs sm:text-sm text-gray-600">Client</span>
           </div>
-          <p className="text-xl font-bold text-gray-900">{project.client}</p>
+          <p className="text-base sm:text-xl font-bold text-gray-900 truncate">{project.client}</p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="p-2 bg-green-100 rounded-lg">
-              <MapPin size={20} className="text-green-600" />
+        <div className="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6">
+          <div className="flex items-center gap-2 sm:gap-3 mb-2">
+            <div className="p-1.5 sm:p-2 bg-green-100 rounded-lg">
+              <MapPin size={16} className="text-green-600 sm:w-5 sm:h-5" />
             </div>
-            <span className="text-sm text-gray-600">Location</span>
+            <span className="text-xs sm:text-sm text-gray-600">Location</span>
           </div>
-          <p className="text-xl font-bold text-gray-900">{project.location}</p>
+          <p className="text-base sm:text-xl font-bold text-gray-900 truncate">{project.location}</p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="p-2 bg-purple-100 rounded-lg">
-              <Calendar size={20} className="text-purple-600" />
+        <div className="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6">
+          <div className="flex items-center gap-2 sm:gap-3 mb-2">
+            <div className="p-1.5 sm:p-2 bg-purple-100 rounded-lg">
+              <Calendar size={16} className="text-purple-600 sm:w-5 sm:h-5" />
             </div>
-            <span className="text-sm text-gray-600">Start Date</span>
+            <span className="text-xs sm:text-sm text-gray-600">Start Date</span>
           </div>
-          <p className="text-xl font-bold text-gray-900">{formatDate(project.startDate)}</p>
+          <p className="text-base sm:text-xl font-bold text-gray-900">{formatDate(project.startDate)}</p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="p-2 bg-orange-100 rounded-lg">
-              <Clock size={20} className="text-orange-600" />
+        <div className="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6">
+          <div className="flex items-center gap-2 sm:gap-3 mb-2">
+            <div className="p-1.5 sm:p-2 bg-orange-100 rounded-lg">
+              <Clock size={16} className="text-orange-600 sm:w-5 sm:h-5" />
             </div>
-            <span className="text-sm text-gray-600">Target Completion</span>
+            <span className="text-xs sm:text-sm text-gray-600">Target Completion</span>
           </div>
-          <p className="text-xl font-bold text-gray-900">
+          <p className="text-base sm:text-xl font-bold text-gray-900">
             {project.targetCompletionDate ? formatDate(project.targetCompletionDate) : 'Not set'}
           </p>
         </div>
       </div>
 
       {/* Budget Overview */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <h2 className="text-xl font-bold text-gray-900 mb-6">Budget Overview</h2>
+      <div className="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6">
+        <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-6">Budget Overview</h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-4 sm:mb-6">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <DollarSign size={18} className="text-gray-600" />
-              <span className="text-sm text-gray-600">Initial Budget</span>
+              <DollarSign size={16} className="text-gray-600 sm:w-[18px] sm:h-[18px]" />
+              <span className="text-xs sm:text-sm text-gray-600">Initial Budget</span>
             </div>
-            <p className="text-2xl font-bold text-gray-900">{formatCurrency(project.initialBudget)}</p>
+            <p className="text-xl sm:text-2xl font-bold text-gray-900">{formatCurrency(project.initialBudget)}</p>
           </div>
 
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <TrendingUp size={18} className="text-gray-600" />
-              <span className="text-sm text-gray-600">Budget Used</span>
+              <TrendingUp size={16} className="text-gray-600 sm:w-[18px] sm:h-[18px]" />
+              <span className="text-xs sm:text-sm text-gray-600">Budget Used</span>
             </div>
-            <p className="text-2xl font-bold text-red-600">{formatCurrency(budgetUsed)}</p>
+            <p className="text-xl sm:text-2xl font-bold text-red-600">{formatCurrency(budgetUsed)}</p>
           </div>
 
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <DollarSign size={18} className="text-gray-600" />
-              <span className="text-sm text-gray-600">Budget Remaining</span>
+              <DollarSign size={16} className="text-gray-600 sm:w-[18px] sm:h-[18px]" />
+              <span className="text-xs sm:text-sm text-gray-600">Budget Remaining</span>
             </div>
-            <p className={`text-2xl font-bold ${budgetRemaining >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+            <p className={`text-xl sm:text-2xl font-bold ${budgetRemaining >= 0 ? 'text-green-600' : 'text-red-600'}`}>
               {formatCurrency(budgetRemaining)}
             </p>
           </div>
@@ -385,13 +388,13 @@ function ProjectDetails() {
 
         {/* Budget Progress Bar */}
         <div>
-          <div className="flex justify-between text-sm mb-2">
+          <div className="flex justify-between text-xs sm:text-sm mb-2">
             <span className="text-gray-600 font-medium">Budget Utilization</span>
             <span className="font-bold text-gray-900">{budgetPercentage.toFixed(1)}%</span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-4">
+          <div className="w-full bg-gray-200 rounded-full h-3 sm:h-4">
             <div
-              className={`h-4 rounded-full transition-all duration-300 ${
+              className={`h-3 sm:h-4 rounded-full transition-all duration-300 ${
                 budgetPercentage > 90 ? 'bg-red-500' :
                 budgetPercentage > 75 ? 'bg-yellow-500' : 'bg-green-500'
               }`}
@@ -399,7 +402,7 @@ function ProjectDetails() {
             ></div>
           </div>
           {budgetPercentage > 100 && (
-            <p className="text-sm text-red-600 mt-2 font-medium">
+            <p className="text-xs sm:text-sm text-red-600 mt-2 font-medium">
               ⚠️ Budget exceeded by {formatCurrency(Math.abs(budgetRemaining))}
             </p>
           )}
@@ -407,47 +410,47 @@ function ProjectDetails() {
       </div>
 
       {/* Description & Site Manager */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Description</h2>
-          <p className="text-gray-700 leading-relaxed">
+      <div className="grid grid-cols-1 gap-4 sm:gap-6">
+        <div className="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6">
+          <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">Description</h2>
+          <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
             {project.description || 'No description provided'}
           </p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Site Manager</h2>
+        <div className="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6">
+          <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">Site Manager</h2>
           {project.siteManager ? (
             <div className="space-y-3">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center">
-                  <UserIcon size={24} className="text-indigo-600" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-indigo-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <UserIcon size={20} className="text-indigo-600 sm:w-6 sm:h-6" />
                 </div>
-                <div>
-                  <p className="font-semibold text-gray-900">{project.siteManager.name}</p>
-                  <p className="text-sm text-gray-600">{project.siteManager.role}</p>
+                <div className="flex-1 min-w-0">
+                  <p className="font-semibold text-sm sm:text-base text-gray-900 truncate">{project.siteManager.name}</p>
+                  <p className="text-xs sm:text-sm text-gray-600">{project.siteManager.role}</p>
                 </div>
               </div>
               <div className="pt-3 border-t border-gray-200">
-                <p className="text-sm text-gray-600">Email</p>
-                <p className="font-medium text-gray-900">{project.siteManager.email}</p>
+                <p className="text-xs sm:text-sm text-gray-600">Email</p>
+                <p className="font-medium text-sm sm:text-base text-gray-900 break-all">{project.siteManager.email}</p>
               </div>
               {project.siteManager.contact && (
                 <div>
-                  <p className="text-sm text-gray-600">Contact</p>
-                  <p className="font-medium text-gray-900">{project.siteManager.contact}</p>
+                  <p className="text-xs sm:text-sm text-gray-600">Contact</p>
+                  <p className="font-medium text-sm sm:text-base text-gray-900">{project.siteManager.contact}</p>
                 </div>
               )}
             </div>
           ) : (
-            <p className="text-gray-500">No site manager assigned</p>
+            <p className="text-sm sm:text-base text-gray-500">No site manager assigned</p>
           )}
         </div>
       </div>
 
       {/* Project Dates */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <h2 className="text-xl font-bold text-gray-900 mb-4">Timeline</h2>
+      <div className="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6">
+        <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">Timeline</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div>
             <p className="text-sm text-gray-600 mb-1">Start Date</p>
