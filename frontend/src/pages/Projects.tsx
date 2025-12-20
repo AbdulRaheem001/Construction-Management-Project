@@ -4,7 +4,7 @@ import { api } from '../lib/api';
 import { formatCurrency, formatDate, getStatusColor } from '../utils/formatters';
 import PermissionGuard from '../components/PermissionGuard';
 import toast from 'react-hot-toast';
-import { Plus, Search, Filter, X, ArrowLeft, Calendar, MapPin, User as UserIcon, DollarSign, TrendingUp, Clock, Edit, Package, Store, ArrowRight, ArrowDown, ArrowUp } from 'lucide-react';
+import { Plus, Search, Filter, X, ArrowLeft, Calendar, MapPin, User as UserIcon, DollarSign, TrendingUp, Clock, Edit, Package, Store, ArrowRight, ArrowDown, ArrowUp, Trash2 } from 'lucide-react';
 import type { Project, User, Inventory, Material, Warehouse } from '../types';
 import { useAuthStore } from '../store/authStore';
 
@@ -194,6 +194,7 @@ function ProjectDetails() {
   const [budgetData, setBudgetData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   // Project Store states
   const [projectInventory, setProjectInventory] = useState<Inventory[]>([]);
@@ -252,6 +253,19 @@ function ProjectDetails() {
 
   const isAdministrator = user?.role === 'Administrator';
 
+  const handleDeleteProject = async () => {
+    try {
+      await api.delete(`/projects/${id}`);
+      toast.success('Project deleted successfully');
+      navigate('/projects');
+    } catch (error: any) {
+      console.error('Error deleting project:', error);
+      toast.error(error.response?.data?.message || 'Failed to delete project');
+    } finally {
+      setShowDeleteConfirm(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -297,14 +311,23 @@ function ProjectDetails() {
             {project.status}
           </span>
           {isAdministrator && (
-            <button
-              onClick={() => setShowEditModal(true)}
-              className="flex items-center gap-2 bg-indigo-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg hover:bg-indigo-700 transition text-sm"
-            >
-              <Edit size={16} className="sm:w-5 sm:h-5" />
-              <span className="hidden sm:inline">Edit Project</span>
-              <span className="sm:hidden">Edit</span>
-            </button>
+            <>
+              <button
+                onClick={() => setShowEditModal(true)}
+                className="flex items-center gap-2 bg-indigo-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg hover:bg-indigo-700 transition text-sm"
+              >
+                <Edit size={16} className="sm:w-5 sm:h-5" />
+                <span className="hidden sm:inline">Edit Project</span>
+                <span className="sm:hidden">Edit</span>
+              </button>
+              <button
+                onClick={() => setShowDeleteConfirm(true)}
+                className="flex items-center gap-2 bg-red-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg hover:bg-red-700 transition text-sm"
+              >
+                <Trash2 size={16} className="sm:w-5 sm:h-5" />
+                <span className="hidden sm:inline">Delete</span>
+              </button>
+            </>
           )}
         </div>
       </div>
@@ -612,6 +635,40 @@ function ProjectDetails() {
             fetchProjectDetails();
           }}
         />
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-xl max-w-md w-full p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2 bg-red-100 rounded-lg">
+                <Trash2 size={24} className="text-red-600" />
+              </div>
+              <h2 className="text-xl font-bold text-gray-900">Delete Project</h2>
+            </div>
+            
+            <p className="text-gray-600 mb-6">
+              Are you sure you want to delete <span className="font-semibold">{project.projectName}</span>? 
+              This will remove all project information and cannot be undone.
+            </p>
+            
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowDeleteConfirm(false)}
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition font-medium"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeleteProject}
+                className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium"
+              >
+                Delete Project
+              </button>
+            </div>
+          </div>
+        </div>
       )}
 
       {/* Issue Material Modal */}

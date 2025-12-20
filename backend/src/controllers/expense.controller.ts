@@ -76,15 +76,23 @@ export const getExpenses = async (
     }
 
     const expenses = await Expense.find(query)
-      .populate('project', 'projectName projectCode')
+      .populate('project', 'projectName projectCode isActive')
       .populate('createdBy', 'name')
       .populate('approvedBy', 'name')
       .sort({ date: -1 });
 
+    // Filter out expenses from deleted (inactive) projects
+    const activeExpenses = expenses.filter(expense => {
+      // If expense has no project, include it
+      if (!expense.project) return true;
+      // If project exists, only include if it's active
+      return (expense.project as any).isActive !== false;
+    });
+
     res.json({
       success: true,
-      count: expenses.length,
-      data: expenses,
+      count: activeExpenses.length,
+      data: activeExpenses,
     });
   } catch (error) {
     next(error);
@@ -98,12 +106,17 @@ export const getExpenseById = async (
 ) => {
   try {
     const expense = await Expense.findById(req.params.id)
-      .populate('project', 'projectName projectCode client')
+      .populate('project', 'projectName projectCode client isActive')
       .populate('createdBy', 'name email')
       .populate('approvedBy', 'name email');
 
     if (!expense) {
       return next(new AppError('Expense not found', 404));
+    }
+
+    // Check if the expense's project is deleted (inactive)
+    if (expense.project && (expense.project as any).isActive === false) {
+      return next(new AppError('Expense belongs to a deleted project', 404));
     }
 
     res.json({

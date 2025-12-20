@@ -47,14 +47,20 @@ export const getDailyLogs = async (
     }
 
     const dailyLogs = await DailyLog.find(query)
-      .populate('project', 'projectName projectCode')
+      .populate('project', 'projectName projectCode isActive')
       .populate('createdBy', 'name')
       .sort({ date: -1 });
 
+    // Filter out logs from deleted (inactive) projects
+    const activeLogs = dailyLogs.filter(log => {
+      if (!log.project) return true;
+      return (log.project as any).isActive !== false;
+    });
+
     res.json({
       success: true,
-      count: dailyLogs.length,
-      data: dailyLogs,
+      count: activeLogs.length,
+      data: activeLogs,
     });
   } catch (error) {
     next(error);
@@ -68,11 +74,16 @@ export const getDailyLogById = async (
 ) => {
   try {
     const dailyLog = await DailyLog.findById(req.params.id)
-      .populate('project', 'projectName projectCode client location')
+      .populate('project', 'projectName projectCode client location isActive')
       .populate('createdBy', 'name email');
 
     if (!dailyLog) {
       return next(new AppError('Daily log not found', 404));
+    }
+
+    // Check if the log's project is deleted (inactive)
+    if (dailyLog.project && (dailyLog.project as any).isActive === false) {
+      return next(new AppError('Daily log belongs to a deleted project', 404));
     }
 
     res.json({

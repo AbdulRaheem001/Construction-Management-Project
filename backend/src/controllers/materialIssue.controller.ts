@@ -130,15 +130,21 @@ export const getMaterialIssues = async (req: Request, res: Response) => {
     }
 
     const issues = await MaterialIssue.find(filter)
-      .populate('project', 'projectName projectCode location')
+      .populate('project', 'projectName projectCode location isActive')
       .populate('material', 'name sku unit category')
       .populate('issuedBy', 'name email')
       .sort({ issueDate: -1 });
 
+    // Filter out material issues from deleted (inactive) projects
+    const activeIssues = issues.filter(issue => {
+      if (!issue.project) return true;
+      return (issue.project as any).isActive !== false;
+    });
+
     res.status(200).json({
       success: true,
-      count: issues.length,
-      data: issues,
+      count: activeIssues.length,
+      data: activeIssues,
     });
   } catch (error: any) {
     console.error('Error fetching material issues:', error);
