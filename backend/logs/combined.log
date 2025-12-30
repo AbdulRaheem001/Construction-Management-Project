@@ -1130,3 +1130,64 @@
 {"level":"info","message":"GET /api/permissions/by-module","timestamp":"2025-12-17 22:54:55"}
 {"level":"info","message":"GET /api/permissions/by-module","timestamp":"2025-12-17 22:54:56"}
 {"level":"info","message":"GET /api/roles","timestamp":"2025-12-17 22:54:56"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-30 11:29:57"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-12-30 11:29:57"}
+{"level":"info","message":"POST /api/auth/login","timestamp":"2025-12-30 11:30:48"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-30 11:30:48"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-30 11:30:49"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-30 11:30:49"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-30 11:30:51"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-30 12:28:55"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-30 12:28:59"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-30 12:28:59"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-30 12:28:59"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-30 12:29:01"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-30 12:29:02"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-30 12:29:03"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-30 12:29:04"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-30 12:29:26"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-30 12:29:27"}
+{"level":"info","message":"GET /api/users","timestamp":"2025-12-30 12:29:27"}
+{"level":"info","message":"GET /api/users","timestamp":"2025-12-30 12:29:29"}
+{"level":"info","message":"GET /api/users","timestamp":"2025-12-30 12:32:52"}
+{"level":"info","message":"GET /api/users","timestamp":"2025-12-30 12:32:54"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-30 12:34:54"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-12-30 12:34:54"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-30 12:35:15"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-12-30 12:35:15"}
+{"level":"info","message":"GET /api/users","timestamp":"2025-12-30 12:35:15"}
+{"level":"info","message":"GET /api/users","timestamp":"2025-12-30 12:35:21"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-30 12:35:26"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-30 12:35:27"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-30 12:35:28"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-30 12:35:29"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-30 12:35:37"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-12-30 12:35:37"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-30 12:35:57"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-12-30 12:35:57"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-30 12:36:14"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-12-30 12:36:14"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-30 12:36:27"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-12-30 12:36:27"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-12-30 12:36:39"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-12-30 12:36:39"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-30 12:37:37"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-30 12:37:37"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-30 12:37:39"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-30 12:37:39"}
+{"level":"info","message":"GET /api/expenses","timestamp":"2025-12-30 12:37:39"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-30 12:37:40"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-30 12:38:05"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-30 12:38:06"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-30 12:38:08"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-30 12:38:09"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-30 12:38:09"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-30 12:38:11"}
+{"level":"info","message":"GET /api/roles","timestamp":"2025-12-30 12:38:17"}
+{"level":"info","message":"GET /api/permissions/by-module","timestamp":"2025-12-30 12:38:17"}
+{"level":"info","message":"GET /api/permissions/by-module","timestamp":"2025-12-30 12:38:18"}
+{"level":"info","message":"GET /api/roles","timestamp":"2025-12-30 12:38:19"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-30 12:40:17"}
+{"level":"info","message":"GET /api/users","timestamp":"2025-12-30 12:40:23"}
+{"level":"info","message":"GET /api/projects","timestamp":"2025-12-30 12:40:23"}
+{"level":"info","message":"GET /api/users","timestamp":"2025-12-30 12:40:24"}

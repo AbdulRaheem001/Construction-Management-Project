@@ -15,12 +15,10 @@ const roleSchema = new Schema<IRole>(
   {
     name: {
       type: String,
-      required: [true, 'Role name is required'],
       trim: true,
     },
     code: {
       type: String,
-      required: [true, 'Role code is required'],
       unique: true,
       trim: true,
       uppercase: true,

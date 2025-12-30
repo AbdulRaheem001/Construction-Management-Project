@@ -296,43 +296,40 @@ function AddWarehouseModal({ onClose, onSuccess }: AddWarehouseModalProps) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Warehouse Code *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Warehouse Code</label>
               <input
                 type="text"
                 value={formData.code}
                 onChange={(e) => setFormData({ ...formData, code: e.target.value.toUpperCase() })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
                 placeholder="e.g., WH-001"
-                required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Warehouse Name *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Warehouse Name</label>
               <input
                 type="text"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
                 placeholder="Main Warehouse"
-                required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Location *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Location</label>
               <input
                 type="text"
                 value={formData.location}
                 onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
                 placeholder="City, Address"
-                required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Capacity (units) *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Capacity (units)</label>
               <input
                 type="number"
                 value={formData.capacity}
@@ -340,7 +337,6 @@ function AddWarehouseModal({ onClose, onSuccess }: AddWarehouseModalProps) {
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
                 placeholder="10000"
                 min="0"
-                required
               />
             </div>
 
@@ -377,4 +373,5 @@ function AddWarehouseModal({ onClose, onSuccess }: AddWarehouseModalProps) {
     </div>
   );
 }
+
 

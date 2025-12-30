@@ -27,7 +27,6 @@ const stockTransferSchema = new Schema<IStockTransfer>(
   {
     transferNumber: {
       type: String,
-      required: [true, 'Transfer number is required'],
       unique: true,
       trim: true,
       uppercase: true,
@@ -35,21 +34,17 @@ const stockTransferSchema = new Schema<IStockTransfer>(
     fromLocation: {
       type: Schema.Types.ObjectId,
       refPath: 'fromLocationType',
-      required: [true, 'From location is required'],
     },
     fromLocationType: {
       type: String,
-      required: true,
       enum: ['Project', 'Warehouse'],
     },
     toLocation: {
       type: Schema.Types.ObjectId,
       refPath: 'toLocationType',
-      required: [true, 'To location is required'],
     },
     toLocationType: {
       type: String,
-      required: true,
       enum: ['Project', 'Warehouse'],
     },
     items: [
@@ -57,11 +52,9 @@ const stockTransferSchema = new Schema<IStockTransfer>(
         material: {
           type: Schema.Types.ObjectId,
           ref: 'Material',
-          required: true,
         },
         quantity: {
           type: Number,
-          required: true,
           min: [0, 'Quantity cannot be negative'],
         },
       },
@@ -73,7 +66,6 @@ const stockTransferSchema = new Schema<IStockTransfer>(
     },
     transferDate: {
       type: Date,
-      required: true,
       default: Date.now,
     },
     receivedDate: {
@@ -82,7 +74,6 @@ const stockTransferSchema = new Schema<IStockTransfer>(
     requestedBy: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: true,
     },
     approvedBy: {
       type: Schema.Types.ObjectId,

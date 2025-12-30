@@ -33,7 +33,6 @@ const purchaseOrderSchema = new Schema<IPurchaseOrder>(
   {
     poNumber: {
       type: String,
-      required: [true, 'PO number is required'],
       unique: true,
       trim: true,
       uppercase: true,
@@ -41,7 +40,6 @@ const purchaseOrderSchema = new Schema<IPurchaseOrder>(
     project: {
       type: Schema.Types.ObjectId,
       ref: 'Project',
-      required: [true, 'Project is required'],
     },
     vendor: {
       type: Schema.Types.ObjectId,
@@ -49,7 +47,6 @@ const purchaseOrderSchema = new Schema<IPurchaseOrder>(
     },
     supplier: {
       type: String,
-      required: [true, 'Supplier is required'],
       trim: true,
     },
     supplierContact: {
@@ -61,27 +58,22 @@ const purchaseOrderSchema = new Schema<IPurchaseOrder>(
         material: {
           type: Schema.Types.ObjectId,
           ref: 'Material',
-          required: true,
         },
         quantity: {
           type: Number,
-          required: true,
           min: [0, 'Quantity cannot be negative'],
         },
         unitPrice: {
           type: Number,
-          required: true,
           min: [0, 'Unit price cannot be negative'],
         },
         totalPrice: {
           type: Number,
-          required: true,
         },
       },
     ],
     totalAmount: {
       type: Number,
-      required: true,
       min: [0, 'Total amount cannot be negative'],
     },
     paidAmount: {
@@ -101,7 +93,6 @@ const purchaseOrderSchema = new Schema<IPurchaseOrder>(
     },
     orderDate: {
       type: Date,
-      required: [true, 'Order date is required'],
       default: Date.now,
     },
     expectedDeliveryDate: {

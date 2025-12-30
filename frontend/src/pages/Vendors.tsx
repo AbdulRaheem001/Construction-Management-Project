@@ -275,7 +275,7 @@ function VendorModal({ vendor, onClose, onSuccess }: VendorModalProps) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Vendor Code *
+                Vendor Code
               </label>
               <input
                 type="text"
@@ -283,14 +283,13 @@ function VendorModal({ vendor, onClose, onSuccess }: VendorModalProps) {
                 onChange={(e) => setFormData({ ...formData, vendorCode: e.target.value.toUpperCase() })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
                 placeholder="VEN-001"
-                required
                 disabled={!!vendor}
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Vendor Name *
+                Vendor Name
               </label>
               <input
                 type="text"
@@ -298,7 +297,6 @@ function VendorModal({ vendor, onClose, onSuccess }: VendorModalProps) {
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
                 placeholder="ABC Suppliers Ltd"
-                required
               />
             </div>
 
@@ -443,3 +441,4 @@ function VendorModal({ vendor, onClose, onSuccess }: VendorModalProps) {
     </div>
   );
 }
+

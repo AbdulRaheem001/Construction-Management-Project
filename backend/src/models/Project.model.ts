@@ -23,19 +23,16 @@ const projectSchema = new Schema<IProject>(
   {
     projectName: {
       type: String,
-      required: [true, 'Project name is required'],
       trim: true,
     },
     projectCode: {
       type: String,
-      required: [true, 'Project code is required'],
       unique: true,
       trim: true,
       uppercase: true,
     },
     client: {
       type: String,
-      required: [true, 'Client name is required'],
       trim: true,
     },
     clientContact: {
@@ -44,18 +41,15 @@ const projectSchema = new Schema<IProject>(
     },
     startDate: {
       type: Date,
-      required: [true, 'Start date is required'],
     },
     targetCompletionDate: {
       type: Date,
-      required: [true, 'Target completion date is required'],
     },
     actualCompletionDate: {
       type: Date,
     },
     initialBudget: {
       type: Number,
-      required: [true, 'Initial budget is required'],
       min: [0, 'Budget cannot be negative'],
     },
     status: {
@@ -78,7 +72,6 @@ const projectSchema = new Schema<IProject>(
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: true,
     },
     isActive: {
       type: Boolean,

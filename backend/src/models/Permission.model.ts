@@ -14,12 +14,10 @@ const permissionSchema = new Schema<IPermission>(
   {
     name: {
       type: String,
-      required: [true, 'Permission name is required'],
       trim: true,
     },
     code: {
       type: String,
-      required: [true, 'Permission code is required'],
       unique: true,
       trim: true,
       uppercase: true,
@@ -30,7 +28,6 @@ const permissionSchema = new Schema<IPermission>(
     },
     module: {
       type: String,
-      required: [true, 'Module is required'],
       enum: ['Projects', 'Materials', 'Labour', 'Equipment', 'Warehouse', 'Expenses', 'Users', 'Roles', 'System'],
     },
     isActive: {

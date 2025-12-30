@@ -728,13 +728,12 @@ function NewExpenseModal({ onClose, onSuccess }: NewExpenseModalProps) {
               {/* Project Selection - MANDATORY */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Project * <span className="text-xs text-gray-500">(Required)</span>
+                  Project
                 </label>
                 <select
                   value={expense.project}
                   onChange={(e) => handleExpenseChange(index, 'project', e.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
-                  required
                 >
                   <option value="">Select a project</option>
                   {projects.map((project) => (
@@ -748,21 +747,20 @@ function NewExpenseModal({ onClose, onSuccess }: NewExpenseModalProps) {
 
               {/* Description */}
               <div className="mt-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Description *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
                 <input
                   type="text"
                   value={expense.description}
                   onChange={(e) => handleExpenseChange(index, 'description', e.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
                   placeholder="e.g., Office supplies, Equipment rental"
-                  required
                 />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                 {/* Amount */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Amount (PKR) *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Amount (PKR)</label>
                   <input
                     type="number"
                     value={expense.amount}
@@ -770,19 +768,17 @@ function NewExpenseModal({ onClose, onSuccess }: NewExpenseModalProps) {
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
                     step="0.01"
                     min="0"
-                    required
                   />
                 </div>
 
                 {/* Date */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Date *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Date</label>
                   <input
                     type="date"
                     value={expense.date}
                     onChange={(e) => handleExpenseChange(index, 'date', e.target.value)}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
-                    required
                   />
                 </div>
               </div>
@@ -790,12 +786,11 @@ function NewExpenseModal({ onClose, onSuccess }: NewExpenseModalProps) {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                 {/* Category */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Category *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
                   <select
                     value={expense.category}
                     onChange={(e) => handleExpenseChange(index, 'category', e.target.value)}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
-                    required
                   >
                     {categories.map((cat) => (
                       <option key={cat} value={cat}>
@@ -807,12 +802,11 @@ function NewExpenseModal({ onClose, onSuccess }: NewExpenseModalProps) {
 
                 {/* Expense Type */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Expense Type *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Expense Type</label>
                   <select
                     value={expense.expenseType}
                     onChange={(e) => handleExpenseChange(index, 'expenseType', e.target.value)}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
-                    required
                   >
                     <option value="Material">Material</option>
                     <option value="Labour">Labour</option>
@@ -826,7 +820,7 @@ function NewExpenseModal({ onClose, onSuccess }: NewExpenseModalProps) {
               {/* Payment Status */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Payment Status *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Payment Status</label>
                   <select
                     value={expense.paymentStatus}
                     onChange={(e) => {
@@ -839,7 +833,6 @@ function NewExpenseModal({ onClose, onSuccess }: NewExpenseModalProps) {
                       }
                     }}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
-                    required
                   >
                     <option value="Pending">Pending</option>
                     <option value="Paid">Paid</option>
@@ -852,7 +845,7 @@ function NewExpenseModal({ onClose, onSuccess }: NewExpenseModalProps) {
                 {expense.paymentStatus === 'Partially Paid' && (
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Amount Paid (PKR) *
+                      Amount Paid (PKR)
                     </label>
                     <input
                       type="number"
@@ -863,7 +856,6 @@ function NewExpenseModal({ onClose, onSuccess }: NewExpenseModalProps) {
                       min="0"
                       max={expense.amount}
                       placeholder="Enter amount paid"
-                      required
                     />
                     {expense.amount && expense.amountPaid && (
                       <p className="text-xs text-orange-600 mt-1">
@@ -1165,7 +1157,6 @@ function EditExpenseModal({ expense, onClose, onSuccess }: EditExpenseModalProps
                 });
               }}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
-              required
             >
               <option value="Pending">Pending</option>
               <option value="Paid">Paid</option>
@@ -1178,7 +1169,7 @@ function EditExpenseModal({ expense, onClose, onSuccess }: EditExpenseModalProps
           {formData.paymentStatus === 'Partially Paid' && (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                {expense.amountPaid && expense.amountPaid > 0 ? 'Additional Payment Amount (PKR) *' : 'Payment Amount (PKR) *'}
+                {expense.amountPaid && expense.amountPaid > 0 ? 'Additional Payment Amount (PKR)' : 'Payment Amount (PKR)'}
               </label>
               <input
                 type="number"
@@ -1189,7 +1180,6 @@ function EditExpenseModal({ expense, onClose, onSuccess }: EditExpenseModalProps
                 min="0"
                 max={expense.amount - (expense.amountPaid || 0)}
                 placeholder="Enter payment amount"
-                required
               />
               <p className="text-xs text-gray-500 mt-1">
                 {expense.amountPaid && expense.amountPaid > 0 
@@ -1456,3 +1446,5 @@ function ImageViewerModal({ expense, currentIndex, onClose, onIndexChange }: Ima
     </div>
   );
 }
+
+

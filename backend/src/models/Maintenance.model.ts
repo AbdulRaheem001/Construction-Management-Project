@@ -21,29 +21,24 @@ const maintenanceSchema = new Schema<IMaintenance>(
     equipment: {
       type: Schema.Types.ObjectId,
       ref: 'Equipment',
-      required: [true, 'Equipment is required'],
     },
     maintenanceType: {
       type: String,
       enum: ['Preventive', 'Corrective', 'Inspection'],
-      required: [true, 'Maintenance type is required'],
     },
     scheduledDate: {
       type: Date,
-      required: [true, 'Scheduled date is required'],
     },
     completedDate: {
       type: Date,
     },
     cost: {
       type: Number,
-      required: [true, 'Cost is required'],
       min: [0, 'Cost cannot be negative'],
       default: 0,
     },
     description: {
       type: String,
-      required: [true, 'Description is required'],
       trim: true,
     },
     performedBy: {
@@ -65,7 +60,6 @@ const maintenanceSchema = new Schema<IMaintenance>(
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: true,
     },
   },
   {

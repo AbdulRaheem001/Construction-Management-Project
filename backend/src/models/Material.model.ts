@@ -21,14 +21,12 @@ const materialSchema = new Schema<IMaterial>(
   {
     sku: {
       type: String,
-      required: [true, 'SKU is required'],
       unique: true,
       trim: true,
       uppercase: true,
     },
     name: {
       type: String,
-      required: [true, 'Material name is required'],
       trim: true,
     },
     description: {
@@ -37,12 +35,10 @@ const materialSchema = new Schema<IMaterial>(
     },
     unit: {
       type: String,
-      required: [true, 'Unit is required'],
       enum: ['kg', 'lbs', 'pcs', 'bags', 'tons', 'm', 'm2', 'm3', 'liters', 'gallons', 'boxes'],
     },
     costPerUnit: {
       type: Number,
-      required: [true, 'Cost per unit is required'],
       min: [0, 'Cost cannot be negative'],
     },
     avgUnitCost: {

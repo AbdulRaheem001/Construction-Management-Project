@@ -171,7 +171,7 @@ export default function RestockMaterialModal({ warehouse, inventory, onClose, on
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Quantity to Add *
+                  Quantity to Add
                 </label>
                 <input
                   type="number"
@@ -180,7 +180,6 @@ export default function RestockMaterialModal({ warehouse, inventory, onClose, on
                   onChange={(e) => handleAmountChange('quantity', e.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
                   placeholder="0"
-                  required
                 />
                 <p className="text-xs text-gray-500 mt-1">
                   New stock: {(inventory.quantity + (parseFloat(formData.quantity) || 0)).toFixed(2)} {material.unit}
@@ -189,7 +188,7 @@ export default function RestockMaterialModal({ warehouse, inventory, onClose, on
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Cost Per Unit *
+                  Cost Per Unit
                 </label>
                 <input
                   type="number"
@@ -198,7 +197,6 @@ export default function RestockMaterialModal({ warehouse, inventory, onClose, on
                   onChange={(e) => handleAmountChange('costPerUnit', e.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
                   placeholder="0.00"
-                  required
                 />
               </div>
 
@@ -210,7 +208,6 @@ export default function RestockMaterialModal({ warehouse, inventory, onClose, on
                   value={formData.vendor}
                   onChange={(e) => setFormData({ ...formData, vendor: e.target.value })}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
-                  required
                 >
                   <option value="">Select vendor...</option>
                   {vendors.map((vendor) => (
@@ -342,3 +339,4 @@ export default function RestockMaterialModal({ warehouse, inventory, onClose, on
     </div>
   );
 }
+

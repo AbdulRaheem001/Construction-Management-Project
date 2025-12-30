@@ -786,66 +786,61 @@ function EditProjectModal({ project, onClose, onSuccess }: EditProjectModalProps
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Project Name *
+                Project Name
               </label>
               <input
                 type="text"
                 value={formData.projectName}
                 onChange={(e) => setFormData({ ...formData, projectName: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
-                required
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Project Code *
+                Project Code
               </label>
               <input
                 type="text"
                 value={formData.projectCode}
                 onChange={(e) => setFormData({ ...formData, projectCode: e.target.value.toUpperCase() })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
-                required
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Client *
+                Client
               </label>
               <input
                 type="text"
                 value={formData.client}
                 onChange={(e) => setFormData({ ...formData, client: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
-                required
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Location *
+                Location
               </label>
               <input
                 type="text"
                 value={formData.location}
                 onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
-                required
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Start Date *
+                Start Date
               </label>
               <input
                 type="date"
                 value={formData.startDate}
                 onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
-                required
               />
             </div>
 
@@ -863,7 +858,7 @@ function EditProjectModal({ project, onClose, onSuccess }: EditProjectModalProps
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Initial Budget *
+                Initial Budget
               </label>
               <input
                 type="number"
@@ -872,19 +867,17 @@ function EditProjectModal({ project, onClose, onSuccess }: EditProjectModalProps
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
                 step="0.01"
                 min="0"
-                required
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Site Manager *
+                Site Manager
               </label>
               <select
                 value={formData.siteManager}
                 onChange={(e) => setFormData({ ...formData, siteManager: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
-                required
               >
                 <option value="">Select Site Manager</option>
                 {users.map((user) => (
@@ -897,13 +890,12 @@ function EditProjectModal({ project, onClose, onSuccess }: EditProjectModalProps
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Status *
+                Status
               </label>
               <select
                 value={formData.status}
                 onChange={(e) => setFormData({ ...formData, status: e.target.value as Project['status'] })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
-                required
               >
                 <option value="Planning">Planning</option>
                 <option value="Active">Active</option>
@@ -1038,7 +1030,7 @@ function IssueMaterialModal({ inventory, projectId, projectName, onClose, onSucc
           {/* Quantity */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Quantity to Issue <span className="text-red-500">*</span>
+              Quantity to Issue
             </label>
             <div className="relative">
               <input
@@ -1050,7 +1042,6 @@ function IssueMaterialModal({ inventory, projectId, projectName, onClose, onSucc
                 onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
                 placeholder="Enter quantity"
-                required
               />
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
                 {material.unit}
@@ -1061,7 +1052,7 @@ function IssueMaterialModal({ inventory, projectId, projectName, onClose, onSucc
           {/* Used By */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Used By (Person/Team) <span className="text-red-500">*</span>
+              Used By (Person/Team)
             </label>
             <input
               type="text"
@@ -1069,7 +1060,6 @@ function IssueMaterialModal({ inventory, projectId, projectName, onClose, onSucc
               onChange={(e) => setFormData({ ...formData, usedBy: e.target.value })}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
               placeholder="e.g., John Doe, Masonry Team"
-              required
             />
           </div>
 
@@ -1258,13 +1248,12 @@ function TransferRequestModal({ projectId, projectName, warehouses, inventory, o
           {!inventory && (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Select Material <span className="text-red-500">*</span>
+                Select Material
               </label>
               <select
                 value={formData.materialId}
                 onChange={(e) => setFormData({ ...formData, materialId: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
-                required
               >
                 <option value="">-- Select Material --</option>
                 {materials.map((material) => (
@@ -1289,13 +1278,12 @@ function TransferRequestModal({ projectId, projectName, warehouses, inventory, o
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Transfer From <span className="text-red-500">*</span>
+                Transfer From
               </label>
               <select
                 value={formData.sourceType}
                 onChange={(e) => setFormData({ ...formData, sourceType: e.target.value, sourceId: '' })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
-                required
                 disabled={!!inventory}
               >
                 <option value="">-- Select Type --</option>
@@ -1306,13 +1294,12 @@ function TransferRequestModal({ projectId, projectName, warehouses, inventory, o
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Source Location <span className="text-red-500">*</span>
+                Source Location
               </label>
               <select
                 value={formData.sourceId}
                 onChange={(e) => setFormData({ ...formData, sourceId: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
-                required
                 disabled={!!inventory || !formData.sourceType}
               >
                 <option value="">-- Select Location --</option>
@@ -1334,13 +1321,12 @@ function TransferRequestModal({ projectId, projectName, warehouses, inventory, o
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Transfer To <span className="text-red-500">*</span>
+                Transfer To
               </label>
               <select
                 value={formData.destinationType}
                 onChange={(e) => setFormData({ ...formData, destinationType: e.target.value, destinationId: '' })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
-                required
                 disabled={!!inventory}
               >
                 <option value="">-- Select Type --</option>
@@ -1351,13 +1337,12 @@ function TransferRequestModal({ projectId, projectName, warehouses, inventory, o
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Destination Location <span className="text-red-500">*</span>
+                Destination Location
               </label>
               <select
                 value={formData.destinationId}
                 onChange={(e) => setFormData({ ...formData, destinationId: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
-                required
                 disabled={!formData.destinationType || (!!inventory && formData.destinationType === 'Project')}
               >
                 <option value="">-- Select Location --</option>
@@ -1387,7 +1372,7 @@ function TransferRequestModal({ projectId, projectName, warehouses, inventory, o
           {/* Quantity */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Quantity to Transfer <span className="text-red-500">*</span>
+              Quantity to Transfer
             </label>
             <div className="relative">
               <input
@@ -1399,7 +1384,6 @@ function TransferRequestModal({ projectId, projectName, warehouses, inventory, o
                 onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
                 placeholder="Enter quantity"
-                required
               />
               {selectedMaterial && (
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
@@ -1556,20 +1540,19 @@ function CreateProjectModal({ onClose, onSuccess }: CreateProjectModalProps) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Project Name *
+                  Project Name
                 </label>
                 <input
                   type="text"
                   value={formData.projectName}
                   onChange={(e) => setFormData({ ...formData, projectName: e.target.value })}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
-                  required
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Project Code *
+                  Project Code
                 </label>
                 <input
                   type="text"
@@ -1577,65 +1560,60 @@ function CreateProjectModal({ onClose, onSuccess }: CreateProjectModalProps) {
                   onChange={(e) => setFormData({ ...formData, projectCode: e.target.value.toUpperCase() })}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
                   placeholder="e.g., PROJ-2024-001"
-                  required
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Client *
+                  Client
                 </label>
                 <input
                   type="text"
                   value={formData.client}
                   onChange={(e) => setFormData({ ...formData, client: e.target.value })}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
-                  required
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Location *
+                  Location
                 </label>
                 <input
                   type="text"
                   value={formData.location}
                   onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
-                  required
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Start Date *
+                  Start Date
                 </label>
                 <input
                   type="date"
                   value={formData.startDate}
                   onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
-                  required
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Deadline (End Date) *
+                  Deadline (End Date)
                 </label>
                 <input
                   type="date"
                   value={formData.targetCompletionDate}
                   onChange={(e) => setFormData({ ...formData, targetCompletionDate: e.target.value })}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
-                  required
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Initial Budget *
+                  Initial Budget
                 </label>
                 <input
                   type="number"
@@ -1645,19 +1623,17 @@ function CreateProjectModal({ onClose, onSuccess }: CreateProjectModalProps) {
                   placeholder="0.00"
                   step="0.01"
                   min="0"
-                  required
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Site Manager *
+                  Site Manager
                 </label>
                 <select
                   value={formData.siteManager}
                   onChange={(e) => setFormData({ ...formData, siteManager: e.target.value })}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
-                  required
                 >
                   <option value="">Select Site Manager</option>
                   {users.map((user) => (
@@ -1670,13 +1646,12 @@ function CreateProjectModal({ onClose, onSuccess }: CreateProjectModalProps) {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Status *
+                  Status
                 </label>
                 <select
                   value={formData.status}
                   onChange={(e) => setFormData({ ...formData, status: e.target.value })}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
-                  required
                 >
                   <option value="Planning">Planning</option>
                   <option value="Active">Active</option>
@@ -1689,7 +1664,7 @@ function CreateProjectModal({ onClose, onSuccess }: CreateProjectModalProps) {
 
             <div className="mt-4">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Description *
+                Description
               </label>
               <textarea
                 value={formData.description}
@@ -1697,7 +1672,6 @@ function CreateProjectModal({ onClose, onSuccess }: CreateProjectModalProps) {
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
                 rows={3}
                 placeholder="Project description..."
-                required
               />
             </div>
           </div>
@@ -1935,6 +1909,7 @@ function MaterialConsumptionHistory({ projectId }: MaterialConsumptionHistoryPro
     </>
   );
 }
+
 
 
 

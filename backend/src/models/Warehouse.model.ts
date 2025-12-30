@@ -16,19 +16,16 @@ const warehouseSchema = new Schema<IWarehouse>(
   {
     name: {
       type: String,
-      required: [true, 'Warehouse name is required'],
       trim: true,
     },
     code: {
       type: String,
-      required: [true, 'Warehouse code is required'],
       unique: true,
       trim: true,
       uppercase: true,
     },
     location: {
       type: String,
-      required: [true, 'Location is required'],
       trim: true,
     },
     manager: {

@@ -367,28 +367,26 @@ function RoleFormModal({ role, permissions, onClose, onSuccess }: RoleFormModalP
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Role Name *
+                  Role Name
                 </label>
                 <input
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  required
                   disabled={role?.isSystem}
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Role Code *
+                  Role Code
                 </label>
                 <input
                   type="text"
                   value={formData.code}
                   onChange={(e) => setFormData({ ...formData, code: e.target.value.toUpperCase() })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent uppercase"
-                  required
                   disabled={!!role}
                   placeholder="ROLE_CODE"
                 />
@@ -504,3 +502,4 @@ function RoleFormModal({ role, permissions, onClose, onSuccess }: RoleFormModalP
     </div>
   );
 }
+

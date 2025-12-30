@@ -22,30 +22,25 @@ const employeeSchema = new Schema<IEmployee>(
   {
     employeeId: {
       type: String,
-      required: [true, 'Employee ID is required'],
       unique: true,
       trim: true,
       uppercase: true,
     },
     name: {
       type: String,
-      required: [true, 'Name is required'],
       trim: true,
     },
     role: {
       type: String,
-      required: [true, 'Role is required'],
       trim: true,
     },
     payRate: {
       type: Number,
-      required: [true, 'Pay rate is required'],
       min: [0, 'Pay rate cannot be negative'],
     },
     payType: {
       type: String,
       enum: ['Hourly', 'Daily', 'Monthly'],
-      required: [true, 'Pay type is required'],
       default: 'Hourly',
     },
     team: {
@@ -54,7 +49,6 @@ const employeeSchema = new Schema<IEmployee>(
     },
     contact: {
       type: String,
-      required: [true, 'Contact is required'],
       trim: true,
     },
     email: {
@@ -68,7 +62,6 @@ const employeeSchema = new Schema<IEmployee>(
     },
     dateOfJoining: {
       type: Date,
-      required: [true, 'Date of joining is required'],
       default: Date.now,
     },
     isActive: {

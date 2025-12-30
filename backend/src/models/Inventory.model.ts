@@ -15,21 +15,17 @@ const inventorySchema = new Schema<IInventory>(
     material: {
       type: Schema.Types.ObjectId,
       ref: 'Material',
-      required: [true, 'Material is required'],
     },
     location: {
       type: Schema.Types.ObjectId,
       refPath: 'locationType',
-      required: [true, 'Location is required'],
     },
     locationType: {
       type: String,
-      required: true,
       enum: ['Project', 'Warehouse'],
     },
     quantity: {
       type: Number,
-      required: true,
       default: 0,
     },
     binLocation: {
@@ -43,7 +39,6 @@ const inventorySchema = new Schema<IInventory>(
     updatedBy: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: true,
     },
   },
   {

@@ -15,16 +15,13 @@ const auditLogSchema = new Schema<IAuditLog>(
     userId: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: true,
     },
     action: {
       type: String,
-      required: true,
       enum: ['CREATE', 'UPDATE', 'DELETE', 'LOGIN', 'LOGOUT', 'APPROVE', 'REJECT'],
     },
     resource: {
       type: String,
-      required: true,
     },
     resourceId: {
       type: String,

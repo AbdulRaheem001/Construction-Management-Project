@@ -250,36 +250,33 @@ export default function AddMaterialToWarehouseModal({ warehouse, onClose, onSucc
           {/* Material Details */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Serial Number (SKU) *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Serial Number (SKU)</label>
               <input
                 type="text"
                 value={formData.sku}
                 onChange={(e) => setFormData({ ...formData, sku: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
                 placeholder="e.g., MAT-001"
-                required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Material Name *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Material Name</label>
               <input
                 type="text"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
                 placeholder="e.g., Steel Rods"
-                required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Category *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
               <select
                 value={formData.category}
                 onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
-                required
               >
                 <option value="Cement">Cement</option>
                 <option value="Steel">Steel</option>
@@ -295,12 +292,11 @@ export default function AddMaterialToWarehouseModal({ warehouse, onClose, onSucc
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Unit *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Unit</label>
               <select
                 value={formData.unit}
                 onChange={(e) => setFormData({ ...formData, unit: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
-                required
               >
                 <option value="kg">Kilogram (kg)</option>
                 <option value="lbs">Pounds (lbs)</option>
@@ -317,7 +313,7 @@ export default function AddMaterialToWarehouseModal({ warehouse, onClose, onSucc
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Cost Per Unit *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Cost Per Unit</label>
               <input
                 type="number"
                 value={formData.costPerUnit}
@@ -326,12 +322,11 @@ export default function AddMaterialToWarehouseModal({ warehouse, onClose, onSucc
                 step="0.01"
                 min="0"
                 placeholder="0.00"
-                required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Quantity *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Quantity</label>
               <input
                 type="number"
                 value={formData.quantity}
@@ -340,7 +335,6 @@ export default function AddMaterialToWarehouseModal({ warehouse, onClose, onSucc
                 step="0.01"
                 min="0"
                 placeholder="0"
-                required
               />
             </div>
 
@@ -367,7 +361,7 @@ export default function AddMaterialToWarehouseModal({ warehouse, onClose, onSucc
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Vendor/Supplier *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Vendor/Supplier</label>
               <select
                 value={formData.vendor}
                 onChange={(e) => {
@@ -379,7 +373,6 @@ export default function AddMaterialToWarehouseModal({ warehouse, onClose, onSucc
                   });
                 }}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
-                required
               >
                 <option value="">Select vendor...</option>
                 {vendors.map((vendor) => (
@@ -572,3 +565,4 @@ export default function AddMaterialToWarehouseModal({ warehouse, onClose, onSucc
     </div>
   );
 }
+
