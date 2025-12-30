@@ -37,7 +37,6 @@ const expenseSchema = new Schema<IExpense>(
   {
     expenseNumber: {
       type: String,
-      required: [true, 'Expense number is required'],
       unique: true,
       trim: true,
       uppercase: true,
@@ -48,7 +47,6 @@ const expenseSchema = new Schema<IExpense>(
     },
     category: {
       type: String,
-      required: [true, 'Category is required'],
       enum: [
         'Permits',
         'Utilities',
@@ -70,17 +68,14 @@ const expenseSchema = new Schema<IExpense>(
     expenseType: {
       type: String,
       enum: ['Material', 'Labour', 'Equipment', 'General', 'Overhead'],
-      required: [true, 'Expense type is required'],
       default: 'General',
     },
     description: {
       type: String,
-      required: [true, 'Description is required'],
       trim: true,
     },
     amount: {
       type: Number,
-      required: [true, 'Amount is required'],
       min: [0, 'Amount cannot be negative'],
     },
     amountPaid: {
@@ -92,12 +87,10 @@ const expenseSchema = new Schema<IExpense>(
       {
         amount: {
           type: Number,
-          required: true,
           min: [0, 'Payment amount cannot be negative'],
         },
         paymentDate: {
           type: Date,
-          required: true,
           default: Date.now,
         },
         paymentMethod: {
@@ -115,7 +108,6 @@ const expenseSchema = new Schema<IExpense>(
     ],
     date: {
       type: Date,
-      required: [true, 'Date is required'],
       default: Date.now,
     },
     vendor: {
@@ -161,7 +153,6 @@ const expenseSchema = new Schema<IExpense>(
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: true,
     },
   },
   {

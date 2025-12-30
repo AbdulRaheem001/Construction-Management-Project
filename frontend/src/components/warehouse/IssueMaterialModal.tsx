@@ -159,13 +159,12 @@ export default function IssueMaterialModal({ inventory, warehouse, onClose, onSu
           ) : (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Issue to Project *
+                Issue to Project
               </label>
               <select
                 value={formData.project}
                 onChange={(e) => setFormData({ ...formData, project: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
-                required
               >
                 <option value="">Select a project</option>
                 {projects.map((project) => (
@@ -180,7 +179,7 @@ export default function IssueMaterialModal({ inventory, warehouse, onClose, onSu
           {/* Quantity */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Quantity to Issue ({material.unit}) *
+              Quantity to Issue ({material.unit})
             </label>
             <input
               type="number"
@@ -191,7 +190,6 @@ export default function IssueMaterialModal({ inventory, warehouse, onClose, onSu
               min="0"
               step="0.01"
               max={inventory.quantity}
-              required
             />
             {formData.quantity && parseFloat(formData.quantity) > inventory.quantity && (
               <p className="text-xs text-red-600 mt-1">
@@ -203,7 +201,7 @@ export default function IssueMaterialModal({ inventory, warehouse, onClose, onSu
           {/* Used By */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Used By (Person/Team) *
+              Used By (Person/Team)
             </label>
             <input
               type="text"
@@ -211,7 +209,6 @@ export default function IssueMaterialModal({ inventory, warehouse, onClose, onSu
               onChange={(e) => setFormData({ ...formData, usedBy: e.target.value })}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
               placeholder="e.g., Construction Team A, John Doe"
-              required
             />
           </div>
 
@@ -290,3 +287,4 @@ export default function IssueMaterialModal({ inventory, warehouse, onClose, onSu
     </div>
   );
 }
+

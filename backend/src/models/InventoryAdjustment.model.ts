@@ -23,7 +23,6 @@ const inventoryAdjustmentSchema = new Schema<IInventoryAdjustment>(
   {
     adjustmentNumber: {
       type: String,
-      required: [true, 'Adjustment number is required'],
       unique: true,
       trim: true,
       uppercase: true,
@@ -31,31 +30,25 @@ const inventoryAdjustmentSchema = new Schema<IInventoryAdjustment>(
     material: {
       type: Schema.Types.ObjectId,
       ref: 'Material',
-      required: [true, 'Material is required'],
     },
     location: {
       type: Schema.Types.ObjectId,
       refPath: 'locationType',
-      required: [true, 'Location is required'],
     },
     locationType: {
       type: String,
-      required: true,
       enum: ['Project', 'Warehouse'],
     },
     adjustmentType: {
       type: String,
       enum: ['Increase', 'Decrease'],
-      required: [true, 'Adjustment type is required'],
     },
     quantity: {
       type: Number,
-      required: [true, 'Quantity is required'],
       min: [0, 'Quantity cannot be negative'],
     },
     reason: {
       type: String,
-      required: [true, 'Reason is required'],
       enum: ['Breakage', 'Theft', 'Loss', 'Found', 'Correction', 'Damaged', 'Expired', 'Other'],
     },
     explanation: {
@@ -64,13 +57,11 @@ const inventoryAdjustmentSchema = new Schema<IInventoryAdjustment>(
     },
     date: {
       type: Date,
-      required: [true, 'Date is required'],
       default: Date.now,
     },
     requestedBy: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: [true, 'Requested by is required'],
     },
     approvedBy: {
       type: Schema.Types.ObjectId,

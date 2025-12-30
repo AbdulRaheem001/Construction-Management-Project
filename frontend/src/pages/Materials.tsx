@@ -709,12 +709,11 @@ function CreateMaterialModal({ onClose, onSuccess }: CreateMaterialModalProps) {
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Warehouse *</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Warehouse</label>
             <select
               value={formData.warehouse}
               onChange={(e) => setFormData({ ...formData, warehouse: e.target.value })}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
-              required
             >
               <option value="">Select a warehouse</option>
               {warehouses.map((warehouse) => (
@@ -728,35 +727,32 @@ function CreateMaterialModal({ onClose, onSuccess }: CreateMaterialModalProps) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Serial Number *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Serial Number</label>
               <input
                 type="text"
                 value={formData.sku}
                 onChange={(e) => setFormData({ ...formData, sku: e.target.value.toUpperCase() })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
                 placeholder="e.g., SE-2003"
-                required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Name *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
               <input
                 type="text"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
-                required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Category *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
               <select
                 value={formData.category}
                 onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
-                required
               >
                 <option value="Cement">Cement</option>
                 <option value="Steel">Steel</option>
@@ -772,12 +768,11 @@ function CreateMaterialModal({ onClose, onSuccess }: CreateMaterialModalProps) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Unit *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Unit</label>
               <select
                 value={formData.unit}
                 onChange={(e) => setFormData({ ...formData, unit: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
-                required
               >
                 <option value="kg">Kilogram (kg)</option>
                 <option value="lbs">Pounds (lbs)</option>
@@ -794,7 +789,7 @@ function CreateMaterialModal({ onClose, onSuccess }: CreateMaterialModalProps) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Cost Per Unit *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Cost Per Unit</label>
               <input
                 type="number"
                 value={formData.costPerUnit}
@@ -802,12 +797,11 @@ function CreateMaterialModal({ onClose, onSuccess }: CreateMaterialModalProps) {
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
                 step="0.01"
                 min="0"
-                required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Number of Units *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Number of Units</label>
               <input
                 type="number"
                 value={formData.initialStock}
@@ -815,7 +809,6 @@ function CreateMaterialModal({ onClose, onSuccess }: CreateMaterialModalProps) {
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
                 step="0.01"
                 min="0"
-                required
               />
             </div>
 
@@ -831,14 +824,13 @@ function CreateMaterialModal({ onClose, onSuccess }: CreateMaterialModalProps) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Reorder Point *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Reorder Point</label>
               <input
                 type="number"
                 value={formData.reorderPoint}
                 onChange={(e) => setFormData({ ...formData, reorderPoint: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
                 min="0"
-                required
               />
             </div>
 
@@ -1012,24 +1004,22 @@ function CreatePOModal({ onClose, onSuccess }: CreatePOModalProps) {
           {/* Basic Information */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">PO Number *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">PO Number</label>
               <input
                 type="text"
                 value={formData.poNumber}
                 onChange={(e) => setFormData({ ...formData, poNumber: e.target.value.toUpperCase() })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
                 placeholder="PO-2025-001"
-                required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Project *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Project</label>
               <select
                 value={formData.project}
                 onChange={(e) => setFormData({ ...formData, project: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
-                required
               >
                 <option value="">Select Project</option>
                 {projects.map((project) => (
@@ -1041,13 +1031,12 @@ function CreatePOModal({ onClose, onSuccess }: CreatePOModalProps) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Supplier *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Supplier</label>
               <input
                 type="text"
                 value={formData.supplier}
                 onChange={(e) => setFormData({ ...formData, supplier: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
-                required
               />
             </div>
 
@@ -1062,13 +1051,12 @@ function CreatePOModal({ onClose, onSuccess }: CreatePOModalProps) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Order Date *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Order Date</label>
               <input
                 type="date"
                 value={formData.orderDate}
                 onChange={(e) => setFormData({ ...formData, orderDate: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
-                required
               />
             </div>
 
@@ -1111,12 +1099,11 @@ function CreatePOModal({ onClose, onSuccess }: CreatePOModalProps) {
 
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div className="md:col-span-2">
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Material *</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Material</label>
                       <select
                         value={item.material}
                         onChange={(e) => handleItemChange(index, 'material', e.target.value)}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
-                        required
                       >
                         <option value="">Select Material</option>
                         {materials.map((material) => (
@@ -1128,7 +1115,7 @@ function CreatePOModal({ onClose, onSuccess }: CreatePOModalProps) {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Quantity *</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Quantity</label>
                       <input
                         type="number"
                         value={item.quantity || ''}
@@ -1136,12 +1123,11 @@ function CreatePOModal({ onClose, onSuccess }: CreatePOModalProps) {
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
                         min="0"
                         step="0.01"
-                        required
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Unit Price *</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Unit Price</label>
                       <input
                         type="number"
                         value={item.unitPrice || ''}
@@ -1149,7 +1135,6 @@ function CreatePOModal({ onClose, onSuccess }: CreatePOModalProps) {
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
                         min="0"
                         step="0.01"
-                        required
                       />
                     </div>
                   </div>
@@ -1338,7 +1323,7 @@ function StockTransferModal({
 
           {/* From Location */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">From Location *</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">From Location</label>
             <select
               value={`${formData.fromLocationType}-${formData.fromLocation}`}
               onChange={(e) => {
@@ -1351,7 +1336,6 @@ function StockTransferModal({
                 });
               }}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
-              required
               disabled={!!fromLocation}
             >
               <option value="">Select source location</option>
@@ -1365,7 +1349,7 @@ function StockTransferModal({
 
           {/* To Location */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">To Location *</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">To Location</label>
             <select
               value={`${formData.toLocationType}-${formData.toLocation}`}
               onChange={(e) => {
@@ -1378,7 +1362,6 @@ function StockTransferModal({
                 });
               }}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
-              required
             >
               <option value="">Select destination location</option>
               {allLocations.map((loc) => (
@@ -1392,7 +1375,7 @@ function StockTransferModal({
           {/* Quantity */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Quantity to Transfer ({material.unit}) *
+              Quantity to Transfer ({material.unit})
             </label>
             <input
               type="number"
@@ -1403,7 +1386,6 @@ function StockTransferModal({
               min="0"
               step="0.01"
               max={availableQty}
-              required
             />
             {availableQty && formData.quantity && parseFloat(formData.quantity) > availableQty && (
               <p className="text-xs text-red-600 mt-1">
@@ -1566,7 +1548,6 @@ function RestockModal({
               placeholder={`Enter quantity in ${material.unit}`}
               min="0"
               step="0.01"
-              required
             />
           </div>
 
@@ -1583,7 +1564,6 @@ function RestockModal({
               placeholder="Enter cost per unit"
               min="0"
               step="0.01"
-              required
             />
           </div>
 
@@ -1777,3 +1757,4 @@ function MaterialImageViewerModal({ material, currentIndex, onClose, onIndexChan
     </div>
   );
 }
+

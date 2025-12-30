@@ -18,37 +18,30 @@ const materialIssueSchema = new Schema<IMaterialIssue>(
     project: {
       type: Schema.Types.ObjectId,
       ref: 'Project',
-      required: [true, 'Project is required'],
     },
     material: {
       type: Schema.Types.ObjectId,
       ref: 'Material',
-      required: [true, 'Material is required'],
     },
     quantity: {
       type: Number,
-      required: [true, 'Quantity is required'],
       min: [0.01, 'Quantity must be greater than 0'],
     },
     unitCost: {
       type: Number,
-      required: true,
       min: [0, 'Unit cost cannot be negative'],
     },
     totalCost: {
       type: Number,
-      required: true,
       min: [0, 'Total cost cannot be negative'],
     },
     issueDate: {
       type: Date,
-      required: [true, 'Issue date is required'],
       default: Date.now,
     },
     issuedBy: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: [true, 'Issued by is required'],
     },
     notes: {
       type: String,

@@ -22,20 +22,16 @@ const timesheetSchema = new Schema<ITimesheet>(
     employee: {
       type: Schema.Types.ObjectId,
       ref: 'Employee',
-      required: [true, 'Employee is required'],
     },
     project: {
       type: Schema.Types.ObjectId,
       ref: 'Project',
-      required: [true, 'Project is required'],
     },
     date: {
       type: Date,
-      required: [true, 'Date is required'],
     },
     hoursWorked: {
       type: Number,
-      required: [true, 'Hours worked is required'],
       min: [0, 'Hours cannot be negative'],
       max: [24, 'Hours cannot exceed 24'],
     },
@@ -51,7 +47,6 @@ const timesheetSchema = new Schema<ITimesheet>(
     submittedBy: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: true,
     },
     approvedBy: {
       type: Schema.Types.ObjectId,

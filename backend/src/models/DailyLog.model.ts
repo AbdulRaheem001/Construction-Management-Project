@@ -25,15 +25,12 @@ const dailyLogSchema = new Schema<IDailyLog>(
     project: {
       type: Schema.Types.ObjectId,
       ref: 'Project',
-      required: [true, 'Project is required'],
     },
     date: {
       type: Date,
-      required: [true, 'Date is required'],
     },
     weather: {
       type: String,
-      required: [true, 'Weather is required'],
       enum: ['Sunny', 'Cloudy', 'Rainy', 'Stormy', 'Foggy', 'Windy', 'Hot', 'Cold'],
     },
     temperature: {
@@ -42,7 +39,6 @@ const dailyLogSchema = new Schema<IDailyLog>(
     },
     progress: {
       type: String,
-      required: [true, 'Progress is required'],
       trim: true,
     },
     activitiesCompleted: [
@@ -53,7 +49,6 @@ const dailyLogSchema = new Schema<IDailyLog>(
     ],
     workforcePresent: {
       type: Number,
-      required: [true, 'Workforce present is required'],
       min: [0, 'Workforce cannot be negative'],
     },
     equipmentUsed: [
@@ -91,7 +86,6 @@ const dailyLogSchema = new Schema<IDailyLog>(
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: true,
     },
   },
   {

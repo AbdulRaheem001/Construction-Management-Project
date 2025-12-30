@@ -23,7 +23,6 @@ const materialConsumptionSchema = new Schema<IMaterialConsumption>(
   {
     consumptionNumber: {
       type: String,
-      required: [true, 'Consumption number is required'],
       unique: true,
       trim: true,
       uppercase: true,
@@ -31,16 +30,13 @@ const materialConsumptionSchema = new Schema<IMaterialConsumption>(
     project: {
       type: Schema.Types.ObjectId,
       ref: 'Project',
-      required: [true, 'Project is required'],
     },
     material: {
       type: Schema.Types.ObjectId,
       ref: 'Material',
-      required: [true, 'Material is required'],
     },
     quantity: {
       type: Number,
-      required: [true, 'Quantity is required'],
       min: [0, 'Quantity cannot be negative'],
     },
     unitCost: {
@@ -53,7 +49,6 @@ const materialConsumptionSchema = new Schema<IMaterialConsumption>(
     },
     date: {
       type: Date,
-      required: [true, 'Date is required'],
       default: Date.now,
     },
     purpose: {
@@ -63,7 +58,6 @@ const materialConsumptionSchema = new Schema<IMaterialConsumption>(
     consumedBy: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: [true, 'Consumed by is required'],
     },
     approvedBy: {
       type: Schema.Types.ObjectId,

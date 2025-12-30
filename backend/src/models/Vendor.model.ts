@@ -22,14 +22,12 @@ const vendorSchema = new Schema<IVendor>(
   {
     vendorCode: {
       type: String,
-      required: [true, 'Vendor code is required'],
       unique: true,
       trim: true,
       uppercase: true,
     },
     name: {
       type: String,
-      required: [true, 'Vendor name is required'],
       trim: true,
     },
     contactPerson: {
@@ -43,7 +41,6 @@ const vendorSchema = new Schema<IVendor>(
     },
     phone: {
       type: String,
-      required: [true, 'Phone is required'],
       trim: true,
     },
     address: {

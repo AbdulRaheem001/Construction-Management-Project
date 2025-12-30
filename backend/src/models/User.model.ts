@@ -22,13 +22,11 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>(
     },
     name: {
       type: String,
-      required: [true, 'Name is required'],
       trim: true,
     },
     role: {
       type: String,
       enum: Object.values(UserRole),
-      required: [true, 'Role is required'],
       default: UserRole.LABOURER,
     },
     roles: [

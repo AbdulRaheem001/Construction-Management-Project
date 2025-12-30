@@ -24,7 +24,6 @@ const goodsReceiptSchema = new Schema<IGoodsReceipt>(
   {
     grNumber: {
       type: String,
-      required: [true, 'GR number is required'],
       unique: true,
       trim: true,
       uppercase: true,
@@ -32,32 +31,26 @@ const goodsReceiptSchema = new Schema<IGoodsReceipt>(
     purchaseOrder: {
       type: Schema.Types.ObjectId,
       ref: 'PurchaseOrder',
-      required: [true, 'Purchase order is required'],
     },
     receivedDate: {
       type: Date,
-      required: [true, 'Received date is required'],
       default: Date.now,
     },
     receivedBy: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: [true, 'Received by is required'],
     },
     items: [
       {
         material: {
           type: Schema.Types.ObjectId,
           ref: 'Material',
-          required: true,
         },
         orderedQuantity: {
           type: Number,
-          required: true,
         },
         receivedQuantity: {
           type: Number,
-          required: true,
           min: [0, 'Received quantity cannot be negative'],
         },
         damagedQuantity: {
@@ -74,7 +67,6 @@ const goodsReceiptSchema = new Schema<IGoodsReceipt>(
     destination: {
       type: Schema.Types.ObjectId,
       refPath: 'destinationType',
-      required: [true, 'Destination is required'],
     },
     destinationType: {
       type: String,
