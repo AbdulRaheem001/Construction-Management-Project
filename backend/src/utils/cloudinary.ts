@@ -3,10 +3,10 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-// Validate Cloudinary environment variables
-const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
-const apiKey = process.env.CLOUDINARY_API_KEY;
-const apiSecret = process.env.CLOUDINARY_API_SECRET;
+// Validate Cloudinary environment variables with fallback to hardcoded values
+const cloudName = process.env.CLOUDINARY_CLOUD_NAME || 'dnploeyj5';
+const apiKey = process.env.CLOUDINARY_API_KEY || '749142284487868';
+const apiSecret = process.env.CLOUDINARY_API_SECRET || 'udsAqO7RHH3wnIS58pOFumpCjTc';
 
 const isCloudinaryConfigured = !!(cloudName && apiKey && apiSecret);
 

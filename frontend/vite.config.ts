@@ -130,6 +130,10 @@ export default defineConfig({
     host: true,
     allowedHosts: [
       'internationaltradersregd.duckdns.org'
-    ]
-  }
+    ],
+    fs: {
+      strict: false
+    }
+  },
+  cacheDir: 'node_modules/.vite'
 })
