@@ -15,6 +15,12 @@ export const createWarehouse = async (
   next: NextFunction
 ) => {
   try {
+    // Auto-generate code if not provided
+    if (!req.body.code) {
+      const warehouseCount = await Warehouse.countDocuments();
+      req.body.code = `WH-${String(warehouseCount + 1).padStart(6, '0')}`;
+    }
+    
     const warehouse = await Warehouse.create(req.body);
     await warehouse.populate('project', 'projectName projectCode location');
     logger.info(`Warehouse created: ${warehouse.code}`);

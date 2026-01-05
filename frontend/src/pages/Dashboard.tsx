@@ -146,7 +146,7 @@ export default function Dashboard() {
                   </p>
                   {stat.change && (
                     <p className={`text-xs sm:text-sm mt-1 sm:mt-2 ${stat.change.startsWith('+') ? 'text-green-600' : 'text-red-600'}`}>
-                      {stat.change} from last month
+                     
                     </p>
                   )}
                 </div>

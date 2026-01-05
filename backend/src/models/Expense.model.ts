@@ -47,23 +47,8 @@ const expenseSchema = new Schema<IExpense>(
     },
     category: {
       type: String,
-      enum: [
-        'Permits',
-        'Utilities',
-        'Transportation',
-        'Accommodation',
-        'Insurance',
-        'Legal',
-        'Consulting',
-        'Office Supplies',
-        'Communications',
-        'Marketing',
-        'Training',
-        'Safety Equipment',
-        'Waste Disposal',
-        'Security',
-        'Other',
-      ],
+      trim: true,
+      // No enum restriction - allows custom categories
     },
     expenseType: {
       type: String,

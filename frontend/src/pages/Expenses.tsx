@@ -445,6 +445,7 @@ interface ExpenseFormData {
   images: File[];
   notes: string;
   amountPaid: string;
+  paymentMethod: string;
 }
 
 function NewExpenseModal({ onClose, onSuccess }: NewExpenseModalProps) {
@@ -452,7 +453,7 @@ function NewExpenseModal({ onClose, onSuccess }: NewExpenseModalProps) {
     project: '',
     description: '',
     amount: '',
-    category: 'Other',
+    category: '',
     expenseType: 'General',
     paymentStatus: 'Pending',
     date: new Date().toISOString().split('T')[0],
@@ -461,6 +462,7 @@ function NewExpenseModal({ onClose, onSuccess }: NewExpenseModalProps) {
     images: [],
     notes: '',
     amountPaid: '',
+    paymentMethod: 'Cash',
   };
 
   const [expenses, setExpenses] = useState<ExpenseFormData[]>([initialFormData]);
@@ -613,9 +615,10 @@ function NewExpenseModal({ onClose, onSuccess }: NewExpenseModalProps) {
             project: expense.project,
             description: expense.description,
             amount: parseFloat(expense.amount),
-            category: expense.category,
-            expenseType: expense.expenseType,
+            category: expense.category || undefined,
+            expenseType: expense.expenseType || undefined,
             paymentStatus: expense.paymentStatus,
+            paymentMethod: expense.paymentMethod || undefined,
             date: expense.date,
             vendor: expense.vendor || undefined,
             invoiceNumber: expense.invoiceNumber || undefined,
@@ -786,34 +789,41 @@ function NewExpenseModal({ onClose, onSuccess }: NewExpenseModalProps) {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                 {/* Category */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
-                  <select
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Category (Optional)</label>
+                  <input
+                    list={`categories-${index}`}
                     value={expense.category}
                     onChange={(e) => handleExpenseChange(index, 'category', e.target.value)}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
-                  >
+                    placeholder="Select or type a category"
+                  />
+                  <datalist id={`categories-${index}`}>
                     {categories.map((cat) => (
-                      <option key={cat} value={cat}>
-                        {cat}
-                      </option>
+                      <option key={cat} value={cat} />
                     ))}
-                  </select>
+                  </datalist>
+                  <p className="text-xs text-gray-500 mt-1">Select from list or type your own</p>
                 </div>
 
                 {/* Expense Type */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Expense Type</label>
-                  <select
+                  <input
+                    type="text"
+                    list={`expenseTypes-${index}`}
                     value={expense.expenseType}
                     onChange={(e) => handleExpenseChange(index, 'expenseType', e.target.value)}
+                    placeholder="Enter or select expense type"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
-                  >
-                    <option value="Material">Material</option>
-                    <option value="Labour">Labour</option>
-                    <option value="Equipment">Equipment</option>
-                    <option value="General">General</option>
-                    <option value="Overhead">Overhead</option>
-                  </select>
+                  />
+                  <datalist id={`expenseTypes-${index}`}>
+                    <option value="Material" />
+                    <option value="Labour" />
+                    <option value="Equipment" />
+                    <option value="General" />
+                    <option value="Overhead" />
+                  </datalist>
+                  <p className="text-xs text-gray-500 mt-1">Select from list or type your own</p>
                 </div>
               </div>
 
@@ -838,6 +848,22 @@ function NewExpenseModal({ onClose, onSuccess }: NewExpenseModalProps) {
                     <option value="Paid">Paid</option>
                     <option value="Partially Paid">Partially Paid</option>
                     <option value="Overdue">Overdue</option>
+                  </select>
+                </div>
+
+                {/* Payment Method */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Payment Method</label>
+                  <select
+                    value={expense.paymentMethod || 'Cash'}
+                    onChange={(e) => handleExpenseChange(index, 'paymentMethod', e.target.value)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
+                  >
+                    <option value="Cash">Cash</option>
+                    <option value="Check">Check</option>
+                    <option value="Bank Transfer">Bank Transfer</option>
+                    <option value="Credit Card">Credit Card</option>
+                    <option value="Online Payment">Online Payment</option>
                   </select>
                 </div>
 
@@ -941,6 +967,7 @@ function NewExpenseModal({ onClose, onSuccess }: NewExpenseModalProps) {
                   )}
                 </div>
               </div>
+              
 
               {/* Notes */}
               <div className="mt-4">

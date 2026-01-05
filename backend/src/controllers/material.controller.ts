@@ -22,6 +22,12 @@ export const createMaterial = async (
     const materialData = { ...req.body };
     const { warehouse, initialStock } = req.body;
     
+    // Auto-generate SKU if not provided
+    if (!materialData.sku) {
+      const materialCount = await Material.countDocuments();
+      materialData.sku = `MAT-${String(materialCount + 1).padStart(6, '0')}`;
+    }
+    
     // Handle image uploads to Cloudinary
     let imageUrls: string[] = [];
     if (req.body.images && Array.isArray(req.body.images) && req.body.images.length > 0) {
