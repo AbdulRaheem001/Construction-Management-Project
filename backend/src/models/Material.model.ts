@@ -62,8 +62,9 @@ const materialSchema = new Schema<IMaterial>(
     },
     category: {
       type: String,
-      enum: ['Cement', 'Steel', 'Bricks', 'Sand', 'Aggregate', 'Paint', 'Electrical', 'Plumbing', 'Hardware', 'Other'],
+      trim: true,
       default: 'Other',
+      // No enum restriction - allows custom categories
     },
     images: {
       type: [String],
